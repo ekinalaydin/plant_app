@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dropdown_search/dropdown_search.dart';
+import 'package:plant_app/helpers/screen_size_helper.dart';
 
 class SignUpForm extends StatefulWidget {
   @override
@@ -19,11 +20,51 @@ class _SignUpFormState extends State<SignUpForm> {
 
   @override
   Widget build(BuildContext context) {
+    final double screenWidth = ScreenSizeHelper.getScreenWidth(context);
+    final double screenHeight = ScreenSizeHelper.getScreenHeight(context);
     return Form(
       key: _formKey,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
+          Container(
+            margin: EdgeInsets.only(bottom: 8.0),
+            alignment: Alignment.center,
+            padding: EdgeInsets.symmetric(vertical: 20.0),
+            child: Row(
+              children: <Widget>[
+                // Logo
+                Container(
+                  margin: EdgeInsets.only(right: 12.0),
+                  child: Image.asset(
+                    'lib/assets/images/logo1.png', // Logo dosya yolu buraya
+                    width: 80, // Logo genişliği
+                    height: 80, // Logo yüksekliği
+                  ),
+                ),
+                // Hoşgeldiniz Metni
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Hello',
+                      style: TextStyle(
+                        fontSize: screenWidth / 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      "Let's Learn More About Plants",
+                      style: TextStyle(
+                        fontSize: screenWidth / 22,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: Row(
@@ -389,8 +430,10 @@ class _SignUpFormState extends State<SignUpForm> {
               return null;
             },
           ),
-          SizedBox(height: 8.0),
-          Center(
+          SizedBox(height: 12.0),
+          SizedBox(
+            width: screenWidth / 1.5,
+            height: screenHeight / 20,
             child: ElevatedButton(
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
@@ -400,13 +443,19 @@ class _SignUpFormState extends State<SignUpForm> {
                 }
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue,
+                backgroundColor: Color(0xFF2DDA53),
                 elevation: 5,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10.0),
                 ),
               ),
-              child: Text('Sign Up'),
+              child: Text(
+                'Sign Up',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: screenWidth / 24,
+                    fontWeight: FontWeight.w700),
+              ),
             ),
           ),
         ],
