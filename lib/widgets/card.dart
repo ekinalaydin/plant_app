@@ -19,14 +19,14 @@ class CardWidget extends StatelessWidget {
               ListTile(
                 leading: CircleAvatar(
                   radius: 35,
-                  // child: ClipOval(
-                  //   child: Image.asset(
-                  //     "images/apple.jpeg",
-                  //     fit: BoxFit.cover,
-                  //     width: 80,
-                  //     height: 80,
-                  //   ),
-                  // ),
+                  child: ClipOval(
+                    child: Image.asset(
+                      "lib/assets/images/apple.jpeg",
+                      fit: BoxFit.cover,
+                      width: 80,
+                      height: 80,
+                    ),
+                  ),
                 ),
                 title: const Row(
                   children: [

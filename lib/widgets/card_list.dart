@@ -12,10 +12,10 @@ class CardList extends StatelessWidget {
           child: Column(
             children: <Widget>[
               Row(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Padding(
-                    padding: const EdgeInsets.all(30),
+                    padding: const EdgeInsets.all(8),
                     child: GestureDetector(
                       onTap: () {
                         Navigator.of(context, rootNavigator: true).push(
@@ -44,11 +44,8 @@ class CardList extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(
-                    width: 10,
-                  ),
                   Padding(
-                    padding: const EdgeInsets.all(15),
+                    padding: const EdgeInsets.all(8),
                     child: Card(
                       shadowColor: const Color.fromARGB(255, 133, 131, 131),
                       color: const Color.fromARGB(255, 232, 236, 234),
