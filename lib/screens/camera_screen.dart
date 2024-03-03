@@ -1,11 +1,108 @@
-import 'package:flutter/material.dart';
+import 'dart:io';
 
-class CameraScreen extends StatelessWidget {
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
+
+class CameraScreen extends StatefulWidget {
+  @override
+  _CameraScreenState createState() => _CameraScreenState();
+}
+
+class _CameraScreenState extends State<CameraScreen> {
+  File? _image;
+  final picker = ImagePicker();
+
+  Future<void> getImageFromCamera() async {
+    final pickedFile = await picker.pickImage(source: ImageSource.camera);
+
+    setState(() {
+      if (pickedFile != null) {
+        _image = File(pickedFile.path);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('No image selected from camera.'),
+          ),
+        );
+      }
+    });
+  }
+
+  Future<void> getImageFromGallery() async {
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      if (pickedFile != null) {
+        _image = File(pickedFile.path);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('No image selected from gallery.'),
+          ),
+        );
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.green,
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(80.0), // here the desired height
+        child: AppBar(
+          backgroundColor: Colors.green,
+          title: Text(
+            "Take a photo of your plant! ",
+            style: GoogleFonts.poppins(fontSize: 20, color: Colors.white),
+          ),
+        ),
+      ),
+      body: Center(
+        child: _image == null
+            ? Text(
+                "No image selected. Please select an image.",
+                style: GoogleFonts.poppins(fontSize: 15),
+              )
+            : Image.file(
+                _image!,
+                width: 500,
+                height: 500,
+              ),
+      ),
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: <Widget>[
+          SizedBox(
+            width: 80, // Specify the desired width
+            height: 80,
+            child: FloatingActionButton(
+              heroTag: 'camera_fab',
+              onPressed: getImageFromCamera,
+              tooltip: 'Take a Photo',
+              backgroundColor: const Color.fromARGB(255, 182, 226, 184),
+              child: Icon(
+                Icons.camera,
+                color: Colors.green,
+              ),
+            ),
+          ),
+          SizedBox(height: 16),
+          SizedBox(
+            width: 80, // Specify the desired width
+            height: 80,
+            child: FloatingActionButton(
+              heroTag: 'gallery_fab',
+              onPressed: getImageFromGallery,
+              tooltip: 'Choose from Gallery',
+              backgroundColor: const Color.fromARGB(255, 182, 226, 184),
+              child: Icon(
+                Icons.photo_library,
+                color: Colors.green,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

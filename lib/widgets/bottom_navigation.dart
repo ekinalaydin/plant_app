@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:plant_app/screens/camera_screen.dart';
 import 'package:plant_app/screens/home_screen.dart';
 import 'package:plant_app/screens/profile_screen.dart';
 
@@ -20,9 +21,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
         "About",
       ),
     ),
-    Center(
-      child: Text("Products"),
-    ),
+    CameraScreen(),
     Center(
       child: Text("Contact"),
     ),

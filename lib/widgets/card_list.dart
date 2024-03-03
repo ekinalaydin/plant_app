@@ -26,19 +26,35 @@ class CardList extends StatelessWidget {
                           ),
                         );
                       },
-                      child: Card(
-                        color: const Color.fromARGB(255, 232, 236, 234),
-                        child: SizedBox(
-                          width: 150,
-                          height: 120,
-                          child: ListTile(
-                            contentPadding: const EdgeInsets.all(20),
-                            leading: const Icon(Icons.healing_sharp),
-                            title: Text(
-                              "Health Check",
-                              style: GoogleFonts.poppins(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                              color: Color.fromARGB(255, 178, 234, 176),
+                              blurRadius: 20.0,
+                            ),
+                          ],
+                        ), // Adjus
+                        child: Card(
+                          shape: BeveledRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          color: Color.fromARGB(255, 217, 243, 153),
+                          child: SizedBox(
+                            width: 150,
+                            height: 100,
+                            child: ListTile(
+                              contentPadding: const EdgeInsets.all(20),
+                              leading: const Icon(
+                                Icons.healing_sharp,
+                                color: Colors.green,
+                              ),
+                              title: Text(
+                                "Health Check",
+                                style: GoogleFonts.poppins(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.green),
                               ),
                             ),
                           ),
@@ -48,20 +64,35 @@ class CardList extends StatelessWidget {
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8),
-                    child: Card(
-                      shadowColor: const Color.fromARGB(255, 133, 131, 131),
-                      color: const Color.fromARGB(255, 232, 236, 234),
-                      child: SizedBox(
-                        width: 150,
-                        height: 120,
-                        child: ListTile(
-                          contentPadding: const EdgeInsets.all(20),
-                          leading: const Icon(Icons.cloud_circle),
-                          title: Text(
-                            "Weather",
-                            style: GoogleFonts.poppins(
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            color: Color.fromARGB(255, 148, 177, 221),
+                            blurRadius: 20.0,
+                          ),
+                        ],
+                      ), // Adjust the height of
+                      child: Card(
+                        shape: BeveledRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        color: Color.fromARGB(255, 175, 210, 238),
+                        child: SizedBox(
+                          width: 150,
+                          height: 100,
+                          child: ListTile(
+                            contentPadding: const EdgeInsets.all(20),
+                            leading: const Icon(
+                              Icons.cloud_circle,
+                              color: Colors.blue,
+                            ),
+                            title: Text(
+                              "Weather",
+                              style: GoogleFonts.poppins(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.blue),
                             ),
                           ),
                         ),
@@ -71,13 +102,18 @@ class CardList extends StatelessWidget {
                 ],
               ),
               Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  "Your Previous Diseases",
-                  style: GoogleFonts.poppins(
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.green),
+                padding: const EdgeInsets.all(10.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Your Previous Diseases",
+                      style: GoogleFonts.poppins(
+                          fontSize: 25,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.green),
+                    ),
+                  ],
                 ),
               ),
               // Adding multiple instances of CardWidget
