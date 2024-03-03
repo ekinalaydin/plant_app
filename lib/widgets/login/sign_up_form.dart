@@ -1,3 +1,4 @@
+import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:plant_app/helpers/screen_size_helper.dart';
@@ -439,7 +440,7 @@ class _SignUpFormState extends State<SignUpForm> {
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
                   // Process form data here
-                  _processFormData();
+                  signUpUser();
                 }
               },
               style: ElevatedButton.styleFrom(
@@ -463,15 +464,82 @@ class _SignUpFormState extends State<SignUpForm> {
     );
   }
 
-  void _processFormData() {
-    // Process form data here
-    print('Name: $_name');
-    print('Surname: $_surname');
-    print('Username: $_username');
-    print('Email: $_email');
-    print('Password: $_password');
-    print('City: $_city');
-    print('Occupation: $_occupation');
-    print('Gender: $_gender');
+  /// Signs a user up with a username, password, and email. The required
+  /// attributes may be different depending on your app's configuration.
+  Future<void> signUpUser({
+    required String name,
+    required String familyName,
+    required String nickname,
+    required String email,
+    required String gender,
+    required String address,
+    required String password,
+    String? occupation,
+    String? city,
+  }) async {
+    try {
+      final String occupationKey = "custom:occupation";
+      final String cityKey = "custom:city";
+
+      final userAttributes = {
+        AuthUserAttributeKey.email: email,
+        AuthUserAttributeKey.address: address,
+        AuthUserAttributeKey.gender: gender,
+        AuthUserAttributeKey.familyName: familyName,
+        AuthUserAttributeKey.nickname: nickname,
+        AuthUserAttributeKey.name: name,
+        occupationKey: occupation,
+        cityKey: city,
+
+        // additional attributes as needed
+      };
+      final result = await Amplify.Auth.signUp(
+        username: nickname,
+        password: password,
+        options: SignUpOptions(
+          userAttributes: userAttributes.map((key, value) =>
+              MapEntry(key.toString(), value!)), // Convert keys to string
+        ),
+      );
+      await _handleSignUpResult(result);
+    } on AuthException catch (e) {
+      safePrint('Error signing up user: ${e.message}');
+    }
+  }
+}
+
+Future<void> _handleSignUpResult(SignUpResult result) async {
+  switch (result.nextStep.signUpStep) {
+    case AuthSignUpStep.confirmSignUp:
+      final codeDeliveryDetails = result.nextStep.codeDeliveryDetails!;
+      _handleCodeDelivery(codeDeliveryDetails);
+      break;
+    case AuthSignUpStep.done:
+      safePrint('Sign up is complete');
+      break;
+  }
+}
+
+void _handleCodeDelivery(AuthCodeDeliveryDetails codeDeliveryDetails) {
+  safePrint(
+    'A confirmation code has been sent to ${codeDeliveryDetails.destination}. '
+    'Please check your ${codeDeliveryDetails.deliveryMedium.name} for the code.',
+  );
+}
+
+Future<void> confirmUser({
+  required String username,
+  required String confirmationCode,
+}) async {
+  try {
+    final result = await Amplify.Auth.confirmSignUp(
+      username: username,
+      confirmationCode: confirmationCode,
+    );
+    // Check if further confirmations are needed or if
+    // the sign up is complete.
+    await _handleSignUpResult(result);
+  } on AuthException catch (e) {
+    safePrint('Error confirming user: ${e.message}');
   }
 }
