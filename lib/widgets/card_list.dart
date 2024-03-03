@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:plant_app/screens/home_screen.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:plant_app/screens/camera_screen.dart';
+// import 'package:plant_app/screens/home_screen.dart';
 import 'package:plant_app/widgets/card.dart';
 
 class CardList extends StatelessWidget {
@@ -20,7 +22,7 @@ class CardList extends StatelessWidget {
                       onTap: () {
                         Navigator.of(context, rootNavigator: true).push(
                           MaterialPageRoute(
-                            builder: (context) => HomeScreen(),
+                            builder: (context) => CameraScreen(),
                           ),
                         );
                       },
@@ -34,7 +36,7 @@ class CardList extends StatelessWidget {
                             leading: const Icon(Icons.healing_sharp),
                             title: Text(
                               "Health Check",
-                              style: TextStyle(
+                              style: GoogleFonts.poppins(
                                 fontSize: 15,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -57,7 +59,7 @@ class CardList extends StatelessWidget {
                           leading: const Icon(Icons.cloud_circle),
                           title: Text(
                             "Weather",
-                            style: TextStyle(
+                            style: GoogleFonts.poppins(
                               fontSize: 14,
                               fontWeight: FontWeight.bold,
                             ),
@@ -68,11 +70,14 @@ class CardList extends StatelessWidget {
                   ),
                 ],
               ),
-              const Text(
-                "Your Previous Diseases",
-                style: TextStyle(
-                  fontSize: 25,
-                  fontWeight: FontWeight.bold,
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  "Your Previous Diseases",
+                  style: GoogleFonts.poppins(
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.green),
                 ),
               ),
               // Adding multiple instances of CardWidget

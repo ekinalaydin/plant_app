@@ -1,0 +1,37 @@
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+class TextSection extends StatelessWidget {
+  final String title;
+  final String content;
+
+  TextSection({required this.title, required this.content});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Text(
+            title,
+            style: GoogleFonts.poppins(
+                fontSize: 18, fontWeight: FontWeight.w900, color: Colors.blue),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Text(
+            content,
+            style: GoogleFonts.poppins(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: const Color.fromARGB(255, 0, 0, 0)),
+          ),
+        ),
+        SizedBox(height: 16),
+      ],
+    );
+  }
+}

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:plant_app/screens/home_screen.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:plant_app/screens/disease_detection.dart';
 
 class CardWidget extends StatelessWidget {
   const CardWidget({super.key});
@@ -28,23 +29,25 @@ class CardWidget extends StatelessWidget {
                     ),
                   ),
                 ),
-                title: const Row(
+                title: Row(
                   children: [
                     Padding(
                       padding: EdgeInsets.only(bottom: 8.0),
                       child: Text(
                         'Apple Scab',
-                        style: TextStyle(fontSize: 20),
+                        style: GoogleFonts.poppins(
+                            fontSize: 20, fontWeight: FontWeight.w900),
                       ),
                     ),
                   ],
                 ),
-                subtitle: const Row(
+                subtitle: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
                       '20/12/2023',
-                      style: TextStyle(fontSize: 15),
+                      style: GoogleFonts.poppins(
+                          fontSize: 15, fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
@@ -59,7 +62,7 @@ class CardWidget extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                           builder: (context) => Builder(
-                            builder: (context) => HomeScreen(),
+                            builder: (context) => DiseaseDetection(),
                           ),
                         ),
                       );

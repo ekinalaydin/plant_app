@@ -16,7 +16,9 @@ class _BottomNavigationState extends State<BottomNavigation> {
   List<Widget> _pages = [
     HomeScreen(),
     Center(
-      child: Text("About"),
+      child: Text(
+        "About",
+      ),
     ),
     Center(
       child: Text("Products"),
