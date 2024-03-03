@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/gestures.dart';
 import 'package:plant_app/screens/login/forgot_password_screen.dart';
 import 'package:plant_app/screens/login/sign_up_screen.dart';

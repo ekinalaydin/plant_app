@@ -5,7 +5,7 @@ import 'package:plant_app/helpers/screen_size_helper.dart';
 
 class SignUpForm extends StatefulWidget {
   @override
-  _SignUpFormState createState() => _SignUpFormState();
+  State<SignUpForm> createState() => _SignUpFormState();
 }
 
 class _SignUpFormState extends State<SignUpForm> {
@@ -439,8 +439,15 @@ class _SignUpFormState extends State<SignUpForm> {
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
-                  // Process form data here
-                  signUpUser();
+                  signUpUser(
+                    name: _name ?? '',
+                    familyName: _surname ?? '',
+                    nickname: _username ?? '',
+                    email: _email ?? '',
+                    password: _password ?? '',
+                    gender: _gender ?? '',
+                    address: _city ?? '',
+                  );
                 }
               },
               style: ElevatedButton.styleFrom(
@@ -464,41 +471,31 @@ class _SignUpFormState extends State<SignUpForm> {
     );
   }
 
-  /// Signs a user up with a username, password, and email. The required
-  /// attributes may be different depending on your app's configuration.
   Future<void> signUpUser({
     required String name,
     required String familyName,
     required String nickname,
     required String email,
+    required String password,
     required String gender,
     required String address,
-    required String password,
     String? occupation,
     String? city,
   }) async {
     try {
-      final String occupationKey = "custom:occupation";
-      final String cityKey = "custom:city";
-
       final userAttributes = {
         AuthUserAttributeKey.email: email,
         AuthUserAttributeKey.address: address,
         AuthUserAttributeKey.gender: gender,
         AuthUserAttributeKey.familyName: familyName,
         AuthUserAttributeKey.nickname: nickname,
-        AuthUserAttributeKey.name: name,
-        occupationKey: occupation,
-        cityKey: city,
-
-        // additional attributes as needed
+        AuthUserAttributeKey.name: name
       };
       final result = await Amplify.Auth.signUp(
         username: nickname,
         password: password,
         options: SignUpOptions(
-          userAttributes: userAttributes.map((key, value) =>
-              MapEntry(key.toString(), value!)), // Convert keys to string
+          userAttributes: userAttributes,
         ),
       );
       await _handleSignUpResult(result);
@@ -536,8 +533,6 @@ Future<void> confirmUser({
       username: username,
       confirmationCode: confirmationCode,
     );
-    // Check if further confirmations are needed or if
-    // the sign up is complete.
     await _handleSignUpResult(result);
   } on AuthException catch (e) {
     safePrint('Error confirming user: ${e.message}');
