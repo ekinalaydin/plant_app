@@ -1,77 +1,87 @@
 import 'package:flutter/material.dart';
-import 'package:plant_app/screens/home_screen.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:plant_app/screens/disease_detection.dart';
 
 class CardWidget extends StatelessWidget {
-  const CardWidget({super.key});
+  const CardWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Card(
-          shadowColor: const Color.fromARGB(255, 133, 131, 131),
-          color: const Color.fromARGB(255, 232, 236, 234),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-              ListTile(
-                leading: CircleAvatar(
-                  radius: 35,
-                  child: ClipOval(
-                    child: Image.asset(
-                      "lib/assets/images/apple.jpeg",
-                      fit: BoxFit.cover,
-                      width: 80,
-                      height: 80,
-                    ),
-                  ),
-                ),
-                title: const Row(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(bottom: 8.0),
-                      child: Text(
-                        'Apple Scab',
-                        style: TextStyle(fontSize: 20),
-                      ),
-                    ),
-                  ],
-                ),
-                subtitle: const Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      '20/12/2023',
-                      style: TextStyle(fontSize: 15),
-                    ),
-                  ],
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  IconButton(
-                    onPressed: () {
-                      debugPrint("Current context: $context");
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => Builder(
-                            builder: (context) => HomeScreen(),
-                          ),
-                        ),
-                      );
-                    },
-                    icon: const Icon(
-                      Icons.arrow_circle_right_outlined,
-                      color: Colors.green,
-                    ),
-                  ),
-                ],
+        child: Container(
+          height: 100,
+          decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                color: Color.fromARGB(162, 202, 231, 134),
+                blurRadius: 25.0,
               ),
             ],
+          ), // Adjust the height of the card container
+          child: Card(
+            shadowColor: const Color.fromARGB(255, 133, 131, 131),
+            color: Color.fromARGB(235, 227, 246, 212),
+            child: Row(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(15.0, 10, 10, 10),
+                  child: CircleAvatar(
+                    backgroundColor: Color.fromARGB(153, 52, 67, 54),
+                    radius: 35,
+                    child: ClipOval(
+                      child: Image.asset(
+                        "lib/assets/images/apple.jpeg",
+                        fit: BoxFit.cover,
+                        width: 60,
+                        height: 60,
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Apple Scab',
+                        style: GoogleFonts.poppins(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w600,
+                            color: Color.fromARGB(153, 52, 67, 54)),
+                      ),
+                      Text(
+                        '20/12/2023',
+                        style: GoogleFonts.poppins(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w300,
+                            color: Color.fromARGB(153, 52, 67, 54)),
+                      ),
+                    ],
+                  ),
+                ),
+                IconButton(
+                  onPressed: () {
+                    debugPrint("Current context: $context");
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Builder(
+                          builder: (context) => DiseaseDetection(),
+                        ),
+                      ),
+                    );
+                  },
+                  icon: const Icon(
+                    Icons.arrow_circle_right_outlined,
+                    color: Color.fromARGB(153, 52, 67, 54),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
