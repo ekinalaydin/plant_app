@@ -12,9 +12,9 @@ class DiseaseDetection extends StatelessWidget {
           title: Text(
             'Apple Scab',
             style: GoogleFonts.poppins(
-                color: Colors.green, fontWeight: FontWeight.bold),
+                color: Colors.green, fontWeight: FontWeight.w500),
           ),
-          backgroundColor: const Color.fromARGB(255, 249, 249, 249),
+          backgroundColor: Color.fromARGB(255, 244, 245, 224),
         ),
       ),
       body: SingleChildScrollView(

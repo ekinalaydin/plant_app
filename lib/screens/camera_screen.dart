@@ -49,12 +49,31 @@ class _CameraScreenState extends State<CameraScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(80.0), // here the desired height
-        child: AppBar(
-          backgroundColor: Colors.green,
-          title: Text(
-            "Take a photo of your plant! ",
-            style: GoogleFonts.poppins(fontSize: 20, color: Colors.white),
+        preferredSize: const Size.fromHeight(90.0), // here the desired height
+        child: Container(
+          decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                color: Color.fromARGB(255, 84, 87, 81),
+                blurRadius: 20.0,
+              ),
+            ],
+          ), // Adjust t
+          child: AppBar(
+            backgroundColor: Color.fromARGB(178, 193, 242, 155),
+            title: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Take a photo of your plant! ",
+                  style: GoogleFonts.poppins(
+                    fontSize: 20,
+                    color: const Color.fromARGB(255, 0, 0, 0),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -80,7 +99,7 @@ class _CameraScreenState extends State<CameraScreen> {
               heroTag: 'camera_fab',
               onPressed: getImageFromCamera,
               tooltip: 'Take a Photo',
-              backgroundColor: const Color.fromARGB(255, 182, 226, 184),
+              backgroundColor: Color.fromARGB(178, 193, 242, 155),
               child: Icon(
                 Icons.camera,
                 color: Colors.green,
@@ -95,7 +114,7 @@ class _CameraScreenState extends State<CameraScreen> {
               heroTag: 'gallery_fab',
               onPressed: getImageFromGallery,
               tooltip: 'Choose from Gallery',
-              backgroundColor: const Color.fromARGB(255, 182, 226, 184),
+              backgroundColor: Color.fromARGB(178, 193, 242, 155),
               child: Icon(
                 Icons.photo_library,
                 color: Colors.green,

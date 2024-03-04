@@ -15,20 +15,20 @@ class CardWidget extends StatelessWidget {
           decoration: BoxDecoration(
             boxShadow: [
               BoxShadow(
-                color: Color.fromARGB(255, 84, 87, 81),
-                blurRadius: 20.0,
+                color: Color.fromARGB(162, 202, 231, 134),
+                blurRadius: 25.0,
               ),
             ],
           ), // Adjust the height of the card container
           child: Card(
             shadowColor: const Color.fromARGB(255, 133, 131, 131),
-            color: Color.fromARGB(255, 236, 237, 221),
+            color: Color.fromARGB(235, 227, 246, 212),
             child: Row(
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.fromLTRB(15.0, 10, 10, 10),
                   child: CircleAvatar(
-                    backgroundColor: Color.fromARGB(153, 60, 161, 244),
+                    backgroundColor: Color.fromARGB(153, 52, 67, 54),
                     radius: 35,
                     child: ClipOval(
                       child: Image.asset(
@@ -51,14 +51,14 @@ class CardWidget extends StatelessWidget {
                         style: GoogleFonts.poppins(
                             fontSize: 20,
                             fontWeight: FontWeight.w600,
-                            color: Colors.blue),
+                            color: Color.fromARGB(153, 52, 67, 54)),
                       ),
                       Text(
                         '20/12/2023',
                         style: GoogleFonts.poppins(
                             fontSize: 15,
                             fontWeight: FontWeight.w300,
-                            color: Colors.blue),
+                            color: Color.fromARGB(153, 52, 67, 54)),
                       ),
                     ],
                   ),
@@ -77,7 +77,7 @@ class CardWidget extends StatelessWidget {
                   },
                   icon: const Icon(
                     Icons.arrow_circle_right_outlined,
-                    color: Colors.green,
+                    color: Color.fromARGB(153, 52, 67, 54),
                   ),
                 ),
               ],

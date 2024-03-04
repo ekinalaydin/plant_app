@@ -39,7 +39,7 @@ class CardList extends StatelessWidget {
                           shape: BeveledRectangleBorder(
                             borderRadius: BorderRadius.circular(10.0),
                           ),
-                          color: Color.fromARGB(255, 217, 243, 153),
+                          color: Color.fromARGB(200, 202, 231, 134),
                           child: SizedBox(
                             width: 150,
                             height: 100,
@@ -47,14 +47,14 @@ class CardList extends StatelessWidget {
                               contentPadding: const EdgeInsets.all(20),
                               leading: const Icon(
                                 Icons.healing_sharp,
-                                color: Colors.green,
+                                color: Color.fromARGB(153, 52, 67, 54),
                               ),
                               title: Text(
                                 "Health Check",
                                 style: GoogleFonts.poppins(
                                     fontSize: 15,
                                     fontWeight: FontWeight.w400,
-                                    color: Colors.green),
+                                    color: Color.fromARGB(153, 52, 67, 54)),
                               ),
                             ),
                           ),
@@ -109,9 +109,10 @@ class CardList extends StatelessWidget {
                     Text(
                       "Your Previous Diseases",
                       style: GoogleFonts.poppins(
-                          fontSize: 25,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.green),
+                        fontSize: 25,
+                        fontWeight: FontWeight.w600,
+                        color: Color.fromARGB(153, 52, 67, 54),
+                      ),
                     ),
                   ],
                 ),

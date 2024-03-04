@@ -18,7 +18,7 @@ class HomeScreen extends StatelessWidget {
             ],
           ), // Adjust t
           child: AppBar(
-            backgroundColor: Colors.green,
+            backgroundColor: Color.fromARGB(178, 193, 242, 155),
             title: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
