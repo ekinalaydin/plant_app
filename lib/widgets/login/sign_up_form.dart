@@ -2,7 +2,8 @@ import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:plant_app/helpers/screen_size_helper.dart';
-import 'package:flutter/services.dart'; // Bu kütüphaneyi ekleyin
+import 'package:flutter/services.dart';
+import 'package:plant_app/widgets/bottom_navigation.dart'; // Bu kütüphaneyi ekleyin
 
 class SignUpForm extends StatefulWidget {
   @override
@@ -484,7 +485,7 @@ class _SignUpFormState extends State<SignUpForm> {
     String? city,
   }) async {
     try {
-      final userAttributes = {
+      /*final userAttributes = {
         AuthUserAttributeKey.email: email,
         AuthUserAttributeKey.address: address,
         AuthUserAttributeKey.gender: gender,
@@ -500,7 +501,10 @@ class _SignUpFormState extends State<SignUpForm> {
         ),
       );
       await _handleSignUpResult(
-          result, nickname); // Kullanıcı adını argüman olarak geçirin
+          result, nickname); // Kullanıcı adını argüman olarak geçirin*/
+      _handleCodeDelivery(
+          AuthCodeDeliveryDetails(deliveryMedium: DeliveryMedium.email),
+          "username");
     } on AuthException catch (e) {
       safePrint('Error signing up user: ${e.message}');
     }
@@ -578,7 +582,6 @@ class _SignUpFormState extends State<SignUpForm> {
                       // Doğrudan onay kodu değişkeninin uzunluğunu kontrol edebilirsiniz
                       // ve gerektiğinde işlem yapabilirsiniz, örneğin: onay işlemini başlatma
                       if (confirmationCode.length == 6) {
-                        // Onay işlemini başlatmak için fonksiyonu çağırın
                         confirmUser(
                           username: username,
                           confirmationCode: confirmationCode,
@@ -606,8 +609,15 @@ class _SignUpFormState extends State<SignUpForm> {
                                       onPressed: () {
                                         Navigator.of(context)
                                             .pop(); // Dialog'u kapat
-                                        Navigator.of(context)
-                                            .pop(); // Önceki dialog'u da kapat
+                                        // Eğer başlık "başarılı" ise, BottomNavigation sayfasına yönlendir
+                                        if (title.toLowerCase() == "başarılı") {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    BottomNavigation()),
+                                          );
+                                        }
                                       },
                                       style: TextButton.styleFrom(
                                         backgroundColor: Colors.lightGreen[
@@ -615,9 +625,9 @@ class _SignUpFormState extends State<SignUpForm> {
                                       ),
                                       child: Text(
                                         'Tamam',
-                                        style:
-                                            TextStyle(color: Colors.green[900]),
-                                        // Buton metni için koyu bir yeşil tonu kullan
+                                        style: TextStyle(
+                                            color: Colors.green[
+                                                900]), // Buton metni için koyu bir yeşil tonu kullan
                                       ),
                                     ),
                                   ],
@@ -653,14 +663,14 @@ class _SignUpFormState extends State<SignUpForm> {
         onResult, // Sonuç callback'i
   }) async {
     try {
-      final result = await Amplify.Auth.confirmSignUp(
+      /*final result = await Amplify.Auth.confirmSignUp(
         username: username,
         confirmationCode: confirmationCode,
       );
-      await _handleSignUpResult(result, username);
+      await _handleSignUpResult(result, username);*/
 
       // Onaylama başarılıysa callback'i çağır
-      onResult('Başarılı', 'Kullanıcı başarıyla onaylandı.');
+      onResult('Hata', 'Kullanıcı başarıyla onaylandı.');
     } on AuthException catch (e) {
       // Hata mesajıyla callback'i çağır
       onResult('Hata', 'Kullanıcı onayı başarısız: ${e.message}');
