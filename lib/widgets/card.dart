@@ -13,16 +13,9 @@ class CardWidget extends StatelessWidget {
         child: Container(
           height: 100,
           decoration: BoxDecoration(
-            boxShadow: [
-              BoxShadow(
-                color: Color.fromARGB(162, 202, 231, 134),
-                blurRadius: 25.0,
-              ),
-            ],
-          ), // Adjust the height of the card container
+            borderRadius: BorderRadius.circular(10.0),
+          ),
           child: Card(
-            shadowColor: const Color.fromARGB(255, 133, 131, 131),
-            color: Color.fromARGB(235, 227, 246, 212),
             child: Row(
               children: <Widget>[
                 Padding(

@@ -2,6 +2,7 @@ import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:plant_app/helpers/screen_size_helper.dart';
+import 'package:flutter/services.dart'; // Bu kütüphaneyi ekleyin
 
 class SignUpForm extends StatefulWidget {
   @override
@@ -498,43 +499,175 @@ class _SignUpFormState extends State<SignUpForm> {
           userAttributes: userAttributes,
         ),
       );
-      await _handleSignUpResult(result);
+      await _handleSignUpResult(
+          result, nickname); // Kullanıcı adını argüman olarak geçirin
     } on AuthException catch (e) {
       safePrint('Error signing up user: ${e.message}');
     }
   }
-}
 
-Future<void> _handleSignUpResult(SignUpResult result) async {
-  switch (result.nextStep.signUpStep) {
-    case AuthSignUpStep.confirmSignUp:
-      final codeDeliveryDetails = result.nextStep.codeDeliveryDetails!;
-      _handleCodeDelivery(codeDeliveryDetails);
-      break;
-    case AuthSignUpStep.done:
-      safePrint('Sign up is complete');
-      break;
+  Future<void> _handleSignUpResult(SignUpResult result, String username) async {
+    switch (result.nextStep.signUpStep) {
+      case AuthSignUpStep.confirmSignUp:
+        final codeDeliveryDetails = result.nextStep.codeDeliveryDetails!;
+        _handleCodeDelivery(codeDeliveryDetails,
+            username); // Kullanıcı adını argüman olarak geçirin
+        break;
+      case AuthSignUpStep.done:
+        safePrint('Sign up is complete');
+        break;
+    }
   }
-}
 
-void _handleCodeDelivery(AuthCodeDeliveryDetails codeDeliveryDetails) {
-  safePrint(
-    'A confirmation code has been sent to ${codeDeliveryDetails.destination}. '
-    'Please check your ${codeDeliveryDetails.deliveryMedium.name} for the code.',
-  );
-}
+  void _handleCodeDelivery(
+      AuthCodeDeliveryDetails codeDeliveryDetails, String username) {
+    // Onay kodunu girmek için bir dialog gösterin
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        String confirmationCode = ''; // Kullanıcının gireceği onay kodu
+        List<TextEditingController> controllers = List.generate(
+          6,
+          (index) => TextEditingController(),
+        ); // TextEditingController listesini oluşturun
 
-Future<void> confirmUser({
-  required String username,
-  required String confirmationCode,
-}) async {
-  try {
-    final result = await Amplify.Auth.confirmSignUp(
-      username: username,
-      confirmationCode: confirmationCode,
+        return AlertDialog(
+          backgroundColor: Colors.lightGreen[50],
+          title: Text('Confirmation Code'),
+          content: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: List.generate(
+              6,
+              (index) => Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 2.0),
+                child: SizedBox(
+                  width: 40,
+                  height: 60,
+                  child: TextFormField(
+                    controller: controllers[index],
+                    focusNode: FocusNode(), // Odaklanmayı devre dışı bırakın
+                    keyboardType: TextInputType.number,
+                    inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                    ],
+                    maxLength: 1,
+                    textAlign: TextAlign.center,
+                    decoration: InputDecoration(
+                      counter: SizedBox.shrink(),
+                      contentPadding: EdgeInsets.zero,
+                      border: OutlineInputBorder(),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            color: Colors.lightGreen[800]!,
+                            width: 2.0), // Normal sınır rengi
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            color: Colors.green,
+                            width: 2.0), // Odaklanıldığında sınır rengi
+                      ),
+                    ),
+                    onChanged: (value) {
+                      // Kullanıcının girdiği değeri doğrudan onay kodu değişkenine eklemek yerine
+                      // kontrolcünün değerini güncelleyin
+                      confirmationCode = controllers.fold(
+                          '',
+                          (previousValue, controller) =>
+                              previousValue + controller.text);
+
+                      // Doğrudan onay kodu değişkeninin uzunluğunu kontrol edebilirsiniz
+                      // ve gerektiğinde işlem yapabilirsiniz, örneğin: onay işlemini başlatma
+                      if (confirmationCode.length == 6) {
+                        // Onay işlemini başlatmak için fonksiyonu çağırın
+                        confirmUser(
+                          username: username,
+                          confirmationCode: confirmationCode,
+                          onResult: (title, message) {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  backgroundColor: Colors.lightGreen[
+                                      50], // Arka plan rengini yeşil tonunda ayarla
+                                  title: Text(
+                                    title,
+                                    style: TextStyle(
+                                        color: Colors.green[
+                                            800]), // Başlık metni için yeşil tonunu kullan
+                                  ),
+                                  content: Text(
+                                    message,
+                                    style: TextStyle(
+                                        color: Colors.green[
+                                            600]), // İçerik metni için daha açık bir yeşil tonunu kullan
+                                  ),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context)
+                                            .pop(); // Dialog'u kapat
+                                        Navigator.of(context)
+                                            .pop(); // Önceki dialog'u da kapat
+                                      },
+                                      style: TextButton.styleFrom(
+                                        backgroundColor: Colors.lightGreen[
+                                            200], // Buton arka planını açık yeşil yap
+                                      ),
+                                      child: Text(
+                                        'Tamam',
+                                        style:
+                                            TextStyle(color: Colors.green[900]),
+                                        // Buton metni için koyu bir yeşil tonu kullan
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          },
+                        );
+                      } else {
+                        // Kutuda bir değer varsa ve onay kodu henüz 6 haneli değilse
+                        // bir sonraki kutuya otomatik olarak geçin
+                        int nextIndex = index + 1;
+                        if (nextIndex < 6) {
+                          // Bir sonraki kutuya odaklanın
+                          FocusScope.of(context).nextFocus();
+                        }
+                      }
+                    },
+                  ),
+                ),
+              ),
+            ),
+          ),
+        );
+      },
     );
-    await _handleSignUpResult(result);
-  } on AuthException catch (e) {
-    safePrint('Error confirming user: ${e.message}');
+  }
+
+  Future<void> confirmUser({
+    required String username,
+    required String confirmationCode,
+    required Function(String title, String message)
+        onResult, // Sonuç callback'i
+  }) async {
+    try {
+      final result = await Amplify.Auth.confirmSignUp(
+        username: username,
+        confirmationCode: confirmationCode,
+      );
+      await _handleSignUpResult(result, username);
+
+      // Onaylama başarılıysa callback'i çağır
+      onResult('Başarılı', 'Kullanıcı başarıyla onaylandı.');
+    } on AuthException catch (e) {
+      // Hata mesajıyla callback'i çağır
+      onResult('Hata', 'Kullanıcı onayı başarısız: ${e.message}');
+    }
+  }
+
+  void safePrint(String message) {
+    print(message);
   }
 }

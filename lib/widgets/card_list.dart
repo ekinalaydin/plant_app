@@ -28,34 +28,24 @@ class CardList extends StatelessWidget {
                       },
                       child: Container(
                         decoration: BoxDecoration(
-                          boxShadow: [
-                            BoxShadow(
-                              color: Color.fromARGB(255, 178, 234, 176),
-                              blurRadius: 20.0,
-                            ),
-                          ],
-                        ), // Adjus
-                        child: Card(
-                          shape: BeveledRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
+                          borderRadius: BorderRadius.circular(10.0),
                           color: Color.fromARGB(200, 202, 231, 134),
-                          child: SizedBox(
-                            width: 150,
-                            height: 100,
-                            child: ListTile(
-                              contentPadding: const EdgeInsets.all(20),
-                              leading: const Icon(
-                                Icons.healing_sharp,
-                                color: Color.fromARGB(153, 52, 67, 54),
-                              ),
-                              title: Text(
-                                "Health Check",
-                                style: GoogleFonts.poppins(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w400,
-                                    color: Color.fromARGB(153, 52, 67, 54)),
-                              ),
+                        ),
+                        child: SizedBox(
+                          width: 150,
+                          height: 100,
+                          child: ListTile(
+                            contentPadding: const EdgeInsets.all(20),
+                            leading: const Icon(
+                              Icons.healing_sharp,
+                              color: Color.fromARGB(153, 52, 67, 54),
+                            ),
+                            title: Text(
+                              "Health Check",
+                              style: GoogleFonts.poppins(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w400,
+                                  color: Color.fromARGB(153, 52, 67, 54)),
                             ),
                           ),
                         ),
@@ -66,34 +56,24 @@ class CardList extends StatelessWidget {
                     padding: const EdgeInsets.all(8),
                     child: Container(
                       decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            color: Color.fromARGB(255, 148, 177, 221),
-                            blurRadius: 20.0,
-                          ),
-                        ],
-                      ), // Adjust the height of
-                      child: Card(
-                        shape: BeveledRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
+                        borderRadius: BorderRadius.circular(10.0),
                         color: Color.fromARGB(255, 175, 210, 238),
-                        child: SizedBox(
-                          width: 150,
-                          height: 100,
-                          child: ListTile(
-                            contentPadding: const EdgeInsets.all(20),
-                            leading: const Icon(
-                              Icons.cloud_circle,
-                              color: Colors.blue,
-                            ),
-                            title: Text(
-                              "Weather",
-                              style: GoogleFonts.poppins(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w400,
-                                  color: Colors.blue),
-                            ),
+                      ),
+                      child: SizedBox(
+                        width: 150,
+                        height: 100,
+                        child: ListTile(
+                          contentPadding: const EdgeInsets.all(20),
+                          leading: const Icon(
+                            Icons.cloud_circle,
+                            color: Colors.blue,
+                          ),
+                          title: Text(
+                            "Weather",
+                            style: GoogleFonts.poppins(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.blue),
                           ),
                         ),
                       ),
