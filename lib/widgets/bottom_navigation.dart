@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:plant_app/screens/camera_screen.dart';
+import 'package:plant_app/screens/create_post_screen.dart';
 import 'package:plant_app/screens/home_screen.dart';
 import 'package:plant_app/screens/profile_screen.dart';
 
@@ -16,11 +17,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
 
   List<Widget> _pages = [
     HomeScreen(),
-    Center(
-      child: Text(
-        "About",
-      ),
-    ),
+    CreatePost(),
     CameraScreen(),
     Center(
       child: Text("Contact"),
