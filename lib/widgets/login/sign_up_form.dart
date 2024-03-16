@@ -485,7 +485,7 @@ class _SignUpFormState extends State<SignUpForm> {
     String? city,
   }) async {
     try {
-      /*final userAttributes = {
+      final userAttributes = {
         AuthUserAttributeKey.email: email,
         AuthUserAttributeKey.address: address,
         AuthUserAttributeKey.gender: gender,
@@ -502,9 +502,6 @@ class _SignUpFormState extends State<SignUpForm> {
       );
       await _handleSignUpResult(
           result, nickname); // Kullanıcı adını argüman olarak geçirin*/
-      _handleCodeDelivery(
-          AuthCodeDeliveryDetails(deliveryMedium: DeliveryMedium.email),
-          "username");
     } on AuthException catch (e) {
       safePrint('Error signing up user: ${e.message}');
     }
@@ -663,14 +660,14 @@ class _SignUpFormState extends State<SignUpForm> {
         onResult, // Sonuç callback'i
   }) async {
     try {
-      /*final result = await Amplify.Auth.confirmSignUp(
+      final result = await Amplify.Auth.confirmSignUp(
         username: username,
         confirmationCode: confirmationCode,
       );
-      await _handleSignUpResult(result, username);*/
+      await _handleSignUpResult(result, username);
 
       // Onaylama başarılıysa callback'i çağır
-      onResult('Hata', 'Kullanıcı başarıyla onaylandı.');
+      onResult('Başarılı', 'Kullanıcı başarıyla onaylandı.');
     } on AuthException catch (e) {
       // Hata mesajıyla callback'i çağır
       onResult('Hata', 'Kullanıcı onayı başarısız: ${e.message}');

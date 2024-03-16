@@ -4,6 +4,7 @@ import 'package:plant_app/screens/login/forgot_password_screen.dart';
 import 'package:plant_app/screens/login/sign_up_screen.dart';
 import 'package:plant_app/helpers/screen_size_helper.dart';
 import 'package:plant_app/widgets/bottom_navigation.dart';
+import 'package:amplify_flutter/amplify_flutter.dart';
 
 class SignInForm extends StatefulWidget {
   @override
@@ -24,7 +25,7 @@ class _SignInFormState extends State<SignInForm> {
     return Scaffold(
       key: _formKey,
       body: SingleChildScrollView(
-        child:  Center(
+        child: Center(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -149,7 +150,7 @@ class _SignInFormState extends State<SignInForm> {
                       });
                     },
                     fillColor:
-                    MaterialStateProperty.resolveWith<Color?>((states) {
+                        MaterialStateProperty.resolveWith<Color?>((states) {
                       if (states.contains(MaterialState.selected)) {
                         return Color(0xFF2DDA53); // Seçili durumda kutu rengi
                       }
@@ -216,7 +217,8 @@ class _SignInFormState extends State<SignInForm> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 16), // İsteğe bağlı boşluk ekleyebilirsiniz
+                    SizedBox(
+                        height: 16), // İsteğe bağlı boşluk ekleyebilirsiniz
                     RichText(
                       text: TextSpan(
                         text: "Don't you have an account? ",
@@ -226,14 +228,12 @@ class _SignInFormState extends State<SignInForm> {
                           TextSpan(
                             text: 'Sign up',
                             style: TextStyle(
-                                color: Colors.green, fontSize: screenWidth / 30),
+                                color: Colors.green,
+                                fontSize: screenWidth / 30),
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => SignUpScreen()),
-                                );
+                                _processFormData(
+                                    _emailOrUsername ?? '', _password ?? '');
                               },
                             // Buraya tıklandığında yapılacak işlemleri de ekleyebilirsiniz.
                           ),
@@ -250,10 +250,59 @@ class _SignInFormState extends State<SignInForm> {
     );
   }
 
-  void _processFormData() {
-    // Process form data here
-    print('E-mail or Username: $_emailOrUsername');
-    print('Password: $_password');
-    // Add your authentication logic here
+  Future<void> _processFormData(String username, String password) async {
+    try {
+      final result = await Amplify.Auth.signIn(
+        username: username,
+        password: password,
+      );
+      await _handleSignInResult(result);
+    } on AuthException catch (e) {
+      safePrint('Error signing in: ${e.message}');
+    }
   }
+
+  Future<void> _handleSignInResult(SignInResult result) async {
+    switch (result.nextStep.signInStep) {
+      case AuthSignInStep.confirmSignInWithSmsMfaCode:
+        final codeDeliveryDetails = result.nextStep.codeDeliveryDetails!;
+        _handleCodeDelivery(codeDeliveryDetails);
+        break;
+      case AuthSignInStep.confirmSignInWithNewPassword:
+        safePrint('Enter a new password to continue signing in');
+        break;
+      case AuthSignInStep.confirmSignInWithCustomChallenge:
+        final parameters = result.nextStep.additionalInfo;
+        final prompt = parameters['prompt']!;
+        safePrint(prompt);
+        break;
+      case AuthSignInStep.resetPassword:
+        final resetResult = await Amplify.Auth.resetPassword(
+          username: _emailOrUsername ?? '',
+        );
+        //await _handleResetPasswordResult(resetResult);
+        break;
+      case AuthSignInStep.confirmSignUp:
+        // Resend the sign up code to the registered device.
+        final resendResult = await Amplify.Auth.resendSignUpCode(
+          username: _emailOrUsername ?? '',
+        );
+        _handleCodeDelivery(resendResult.codeDeliveryDetails);
+        break;
+      case AuthSignInStep.done:
+        safePrint('Sign in is complete');
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => BottomNavigation()),
+        );
+        break;
+    }
+  }
+}
+
+void _handleCodeDelivery(AuthCodeDeliveryDetails codeDeliveryDetails) {
+  safePrint(
+    'A confirmation code has been sent to ${codeDeliveryDetails.destination}. '
+    'Please check your ${codeDeliveryDetails.deliveryMedium.name} for the code.',
+  );
 }
