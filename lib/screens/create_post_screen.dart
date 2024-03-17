@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:plant_app/widgets/create_post.dart';
 
-class CreatePost extends StatelessWidget {
+class CreatePostScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -11,13 +11,17 @@ class CreatePost extends StatelessWidget {
         child: AppBar(
           backgroundColor: Colors.green,
           title: Text(
-            "Post",
+            "Create Post",
             style: GoogleFonts.poppins(color: Colors.white),
           ),
         ),
       ),
       body: SingleChildScrollView(
-        child: Column(children: [PostWidget()]),
+        child: Column(
+          children: [
+            PostWidget(), // Assuming this is where you create a post
+          ],
+        ),
       ),
     );
   }
