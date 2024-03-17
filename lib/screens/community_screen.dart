@@ -14,7 +14,8 @@ class CommunityScreen extends StatelessWidget {
           reactsCount: 123,
           // viewsCount: 456,
           authorName: 'John Doe',
-          authorProfileImage: 'https://example.com/john_doe.jpg',
+          authorProfileImage:
+              'https://upload.wikimedia.org/wikipedia/commons/5/50/User_icon-cp.svg',
           postDate: DateTime.now(),
         ),
       ),
