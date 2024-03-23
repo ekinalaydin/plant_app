@@ -31,6 +31,5 @@ flutter:
   assets:
     - lib/assets/images/
     - lib/assets/images/apple.jpeg
-    - lib/assets/images/plant.png
-
+    - lib/assets/images/plant.jpeg
     - lib/assets/
