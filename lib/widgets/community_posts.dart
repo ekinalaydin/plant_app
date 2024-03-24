@@ -1,6 +1,8 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:plant_app/screens/create_post_screen.dart';
+import 'package:plant_app/screens/post_detail_screen.dart';
 
 class PostPage extends StatefulWidget {
   final String postTitle;
@@ -28,9 +30,7 @@ class PostPage extends StatefulWidget {
 }
 
 class _PostPageState extends State<PostPage> {
-  TextEditingController _commentController = TextEditingController();
-  List<String> _comments = [];
-
+  bool _expanded = false;
   var allItems = List.generate(50, (index) => 'item $index');
   var items = [];
   var searchHistory = [];
@@ -67,28 +67,24 @@ class _PostPageState extends State<PostPage> {
     }
   }
 
-  void _submitComment() {
-    final newComment = _commentController.text;
-    if (newComment.isNotEmpty) {
-      setState(() {
-        _comments.add(newComment);
-        _commentController.clear();
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
+    List<String> words = widget.postBody.split(' ');
+    String displayedText =
+        _expanded ? widget.postBody : words.take(25).join(' ');
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(70.0), // here the desired height
+        preferredSize: const Size.fromHeight(70.0),
+
+        /// here the desired height
         child: AppBar(
           backgroundColor: Colors.white,
+          elevation: 0.5,
           title: Text(
             "Community",
             style: GoogleFonts.poppins(
               color: Color.fromRGBO(57, 79, 74, 50),
-              fontSize: 20,
+              fontSize: 18,
               fontWeight: FontWeight.w700,
             ),
           ),
@@ -135,7 +131,7 @@ class _PostPageState extends State<PostPage> {
                 ),
               ]),
               width: 100,
-              height: 150,
+              height: 190,
               child: Padding(
                 padding: const EdgeInsets.only(left: 30.0, right: 30),
                 child: ClipRRect(
@@ -151,178 +147,148 @@ class _PostPageState extends State<PostPage> {
 
             Padding(
               padding: const EdgeInsets.only(top: 20.0, right: 20, left: 20),
-              child: Container(
-                decoration: BoxDecoration(
-                    border: Border.symmetric(),
-                    borderRadius: BorderRadius.circular(20),
-                    gradient: LinearGradient(
-                      colors: [
-                        Color.fromARGB(255, 201, 224, 109),
-                        Color.fromARGB(255, 218, 242, 168)
-                      ],
-                      stops: [0.25, 0.75],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Color.fromRGBO(220, 226, 201, 0.498),
-                        spreadRadius: 10,
-                        blurRadius: 10,
-                        offset: Offset(0, 4),
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => PostDetailPage()),
+                  );
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                      border: Border.symmetric(),
+                      borderRadius: BorderRadius.circular(20),
+                      gradient: LinearGradient(
+                        colors: [
+                          Color.fromARGB(255, 201, 224, 109),
+                          Color.fromARGB(255, 218, 242, 168)
+                        ],
+                        stops: [0.25, 0.75],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
                       ),
-                    ]),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      widget.postTitle,
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.poppins(
-                          fontWeight: FontWeight.w700,
-                          fontSize: 18,
-                          color: Color.fromRGBO(34, 58, 51, 40)),
-                    ),
-                    SizedBox(height: 8),
-                    // SizedBox(height: 16),
-                    Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Text(
-                        widget.postBody,
-                        textAlign: TextAlign.justify,
-                        style: GoogleFonts.poppins(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 14,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Color.fromRGBO(220, 226, 201, 0.498),
+                          spreadRadius: 10,
+                          blurRadius: 10,
+                          offset: Offset(0, 4),
+                        ),
+                      ]),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Text(
+                          widget.postTitle,
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.poppins(
+                              fontWeight: FontWeight.w700,
+                              fontSize: 20,
+                              color: Color.fromRGBO(34, 58, 51, 40)),
                         ),
                       ),
-                    ), // Text(widget.postSummary),
-                    ListTile(
-                      leading: CircleAvatar(
-                        backgroundColor: Colors.white,
-                        backgroundImage:
-                            NetworkImage(widget.authorProfileImage),
+                      SizedBox(height: 8),
+                      // SizedBox(height: 16),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: RichText(
+                                text: TextSpan(
+                                  children: [
+                                    TextSpan(
+                                      text: displayedText,
+                                      style: GoogleFonts.poppins(
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 14,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                    if (words.length >
+                                        20) // Show "Read More" button if post body has more than 50 words
+                                      TextSpan(
+                                        text: '...',
+                                        style: GoogleFonts.poppins(
+                                          fontSize: 14,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    if (words.length >
+                                        20) // Show "Read More" button if post body has more than 50 words
+                                      TextSpan(
+                                        text: ' Read More',
+                                        style: GoogleFonts.poppins(
+                                          fontSize: 14,
+                                          color: Colors.blue,
+                                        ),
+                                        recognizer: TapGestureRecognizer()
+                                          ..onTap = () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    PostDetailPage(),
+                                              ),
+                                            );
+                                          },
+                                      ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                      title: Text(
-                        widget.authorName,
-                        style: GoogleFonts.poppins(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 16,
-                            color: Color.fromRGBO(34, 58, 51, 50)),
-                      ),
-                      subtitle: Text(
-                          widget.postDate.toLocal().toString().split(' ')[0],
-                          textAlign: TextAlign.start,
+
+                      // Text(widget.postSummary),
+                      ListTile(
+                        leading: CircleAvatar(
+                          backgroundColor: Colors.white,
+                          backgroundImage:
+                              NetworkImage(widget.authorProfileImage),
+                        ),
+                        title: Text(
+                          widget.authorName,
                           style: GoogleFonts.poppins(
                               fontWeight: FontWeight.w600,
-                              fontSize: 16,
-                              color: Color.fromRGBO(34, 58, 51, 50))),
-                      trailing: ElevatedButton.icon(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            shadowColor: Color.fromRGBO(70, 75, 75, 0.612)),
-                        icon: Icon(Icons.comment_sharp,
-                            color: Color.fromRGBO(174, 199, 131, 1)),
-                        onPressed: () {
-                          // Show comment text box
-                          showDialog(
-                            context: context,
-                            builder: (context) {
-                              return AlertDialog(
-                                backgroundColor:
-                                    Color.fromRGBO(224, 231, 231, 1),
-                                title: Text(
-                                  'Add a Comment',
-                                  style: GoogleFonts.poppins(),
-                                ),
-                                content: Material(
-                                  type: MaterialType.transparency,
-                                  child: TextField(
-                                    controller: _commentController,
-                                    decoration: InputDecoration(
-                                      hintText: 'Write your comment...',
-                                      hintStyle: GoogleFonts.poppins(),
-                                    ),
-                                  ),
-                                ),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.pop(context); // Close dialog
-                                    },
-                                    child: Text(
-                                      'Cancel',
-                                      style: GoogleFonts.poppins(
-                                          color: const Color.fromARGB(
-                                              179, 0, 0, 0),
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 8,
-                                  ),
-                                  ElevatedButton(
-                                    onPressed: _submitComment,
-                                    child: Text(
-                                      'Submit',
-                                      style: GoogleFonts.poppins(
-                                          color: const Color.fromARGB(
-                                              179, 0, 0, 0),
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-                                ],
-                              );
-                            },
-                          );
-                        },
-                        label: Text(
-                          'Comment',
-                          style: GoogleFonts.poppins(
-                              fontWeight: FontWeight.bold,
-                              color: Color.fromRGBO(116, 124, 122, 1)),
+                              fontSize: 12,
+                              color: Color.fromRGBO(34, 58, 51, 50)),
+                        ),
+                        subtitle: Text(
+                            widget.postDate.toLocal().toString().split(' ')[0],
+                            textAlign: TextAlign.start,
+                            style: GoogleFonts.poppins(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 12,
+                                color: Color.fromRGBO(34, 58, 51, 50))),
+                        trailing: ElevatedButton.icon(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Color.fromARGB(255, 246, 247, 226),
+                            shadowColor: Color.fromARGB(255, 216, 229, 160),
+                          ),
+                          icon: Icon(Icons.comment_sharp,
+                              color: Color.fromARGB(255, 116, 118, 107)),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => PostDetailPage()),
+                            );
+                          },
+                          label: Text(
+                            'Comments',
+                            style: GoogleFonts.poppins(
+                                fontWeight: FontWeight.bold,
+                                color: Color.fromRGBO(116, 124, 122, 1)),
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-
-            Padding(
-              padding: const EdgeInsets.only(left: 20.0, right: 20, top: 10),
-              child: Container(
-                decoration: BoxDecoration(boxShadow: [
-                  BoxShadow(
-                    color: Color.fromRGBO(220, 226, 201, 0.498),
-                    spreadRadius: 10,
-                    blurRadius: 10,
-                    offset: Offset(0, 4),
+                    ],
                   ),
-                ]),
-                child: Column(
-                  // crossAxisAlignment: CrossAxisAlignment.center,
-                  children: _comments.map(
-                    (comment) {
-                      return Container(
-                        decoration: BoxDecoration(
-                            border: Border.symmetric(
-                                horizontal: BorderSide(
-                          width: 1,
-                          style: BorderStyle.solid,
-                          color: Color.fromRGBO(57, 79, 74, 100),
-                        ))),
-                        child: ListTile(
-                          leading: CircleAvatar(
-                            backgroundColor: Colors.white,
-                            backgroundImage:
-                                NetworkImage(widget.authorProfileImage),
-                          ),
-                          title: Text(widget.authorName),
-                          subtitle: Text(comment),
-                        ),
-                      );
-                    },
-                  ).toList(),
                 ),
               ),
             ),

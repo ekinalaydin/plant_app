@@ -37,7 +37,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
       body: _pages[_selectedTab],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedTab,
-        fixedColor: const Color.fromARGB(255, 100, 189, 132),
+        fixedColor: Colors.green,
         unselectedItemColor: Colors.grey,
         showUnselectedLabels: true,
         onTap: (index) => _changeTab(index),

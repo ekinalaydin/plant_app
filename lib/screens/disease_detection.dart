@@ -9,12 +9,14 @@ class DiseaseDetection extends StatelessWidget {
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(70.0), // here the desired height
         child: AppBar(
+          elevation: 0.8,
           title: Text(
             'Apple Scab',
             style: GoogleFonts.poppins(
-                color: Colors.green, fontWeight: FontWeight.w500),
+                color: Color.fromARGB(255, 201, 224, 109),
+                fontWeight: FontWeight.w500),
           ),
-          backgroundColor: Color.fromARGB(255, 244, 245, 224),
+          backgroundColor: Color.fromARGB(255, 255, 255, 255),
         ),
       ),
       body: SingleChildScrollView(

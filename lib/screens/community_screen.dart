@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:plant_app/screens/post_detail_screen.dart';
 import 'package:plant_app/widgets/community_posts.dart';
 
 class CommunityScreen extends StatelessWidget {

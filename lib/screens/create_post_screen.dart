@@ -7,12 +7,28 @@ class CreatePostScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(70.0), // here the desired height
-        child: AppBar(
-          backgroundColor: Colors.green,
-          title: Text(
-            "Create Post",
-            style: GoogleFonts.poppins(color: Colors.white),
+        preferredSize: const Size.fromHeight(80.0),
+        child: Container(
+          decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                color: Color.fromARGB(133, 192, 197, 173),
+                blurRadius: 15.0,
+              ),
+            ],
+          ),
+          // here the desired height
+          child: AppBar(
+            elevation: 0.8,
+            backgroundColor: Colors.white,
+            title: Text(
+              "Create Your Post!",
+              style: GoogleFonts.poppins(
+                color: Color.fromRGBO(57, 79, 74, 50),
+                fontSize: 20,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
           ),
         ),
       ),
