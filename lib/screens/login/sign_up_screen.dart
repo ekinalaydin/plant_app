@@ -5,7 +5,10 @@ class SignUpScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(29.9),
+        child: AppBar(),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SignUpForm(), // SignUpForm widget'ını çağırın

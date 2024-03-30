@@ -160,7 +160,10 @@ class _PostWidgetState extends State<PostWidget> {
                         height: 50,
                         // alignment: Alignment.center,
                         child: TextButton.icon(
-                          icon: Icon(Icons.camera_alt_rounded),
+                          icon: Icon(
+                            Icons.camera_alt_rounded,
+                            color: Color.fromRGBO(108, 124, 117, 0.854),
+                          ),
                           onPressed: () {
                             _selectImage(context);
                           },
@@ -168,8 +171,12 @@ class _PostWidgetState extends State<PostWidget> {
                             padding: const EdgeInsets.all(6.0),
                             child: Column(
                               children: [
-                                Text("Add your photo!",
-                                    style: GoogleFonts.poppins()),
+                                Text(
+                                  "Add your photo!",
+                                  style: GoogleFonts.poppins(
+                                      color:
+                                          Color.fromRGBO(108, 124, 117, 0.854)),
+                                ),
                               ],
                             ),
                           ),
