@@ -592,7 +592,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
           onPressed: () {
             String oldPassword = oldPasswordController.text;
             String newPassword = newPasswordController.text;
-            if (_formKey.currentState!.validate()) {
+            if (oldPassword.isEmpty || newPassword.isEmpty) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                    'Please fill out both old and new password fields.',
+                  ),
+                ),
+              );
+            } else if (_formKey.currentState!.validate()) {
               // Do something with the form data
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
