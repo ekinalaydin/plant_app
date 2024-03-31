@@ -48,7 +48,7 @@ class _PostWidgetState extends State<PostWidget> {
                   ),
                 ]),
             width: 380, // Adjust width as needed
-            height: 400, // Adjust height as needed
+            height: 440, // Adjust height as needed
 
             child: Padding(
               padding: const EdgeInsets.all(12.0),

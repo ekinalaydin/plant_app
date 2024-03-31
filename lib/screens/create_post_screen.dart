@@ -24,7 +24,7 @@ class CreatePostScreen extends StatelessWidget {
             title: Text(
               "Create Your Post!",
               style: GoogleFonts.poppins(
-                color: Color.fromRGBO(57, 79, 74, 50),
+                color: Color.fromRGBO(34, 58, 51, 40),
                 fontSize: 20,
                 fontWeight: FontWeight.w700,
               ),
