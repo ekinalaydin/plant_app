@@ -592,15 +592,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           onPressed: () {
             String oldPassword = oldPasswordController.text;
             String newPassword = newPasswordController.text;
-            if (oldPassword.isEmpty || newPassword.isEmpty) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(
-                    'Please fill out both old and new password fields.',
-                  ),
-                ),
-              );
-            } else if (_formKey.currentState!.validate()) {
+            if (_formKey.currentState!.validate()) {
               // Do something with the form data
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
@@ -621,7 +613,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   content: Text(
                     'Password changed successfully.',
                     style: GoogleFonts.poppins(
-                        color: Color.fromRGBO(255, 255, 255, 0.847)),
+                        color: Color.fromRGBO(34, 58, 51, 40)),
                   ),
                 ),
               );
