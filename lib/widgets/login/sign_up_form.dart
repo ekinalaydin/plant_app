@@ -2,8 +2,8 @@ import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:plant_app/helpers/screen_size_helper.dart';
-import 'package:flutter/services.dart';
-import 'package:plant_app/widgets/bottom_navigation.dart'; // Bu kütüphaneyi ekleyin
+import 'package:plant_app/widgets/bottom_navigation.dart';
+import 'package:flutter_verification_code/flutter_verification_code.dart';
 
 class SignUpForm extends StatefulWidget {
   @override
@@ -214,7 +214,7 @@ class _SignUpFormState extends State<SignUpForm> {
             TextFormField(
               decoration: InputDecoration(
                 labelText: 'Password*',
-                helperText: 'Your password must be between 4-12 characters',
+                helperText: 'Your password must be between 4-12 characters.',
                 labelStyle: TextStyle(color: Colors.black),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10.0),
@@ -240,6 +240,12 @@ class _SignUpFormState extends State<SignUpForm> {
                   return 'Please enter a password';
                 } else if (value.length < 4 || value.length > 12) {
                   return 'Your password must be between 4-12 characters';
+                } else if (!RegExp(r'[A-Z]').hasMatch(value)) {
+                  return 'Your password must include at least one uppercase letter';
+                } else if (!RegExp(r'[0-9]').hasMatch(value)) {
+                  return 'Your password must include at least one number';
+                } else if (!RegExp(r'[!@#$%^&*(),.?":{}|<>]').hasMatch(value)) {
+                  return 'Your password must include at least one symbol';
                 }
                 return null;
               },
@@ -524,131 +530,80 @@ class _SignUpFormState extends State<SignUpForm> {
 
   void _handleCodeDelivery(
       AuthCodeDeliveryDetails codeDeliveryDetails, String username) {
-    // Onay kodunu girmek için bir dialog gösterin
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        String confirmationCode = ''; // Kullanıcının gireceği onay kodu
-        List<TextEditingController> controllers = List.generate(
-          6,
-          (index) => TextEditingController(),
-        ); // TextEditingController listesini oluşturun
-
         return AlertDialog(
           backgroundColor: Colors.lightGreen[50],
           title: Text('Confirmation Code'),
-          content: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: List.generate(
-              6,
-              (index) => Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 2.0),
-                child: SizedBox(
-                  width: 40,
-                  height: 60,
-                  child: TextFormField(
-                    controller: controllers[index],
-                    focusNode: FocusNode(), // Odaklanmayı devre dışı bırakın
-                    keyboardType: TextInputType.number,
-                    inputFormatters: <TextInputFormatter>[
-                      FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
-                    ],
-                    maxLength: 1,
-                    textAlign: TextAlign.center,
-                    decoration: InputDecoration(
-                      counter: SizedBox.shrink(),
-                      contentPadding: EdgeInsets.zero,
-                      border: OutlineInputBorder(),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                            color: Colors.lightGreen[800]!,
-                            width: 2.0), // Normal sınır rengi
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                            color: Colors.green,
-                            width: 2.0), // Odaklanıldığında sınır rengi
-                      ),
-                    ),
-                    onChanged: (value) {
-                      // Kullanıcının girdiği değeri doğrudan onay kodu değişkenine eklemek yerine
-                      // kontrolcünün değerini güncelleyin
-                      confirmationCode = controllers.fold(
-                          '',
-                          (previousValue, controller) =>
-                              previousValue + controller.text);
-
-                      // Doğrudan onay kodu değişkeninin uzunluğunu kontrol edebilirsiniz
-                      // ve gerektiğinde işlem yapabilirsiniz, örneğin: onay işlemini başlatma
-                      if (confirmationCode.length == 6) {
-                        confirmUser(
-                          username: username,
-                          confirmationCode: confirmationCode,
-                          onResult: (title, message) {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  backgroundColor: Colors.lightGreen[
-                                      50], // Arka plan rengini yeşil tonunda ayarla
-                                  title: Text(
-                                    title,
-                                    style: TextStyle(
-                                        color: Colors.green[
-                                            800]), // Başlık metni için yeşil tonunu kullan
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text('Please enter the confirmation code:'),
+              SizedBox(
+                width: 450,
+                child: VerificationCode(
+                  keyboardType: TextInputType.number,
+                  textStyle: TextStyle(fontSize: 20),
+                  underlineColor: Colors.black,
+                  length: 6,
+                  onEditing: (bool value) {},
+                  onCompleted: (String value) {
+                    confirmUser(
+                      username: username,
+                      confirmationCode: value,
+                      onResult: (title, message) {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              backgroundColor: Colors.lightGreen[50],
+                              title: Text(
+                                title,
+                                style: TextStyle(
+                                  color: Colors.green[800],
+                                ),
+                              ),
+                              content: Text(
+                                message,
+                                style: TextStyle(
+                                  color: Colors.green[600],
+                                ),
+                              ),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                    if (title.toLowerCase() == "başarılı") {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              BottomNavigation(),
+                                        ),
+                                      );
+                                    }
+                                  },
+                                  style: TextButton.styleFrom(
+                                    backgroundColor: Colors.lightGreen[200],
                                   ),
-                                  content: Text(
-                                    message,
+                                  child: Text(
+                                    'Tamam',
                                     style: TextStyle(
-                                        color: Colors.green[
-                                            600]), // İçerik metni için daha açık bir yeşil tonunu kullan
-                                  ),
-                                  actions: <Widget>[
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.of(context)
-                                            .pop(); // Dialog'u kapat
-                                        // Eğer başlık "başarılı" ise, BottomNavigation sayfasına yönlendir
-                                        if (title.toLowerCase() == "başarılı") {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    BottomNavigation()),
-                                          );
-                                        }
-                                      },
-                                      style: TextButton.styleFrom(
-                                        backgroundColor: Colors.lightGreen[
-                                            200], // Buton arka planını açık yeşil yap
-                                      ),
-                                      child: Text(
-                                        'Tamam',
-                                        style: TextStyle(
-                                            color: Colors.green[
-                                                900]), // Buton metni için koyu bir yeşil tonu kullan
-                                      ),
+                                      color: Colors.green[900],
                                     ),
-                                  ],
-                                );
-                              },
+                                  ),
+                                ),
+                              ],
                             );
                           },
                         );
-                      } else {
-                        // Kutuda bir değer varsa ve onay kodu henüz 6 haneli değilse
-                        // bir sonraki kutuya otomatik olarak geçin
-                        int nextIndex = index + 1;
-                        if (nextIndex < 6) {
-                          // Bir sonraki kutuya odaklanın
-                          FocusScope.of(context).nextFocus();
-                        }
-                      }
-                    },
-                  ),
+                      },
+                    );
+                  },
                 ),
               ),
-            ),
+            ],
           ),
         );
       },

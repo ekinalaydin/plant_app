@@ -232,8 +232,11 @@ class _SignInFormState extends State<SignInForm> {
                                 fontSize: screenWidth / 30),
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
-                                _processFormData(
-                                    _emailOrUsername ?? '', _password ?? '');
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => SignUpScreen()),
+                                );
                               },
                             // Buraya tıklandığında yapılacak işlemleri de ekleyebilirsiniz.
                           ),

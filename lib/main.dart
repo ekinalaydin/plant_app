@@ -38,6 +38,8 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       title: 'Namer App',
       theme: ThemeData(
+        scaffoldBackgroundColor:
+            Colors.white, // Arka plan rengini buradan ayarlayabilirsiniz
         useMaterial3: true,
         textSelectionTheme: TextSelectionThemeData(
           cursorColor: Colors.black, // Cursor rengini burada ayarlayın

@@ -16,8 +16,10 @@ class HomeScreen extends StatelessWidget {
                 blurRadius: 20.0,
               ),
             ],
-          ), // Adjust t
+          ), // Adjust
           child: AppBar(
+            automaticallyImplyLeading:
+                false, // This line removes the back button
             backgroundColor: Color.fromARGB(178, 193, 242, 155),
             title: Column(
               mainAxisAlignment: MainAxisAlignment.start,

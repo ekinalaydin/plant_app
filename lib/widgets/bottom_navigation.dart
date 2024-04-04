@@ -8,14 +8,13 @@ class BottomNavigation extends StatefulWidget {
   BottomNavigation({Key? key}) : super(key: key);
 
   @override
-  // ignore: library_private_types_in_public_api
   _BottomNavigationState createState() => _BottomNavigationState();
 }
 
 class _BottomNavigationState extends State<BottomNavigation> {
   int _selectedTab = 0;
 
-  List<Widget> _pages = [
+  final List<Widget> _pages = [
     HomeScreen(),
     CommunityScreen(),
     CameraScreen(),
@@ -25,7 +24,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
     ProfileScreen(),
   ];
 
-  _changeTab(int index) {
+  void _changeTab(int index) {
     setState(() {
       _selectedTab = index;
     });
@@ -37,11 +36,12 @@ class _BottomNavigationState extends State<BottomNavigation> {
       body: _pages[_selectedTab],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedTab,
-        fixedColor: Colors.green,
+        selectedItemColor: Color(
+            0xFF2B423D), // fixedColor is deprecated, use selectedItemColor
         unselectedItemColor: Colors.grey,
         showUnselectedLabels: true,
-        onTap: (index) => _changeTab(index),
-        items: const <BottomNavigationBarItem>[
+        onTap: _changeTab,
+        items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',
@@ -51,11 +51,34 @@ class _BottomNavigationState extends State<BottomNavigation> {
             label: 'Community',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.camera_alt_rounded),
-            label: 'Detect',
+            icon: Container(
+              width: 48,
+              height: 48,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Color(0xFF87BB17), // Inner color
+                    Color(0xFFB4DC30), // Outer color
+                  ],
+                ),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                Icons.camera_alt_rounded,
+                size: 24,
+                color: Colors.white,
+              ),
+            ),
+            label: '',
           ),
-          BottomNavigationBarItem(icon: Icon(Icons.map_rounded), label: 'Map'),
-          BottomNavigationBarItem(icon: Icon(Icons.person_2), label: 'Profile'),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.map_rounded),
+            label: 'Map',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profile',
+          ),
         ],
       ),
     );

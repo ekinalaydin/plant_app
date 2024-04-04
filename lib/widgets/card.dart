@@ -8,73 +8,64 @@ class CardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Container(
-          height: 100,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-          child: Card(
-            child: Row(
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(15.0, 10, 10, 10),
-                  child: CircleAvatar(
-                    backgroundColor: Color.fromARGB(153, 52, 67, 54),
-                    radius: 35,
-                    child: ClipOval(
-                      child: Image.asset(
-                        "lib/assets/images/apple.jpeg",
-                        fit: BoxFit.cover,
-                        width: 60,
-                        height: 60,
+      child: Card(
+        color: Color(0xFFF8F9F9),
+        child: Padding(
+          padding: const EdgeInsets.all(6.0),
+          child: Row(
+            children: [
+              CircleAvatar(
+                backgroundColor: Color(0xFFE3E9E9),
+                radius: 35,
+                child: ClipOval(
+                  child: Image.asset(
+                    "lib/assets/images/apple.jpeg",
+                    fit: BoxFit.cover,
+                    width: 60,
+                    height: 60,
+                  ),
+                ),
+              ),
+              SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Apple Scab',
+                      style: GoogleFonts.poppins(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Color(0xFF0D2821)),
+                    ),
+                    Text(
+                      '20/12/2023',
+                      style: GoogleFonts.poppins(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w300,
+                          color: Color(0xFF0D2821)),
+                    ),
+                  ],
+                ),
+              ),
+              IconButton(
+                onPressed: () {
+                  debugPrint("Current context: $context");
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Builder(
+                        builder: (context) => DiseaseDetection(),
                       ),
                     ),
-                  ),
+                  );
+                },
+                icon: const Icon(
+                  Icons.arrow_circle_right_outlined,
+                  color: Color(0xFF2B826D),
                 ),
-                SizedBox(width: 16),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Apple Scab',
-                        style: GoogleFonts.poppins(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600,
-                            color: Color.fromARGB(153, 52, 67, 54)),
-                      ),
-                      Text(
-                        '20/12/2023',
-                        style: GoogleFonts.poppins(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w300,
-                            color: Color.fromARGB(153, 52, 67, 54)),
-                      ),
-                    ],
-                  ),
-                ),
-                IconButton(
-                  onPressed: () {
-                    debugPrint("Current context: $context");
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => Builder(
-                          builder: (context) => DiseaseDetection(),
-                        ),
-                      ),
-                    );
-                  },
-                  icon: const Icon(
-                    Icons.arrow_circle_right_outlined,
-                    color: Color.fromARGB(153, 52, 67, 54),
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
