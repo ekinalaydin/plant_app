@@ -17,7 +17,9 @@ class TextSection extends StatelessWidget {
           child: Text(
             title,
             style: GoogleFonts.poppins(
-                fontSize: 18, fontWeight: FontWeight.w700, color: Colors.blue),
+                fontSize: 18,
+                fontWeight: FontWeight.w700,
+                color: Color.fromRGBO(108, 124, 117, 0.857)),
           ),
         ),
         Padding(

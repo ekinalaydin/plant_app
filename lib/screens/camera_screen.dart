@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 
 class CameraScreen extends StatefulWidget {
   @override
+  // ignore: library_private_types_in_public_api
   _CameraScreenState createState() => _CameraScreenState();
 }
 
@@ -60,7 +61,7 @@ class _CameraScreenState extends State<CameraScreen> {
             ],
           ), // Adjust t
           child: AppBar(
-            backgroundColor: Color.fromARGB(178, 193, 242, 155),
+            backgroundColor: Color.fromARGB(255, 224, 228, 208),
             title: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -68,8 +69,9 @@ class _CameraScreenState extends State<CameraScreen> {
                 Text(
                   "Take a photo of your plant! ",
                   style: GoogleFonts.poppins(
+                    fontWeight: FontWeight.w700,
                     fontSize: 20,
-                    color: const Color.fromARGB(255, 0, 0, 0),
+                    color: Color.fromRGBO(108, 124, 117, 0.857),
                   ),
                 ),
               ],
@@ -81,7 +83,11 @@ class _CameraScreenState extends State<CameraScreen> {
         child: _image == null
             ? Text(
                 "No image selected. Please select an image.",
-                style: GoogleFonts.poppins(fontSize: 15),
+                style: GoogleFonts.poppins(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w700,
+                  color: Color.fromRGBO(108, 124, 117, 0.857),
+                ),
               )
             : Image.file(
                 _image!,

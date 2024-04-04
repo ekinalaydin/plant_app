@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:plant_app/screens/camera_screen.dart';
+import 'package:plant_app/screens/community_screen.dart';
 import 'package:plant_app/screens/home_screen.dart';
 import 'package:plant_app/screens/profile_screen.dart';
 
@@ -16,11 +17,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
 
   List<Widget> _pages = [
     HomeScreen(),
-    Center(
-      child: Text(
-        "About",
-      ),
-    ),
+    CommunityScreen(),
     CameraScreen(),
     Center(
       child: Text("Contact"),
@@ -40,7 +37,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
       body: _pages[_selectedTab],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedTab,
-        fixedColor: const Color.fromARGB(255, 100, 189, 132),
+        fixedColor: Colors.green,
         unselectedItemColor: Colors.grey,
         showUnselectedLabels: true,
         onTap: (index) => _changeTab(index),
