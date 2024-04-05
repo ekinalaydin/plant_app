@@ -1,8 +1,9 @@
 import 'dart:io';
-
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:http/http.dart' as http;
 
 class CameraScreen extends StatefulWidget {
   @override
@@ -14,12 +15,73 @@ class _CameraScreenState extends State<CameraScreen> {
   File? _image;
   final picker = ImagePicker();
 
+  Future<void> uploadImage(String filePath) async {
+    var uri = Uri.parse('http://10.0.2.2:8080/plant/predict');
+    var request = http.MultipartRequest('POST', uri);
+
+    request.files.add(await http.MultipartFile.fromPath('image', filePath));
+
+    try {
+      var response = await request.send();
+      var responseBody = await response.stream.bytesToString();
+
+      List<dynamic> responseList = jsonDecode(responseBody);
+      String label = responseList[0]['label'];
+
+      if (response.statusCode == 200) {
+        // Handle successful upload
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Successfully uploaded image.')),
+        );
+        showInformationModal(context, label);
+      } else {
+        // Handle server errors or non-200 responses
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Image upload failed.')),
+        );
+      }
+    } catch (e) {
+      // Handle any errors that occur during the upload
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: $e')),
+      );
+    }
+  }
+
+  void showInformationModal(BuildContext context, String label) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Disease Information'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text(label),
+                // You can include more information from the response here
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   Future<void> getImageFromCamera() async {
     final pickedFile = await picker.pickImage(source: ImageSource.camera);
 
     setState(() {
       if (pickedFile != null) {
         _image = File(pickedFile.path);
+        uploadImage(pickedFile.path); // Upload the image after it's selected
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -36,10 +98,11 @@ class _CameraScreenState extends State<CameraScreen> {
     setState(() {
       if (pickedFile != null) {
         _image = File(pickedFile.path);
+        uploadImage(pickedFile.path); // Upload the image after it's selected
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('No image selected from gallery.'),
+            content: Text('No image selected from camera.'),
           ),
         );
       }
