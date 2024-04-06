@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:plant_app/helpers/screen_size_helper.dart';
-import 'package:amplify_flutter/amplify_flutter.dart';
-
 class ForgotPasswordScreen extends StatelessWidget {
   String _emailOrUsername = '';
 
