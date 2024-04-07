@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:plant_app/screens/login/forgot_password_screen.dart';
 import 'package:plant_app/screens/login/sign_up_screen.dart';
 import 'package:plant_app/helpers/screen_size_helper.dart';
 import 'package:plant_app/widgets/bottom_navigation.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class SignInForm extends StatefulWidget {
   @override
@@ -12,8 +14,8 @@ class SignInForm extends StatefulWidget {
 
 class _SignInFormState extends State<SignInForm> {
   final _formKey = GlobalKey<FormState>();
-  String? _emailOrUsername;
-  String? _password;
+  String _emailOrUsername = '';
+  String _password = '';
   bool _rememberMe = false;
 
   @override
@@ -90,7 +92,6 @@ class _SignInFormState extends State<SignInForm> {
                   ),
                 ),
                 cursorColor: Colors.black, // İmleç rengi burada ayarlanıyor
-
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter your e-mail or username';
@@ -98,7 +99,7 @@ class _SignInFormState extends State<SignInForm> {
                   return null;
                 },
                 onSaved: (value) {
-                  _emailOrUsername = value;
+                  _emailOrUsername = value ?? '';
                 },
               ),
               SizedBox(height: 8.0),
@@ -136,7 +137,7 @@ class _SignInFormState extends State<SignInForm> {
                   return null;
                 },
                 onSaved: (value) {
-                  _password = value;
+                  _password = value ?? '';
                 },
               ),
               Row(
@@ -192,13 +193,8 @@ class _SignInFormState extends State<SignInForm> {
                       width: screenWidth / 1.5,
                       height: screenHeight / 20,
                       child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => BottomNavigation(),
-                            ),
-                          );
+                        onPressed: () async {
+                          await _processFormData(_emailOrUsername, _password);
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Color(0xFF2DDA53),
@@ -253,9 +249,19 @@ class _SignInFormState extends State<SignInForm> {
   }
 
   Future<void> _processFormData(String username, String password) async {
-      Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => BottomNavigation()),
-        );
+    try {
+      final credential = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: username, password: password);
+      /*Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => BottomNavigation()),
+      );*/
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        print('No user found for that email.');
+      } else if (e.code == 'wrong-password') {
+        print('Wrong password provided for that user.');
+      }
+    }
   }
 }
