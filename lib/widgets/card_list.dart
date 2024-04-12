@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:plant_app/screens/camera_screen.dart';
 // import 'package:plant_app/screens/home_screen.dart';
 import 'package:plant_app/widgets/card.dart';
 import 'package:intl/intl.dart';
@@ -147,25 +149,27 @@ class _CardListState extends State<CardList> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Identifier",
-                                  style: TextStyle(
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.w500,
-                                    color: Color(0xFF2B423D),
+                            GestureDetector(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Identifier",
+                                    style: TextStyle(
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.w500,
+                                      color: Color(0xFF2B423D),
+                                    ),
                                   ),
-                                ),
-                                Text(
-                                  "Tap to recognize a plant",
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 14,
-                                    color: Color.fromARGB(255, 76, 106, 99),
+                                  Text(
+                                    "Tap to recognize a plant",
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 14,
+                                      color: Color.fromARGB(255, 76, 106, 99),
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                             SizedBox(width: 10),
                             Icon(
@@ -181,7 +185,14 @@ class _CardListState extends State<CardList> {
                   SizedBox(height: 10), // Spacing between buttons
                   GestureDetector(
                     onTap: () {
-                      // Navigator.push to Identifier screen
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Builder(
+                            builder: (context) => CameraScreen(),
+                          ),
+                        ),
+                      );
                     },
                     child: Container(
                       margin: EdgeInsets.only(top: 10),
