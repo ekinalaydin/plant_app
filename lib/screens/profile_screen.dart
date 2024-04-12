@@ -309,7 +309,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                     SizedBox(height: 4),
                     SizedBox(
-                      height: 62,
+                      height: 65,
                       width: double.infinity, // Take full available width
                       child: TextFormField(
                         textAlign: TextAlign.start,
@@ -337,6 +337,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             return 'Please enter a password';
                           } else if (value.length < 4 || value.length > 12) {
                             return 'Your password must be between 4-12 characters';
+                          } else if (!RegExp(r'[A-Z]').hasMatch(value)) {
+                            return 'Your password must include at least one uppercase letter';
+                          } else if (!RegExp(r'[0-9]').hasMatch(value)) {
+                            return 'Your password must include at least one number';
+                          } else if (!RegExp(r'[!@#$%^&*(),.?":{}|<>]')
+                              .hasMatch(value)) {
+                            return 'Your password must include at least one symbol';
                           }
                           return null;
                         },
@@ -599,11 +606,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   content: Text('Your Changes are Saved!'),
                 ),
               );
-            } else if (oldPassword != newPassword) {
+            } else if (oldPassword.isEmpty || newPassword.isEmpty) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(
-                    'Old and new passwords must be different.',
+                    'Please enter your old and new passwords',
+                  ),
+                ),
+              );
+            } else if (oldPassword == newPassword) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                    'Your old and new password cannot be the same',
                   ),
                 ),
               );
@@ -613,7 +628,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   content: Text(
                     'Password changed successfully.',
                     style: GoogleFonts.poppins(
-                        color: Color.fromRGBO(34, 58, 51, 40)),
+                      color: Color.fromRGBO(34, 58, 51, 40),
+                    ),
                   ),
                 ),
               );
