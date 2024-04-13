@@ -25,7 +25,7 @@ class _PostWidgetState extends State<PostWidget> {
     return SingleChildScrollView(
       child: Center(
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(50.0, 100, 50, 50),
+          padding: const EdgeInsets.fromLTRB(10.0, 40, 10, 30),
           child: Container(
             decoration: BoxDecoration(
                 border: Border.symmetric(),
@@ -47,11 +47,11 @@ class _PostWidgetState extends State<PostWidget> {
                     offset: Offset(0, 4),
                   ),
                 ]),
-            width: 380, // Adjust width as needed
-            height: 440, // Adjust height as needed
+            width: 440, // Adjust width as needed
+            height: 500, // Adjust height as needed
 
             child: Padding(
-              padding: const EdgeInsets.all(12.0),
+              padding: const EdgeInsets.all(8.0),
               child: Form(
                 key: _formKey,
                 child: Column(
@@ -66,6 +66,8 @@ class _PostWidgetState extends State<PostWidget> {
                       ),
                     ),
                     SizedBox(
+                      height: 60,
+                      width: 50,
                       child: TextFormField(
                         controller: _askToCommunityController,
                         decoration: InputDecoration(
@@ -110,8 +112,8 @@ class _PostWidgetState extends State<PostWidget> {
                       ),
                     ), // Adjust spacing between text fields
                     SizedBox(
-                      width: 240, // <-- TextField width
-                      height: 120, // <-- TextField height
+                      width: 400, // <-- TextField width
+                      height: 200, // <-- TextField height
                       child: TextFormField(
                         controller: _descriptionController,
                         maxLines: null,
@@ -184,7 +186,10 @@ class _PostWidgetState extends State<PostWidget> {
                       ),
                     ),
 
-                    SizedBox(height: 10),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SizedBox(height: 10),
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [

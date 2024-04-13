@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:plant_app/screens/login/forgot_password_screen.dart';
 import 'package:plant_app/screens/login/sign_up_screen.dart';
 import 'package:plant_app/helpers/screen_size_helper.dart';
-import 'package:plant_app/widgets/bottom_navigation.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:plant_app/widgets/bottom_navigation.dart';
 
 class SignInForm extends StatefulWidget {
   @override
@@ -91,14 +91,15 @@ class _SignInFormState extends State<SignInForm> {
                     ),
                   ),
                 ),
-                cursorColor: Colors.black, // İmleç rengi burada ayarlanıyor
+                cursorColor: Colors.black,
+                // İmleç rengi burada ayarlanıyor
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter your e-mail or username';
                   }
                   return null;
                 },
-                onSaved: (value) {
+                onChanged: (value) {
                   _emailOrUsername = value ?? '';
                 },
               ),
@@ -136,7 +137,7 @@ class _SignInFormState extends State<SignInForm> {
                   }
                   return null;
                 },
-                onSaved: (value) {
+                onChanged: (value) {
                   _password = value ?? '';
                 },
               ),
@@ -249,13 +250,17 @@ class _SignInFormState extends State<SignInForm> {
   }
 
   Future<void> _processFormData(String username, String password) async {
+    print("-----");
+    print(username + password);
+
     try {
       final credential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: username, password: password);
-      /*Navigator.push(
+      print(credential);
+      Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => BottomNavigation()),
-      );*/
+      );
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         print('No user found for that email.');
