@@ -50,7 +50,6 @@ class CardWidget extends StatelessWidget {
               ),
               IconButton(
                 onPressed: () {
-                  debugPrint("Current context: $context");
                   Navigator.push(
                     context,
                     MaterialPageRoute(

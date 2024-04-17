@@ -1,8 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:plant_app/helpers/screen_size_helper.dart';
+import 'package:plant_app/services/user_provider.dart';
 import 'package:plant_app/widgets/bottom_navigation.dart';
 import 'package:flutter_verification_code/flutter_verification_code.dart';
+import 'package:provider/provider.dart';
 
 class SignUpForm extends StatefulWidget {
   @override
@@ -491,9 +494,43 @@ class _SignUpFormState extends State<SignUpForm> {
     String? occupation,
     String? city,
   }) async {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => BottomNavigation()),
-    );
+    try {
+      // Firebase kullanarak kullanıcı kaydı yapın
+      UserCredential credential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      // Kullanıcının oluşturulduğunu kontrol edin
+      if (credential.user != null) {
+        // UserProvider kullanarak uygulama genelinde kullanıcı bilgilerini kaydedin
+        final userProvider = Provider.of<UserProvider>(context, listen: false);
+
+        // Kayıttan sonra kullanıcıyı anasayfaya yönlendirin
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => BottomNavigation()),
+        );
+      }
+    } on FirebaseAuthException catch (e) {
+      // Burada bir hata mesajı göster
+      String errorMessage = 'An error occurred. Please try again later.';
+      if (e.code == 'email-already-in-use') {
+        errorMessage =
+            'The email address is already in use by another account.';
+      } else if (e.code == 'invalid-email') {
+        errorMessage = 'The email address is not valid.';
+      } else if (e.code == 'operation-not-allowed') {
+        errorMessage = 'Email/password accounts are not enabled.';
+      } else if (e.code == 'weak-password') {
+        errorMessage = 'The password is too weak.';
+      }
+
+      // Hata mesajını kullanıcıya göster
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(errorMessage)),
+      );
+    }
   }
 }

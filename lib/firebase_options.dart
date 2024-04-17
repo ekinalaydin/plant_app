@@ -65,4 +65,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'plant-app-f6e01.appspot.com',
     iosBundleId: 'com.example.plantApp',
   );
+
 }

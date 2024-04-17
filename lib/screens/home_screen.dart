@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:plant_app/services/user_provider.dart';
 import 'package:plant_app/widgets/card_list.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    // Provider aracılığıyla UserProvider'a erişim sağlayın
+    final userProvider = Provider.of<UserProvider>(context);
+    final userName = userProvider
+        .user?.username; // Kullanıcı adını al veya varsayılan bir değer kullan
+
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(90.0), // here the desired height
@@ -26,7 +33,7 @@ class HomeScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Hello X!",
+                  "Hello $userName!",
                   style: GoogleFonts.poppins(
                       fontSize: 23,
                       fontWeight: FontWeight.w500,

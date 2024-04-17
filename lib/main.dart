@@ -2,13 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:plant_app/screens/login/sign_in_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
+import 'services/user_provider.dart';
+import 'services/weather_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
-);
-  runApp(MyApp());
+  );
+
+  // Provider'ı kullanarak başlatma işlemini burada gerçekleştiriyoruz.
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => WeatherProvider()),
+        ChangeNotifierProvider(create: (_) => UserProvider()),
+      ],
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatefulWidget {
@@ -22,6 +36,12 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+    // StatusBar stili ayarlama
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: Colors.blue,
+      statusBarIconBrightness: Brightness.light,
+      statusBarBrightness: Brightness.dark,
+    ));
   }
 
   @override
@@ -30,11 +50,10 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       title: 'Namer App',
       theme: ThemeData(
-        scaffoldBackgroundColor:
-            Colors.white, // Arka plan rengini buradan ayarlayabilirsiniz
+        scaffoldBackgroundColor: Colors.white,
         useMaterial3: true,
         textSelectionTheme: TextSelectionThemeData(
-          cursorColor: Colors.black, // Cursor rengini burada ayarlayın
+          cursorColor: Colors.black,
         ),
       ),
       home: SignInScreen(),

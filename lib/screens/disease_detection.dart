@@ -1,73 +1,187 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:plant_app/widgets/text_detail_page.dart';
 
 class DiseaseDetection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(70.0), // here the desired height
-        child: AppBar(
-          elevation: 0.8,
-          title: Text(
-            'Apple Scab',
-            style: GoogleFonts.poppins(
-                color: Color.fromRGBO(57, 79, 74, 50),
-                fontWeight: FontWeight.w500),
-          ),
-          backgroundColor: Color.fromARGB(255, 255, 255, 255),
-        ),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Image.asset(
-              "lib/assets/images/apple.jpeg",
-              width: MediaQuery.of(context)
-                  .size
-                  .width, // Resmin yatay boyutunu ekran genişliği kadar yapar
-              fit: BoxFit.fitWidth,
-              height: 150,
-            ),
-            TextSection(
-              title: 'SYMPTOMS',
-              content:
-                  'Apple scab infections are initiated in early spring on emerging and young leaves.Early lesions appear 10 days later as lighter green areas compared to the surrounding leaf tissue. Lesions increase in size and become olive-colored and velvety as a result of asexual spore production (conidia).',
-            ),
-            TextSection(
-              title: 'CULTURAL TREATMENT',
-              content:
-                  'Sanitation: Remove fallen leaves from the orchard in the fall. Rake up and destroy any diseased fruit.',
-            ),
-            TextSection(
-              title: 'CHEMICAL TREATMENT',
-              content:
-                  'Common types of fungicides used for apple scab: Dithianes: Mancozeb, metiram Demethylation inhibitors (DMIs): Difenoconazole,  myclobutanil, penconazole Fungicides must be used strictly according to the instructions on the label. Fungicides should be applied evenly to all plant  surfaces. Fungicides should be applied before rain.',
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  ElevatedButton(
-                    style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(
-                          const Color.fromARGB(255, 87, 173, 243),
+      backgroundColor: Color(0xFFEFF2EA),
+      body: CustomScrollView(
+        slivers: [
+          SliverToBoxAdapter(
+            child: Stack(
+              alignment: Alignment.bottomCenter,
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(50.0),
+                    bottomRight: Radius.circular(50.0),
+                  ),
+                  child: Image.asset(
+                    "lib/assets/images/apple.jpeg",
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height *
+                        0.4, // 40% of the screen height
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                Positioned(
+                  top: MediaQuery.of(context)
+                      .padding
+                      .top, // Adjust for the status bar height
+                  left: 15, // Added some left padding for the button
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Color(0xFFAACC96), // White color background
+                      shape: BoxShape.circle, // Circular shape
+                      boxShadow: [
+                        // Optional: if you want to add a shadow to the button
+                        BoxShadow(
+                          color: Colors.black26,
+                          blurRadius: 4,
+                          offset: Offset(0, 3),
                         ),
-                        foregroundColor: MaterialStateProperty.all<Color>(
-                          Color.fromARGB(255, 255, 255, 255),
-                        )),
-                    onPressed: () {},
-                    child: Text('Read More'),
+                      ],
+                    ),
+                    child: IconButton(
+                      icon: Icon(Icons.arrow_back,
+                          color: Color(
+                              0xFF233A38)), // Icon color changed to green for contrast
+                      onPressed: () {
+                        Navigator.of(context)
+                            .pop(); // Ensure this context has a Navigator ancestor
+                      },
+                    ),
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(bottom: 16),
+                  width: MediaQuery.of(context).size.width,
+                  padding: EdgeInsets.all(
+                      8), // Padding for text inside the container
+                  child: Text(
+                    'Abiotic',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: MediaQuery.of(context).size.width / 13,
+                      fontWeight: FontWeight.bold,
+                      shadows: [
+                        Shadow(
+                          offset: Offset(1.0, 1.0),
+                          blurRadius: 3.0,
+                          color: Colors.black.withOpacity(0.75),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: EdgeInsets.all(MediaQuery.of(context).size.width / 12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Center(
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 1,
+                            blurRadius: 6,
+                            offset: Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      padding: EdgeInsets.all(8),
+                      child: TextSection(
+                        title: 'SYMPTOMS',
+                        content: 'The symptoms text goes here...',
+                        titleStyle: TextStyle(
+                          fontSize: MediaQuery.of(context).size.width / 20,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF1C352F),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 16),
+                  TextSection(
+                    title: 'CULTURAL TREATMENT',
+                    content: 'The cultural treatment text goes here...',
+                  ),
+                  SizedBox(height: 16),
+                  TextSection(
+                    title: 'CHEMICAL TREATMENT',
+                    content: 'The chemical treatment text goes here...',
                   ),
                 ],
               ),
             ),
-          ],
-        ),
+          )
+        ],
       ),
-      // Resmi yatay boyutu kadar sığacak şekilde ayarlar
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          // Handle your onPressed action here
+        },
+        label: Text('Health Check'),
+        icon: Icon(Icons.camera_alt),
+        backgroundColor: Colors.green, // Use the color from your screenshot
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+    );
+  }
+}
+
+class TextSection extends StatelessWidget {
+  final String title;
+  final String content;
+  final TextStyle? titleStyle; // Optional custom style for the title
+  final TextStyle? contentStyle; // Optional custom style for the content
+
+  const TextSection(
+      {Key? key,
+      required this.title,
+      required this.content,
+      this.titleStyle,
+      this.contentStyle})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: titleStyle ??
+                TextStyle(
+                  color: Color(0xFF1C352F),
+                  fontWeight: FontWeight.w700,
+                  fontSize: 18,
+                ),
+          ),
+          SizedBox(height: 8),
+          Text(
+            content,
+            style: contentStyle ??
+                TextStyle(
+                  color: Color(0xFF74857D),
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
+          ),
+        ],
+      ),
     );
   }
 }

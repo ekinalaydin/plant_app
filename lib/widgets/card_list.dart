@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:plant_app/screens/camera_screen.dart';
+import 'package:plant_app/services/weather_provider.dart';
 // import 'package:plant_app/screens/home_screen.dart';
 import 'package:plant_app/widgets/card.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class CardList extends StatefulWidget {
   @override
@@ -14,30 +15,11 @@ class CardList extends StatefulWidget {
 }
 
 class _CardListState extends State<CardList> {
-  Map<String, dynamic>? weatherData;
-
   @override
-  void initState() {
+  void initState() async {
     super.initState();
-    fetchWeather(); // Trigger the weather API call
-  }
-
-  Future<void> fetchWeather() async {
-    var url = Uri.parse(
-        'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/ankara?unitGroup=metric&key=E2U5WK3EVD8L6GPJTTAZXGHRZ&contentType=json');
-
-    try {
-      var response = await http.get(url);
-      if (response.statusCode == 200) {
-        setState(() {
-          weatherData = json.decode(response.body);
-        });
-      } else {
-        print('Failed to load weather data');
-      }
-    } catch (e) {
-      print('Error: $e');
-    }
+    await Provider.of<WeatherProvider>(context, listen: false)
+        .fetchWeather(); // Trigger the weather API call
   }
 
   String formatDate(String dateString) {
@@ -50,17 +32,20 @@ class _CardListState extends State<CardList> {
 
   @override
   Widget build(BuildContext context) {
+    var weatherProvider = Provider.of<WeatherProvider>(context);
+    var weatherData = weatherProvider.weatherData;
+
     var date = weatherData != null
-        ? formatDate("${weatherData!['days'][0]['datetime'].toString()}")
-        : 'Loading date...'; // Placeholder for date parsing
+        ? formatDate(weatherData['days'][0]['datetime'].toString())
+        : 'Loading date...';
     var temperature = weatherData != null
-        ? "${weatherData!['days'][0]['temp'].toString()}°C"
+        ? "${weatherData['days'][0]['temp'].toString()}°C"
         : 'Loading...';
     var humidity = weatherData != null
-        ? "${weatherData!['days'][0]['humidity'].toString()}%"
+        ? "${weatherData['days'][0]['humidity'].toString()}%"
         : 'Loading...';
     var solarEnergy = weatherData != null
-        ? "${weatherData!['days'][0]['solarenergy'].toString()}%"
+        ? "${weatherData['days'][0]['solarenergy'].toString()}%"
         : 'Loading...';
 
     return Scaffold(

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:plant_app/screens/login/forgot_password_screen.dart';
 import 'package:plant_app/screens/login/sign_up_screen.dart';
 import 'package:plant_app/helpers/screen_size_helper.dart';
+import 'package:plant_app/services/user_provider.dart';
 import 'package:plant_app/widgets/bottom_navigation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignInForm extends StatefulWidget {
   @override
@@ -16,7 +18,24 @@ class _SignInFormState extends State<SignInForm> {
   final _formKey = GlobalKey<FormState>();
   String _emailOrUsername = '';
   String _password = '';
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
   bool _rememberMe = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserEmailAndPassword();
+  }
+
+  Future<void> _loadUserEmailAndPassword() async {
+    final prefs = await SharedPreferences.getInstance();
+    if (prefs.getBool('rememberMe') ?? false) {
+      _emailController.text = prefs.getString('email') ?? '';
+      _passwordController.text = prefs.getString('password') ?? '';
+      _rememberMe = true;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,6 +89,7 @@ class _SignInFormState extends State<SignInForm> {
                 ),
               ),
               TextFormField(
+                controller: _emailController,
                 decoration: InputDecoration(
                   labelText: 'E-mail or Username*',
                   labelStyle: TextStyle(color: Colors.black),
@@ -98,12 +118,13 @@ class _SignInFormState extends State<SignInForm> {
                   }
                   return null;
                 },
-                onSaved: (value) {
+                onChanged: (value) {
                   _emailOrUsername = value ?? '';
                 },
               ),
               SizedBox(height: 8.0),
               TextFormField(
+                controller: _passwordController,
                 decoration: InputDecoration(
                   labelText: 'Password*',
                   helperText: 'Your password must be between 4-12 characters',
@@ -136,7 +157,7 @@ class _SignInFormState extends State<SignInForm> {
                   }
                   return null;
                 },
-                onSaved: (value) {
+                onChanged: (value) {
                   _password = value ?? '';
                 },
               ),
@@ -144,7 +165,7 @@ class _SignInFormState extends State<SignInForm> {
                 children: <Widget>[
                   Checkbox(
                     value: _rememberMe,
-                    onChanged: (value) {
+                    onChanged: (bool? value) {
                       setState(() {
                         _rememberMe = value!;
                       });
@@ -248,20 +269,41 @@ class _SignInFormState extends State<SignInForm> {
     );
   }
 
-  Future<void> _processFormData(String username, String password) async {
-    try {
-      final credential = await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: username, password: password);
-      /*Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => BottomNavigation()),
-      );*/
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        print('No user found for that email.');
-      } else if (e.code == 'wrong-password') {
-        print('Wrong password provided for that user.');
+  Future<void> _processFormData(String email, String password) async {
+      // FirebaseAuth kullanarak kullanıcı girişi yap
+      final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      print(credential.user);
+      // Eğer kullanıcı bilgisi null değilse ve kullanıcı "Beni Hatırla" işlevini seçtiyse
+      if (credential.user != null) {
+        // UserProvider'ı kullanarak kullanıcı bilgilerini kaydetme
+        final userProvider = Provider.of<UserProvider>(context, listen: false);
+        String? token =
+            await credential.user!.getIdToken(); // Token alınır ve beklenir
+        userProvider.login(
+          credential.user!.displayName ?? '',
+          credential.user!.uid,
+          token ?? '',
+        );
+        // Kullanıcı girişi başarılı olduktan sonra ana sayfaya yönlendir
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => BottomNavigation()),
+        );
       }
+    } on FirebaseAuthException catch (e) {
+      // FirebaseAuth'tan gelen hataları işle
+      String errorMessage = 'An error occurred. Please try again later.';
+      if (e.code == 'user-not-found') {
+        errorMessage = 'No user found for that email.';
+      } else if (e.code == 'wrong-password') {
+        errorMessage = 'Wrong password provided for that user.';
+      }
+      // Kullanıcıya hata mesajı göster
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(errorMessage)),
+      );
     }
   }
 }
