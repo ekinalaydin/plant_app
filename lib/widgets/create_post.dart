@@ -25,7 +25,7 @@ class _PostWidgetState extends State<PostWidget> {
     return SingleChildScrollView(
       child: Center(
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(50.0, 100, 50, 50),
+          padding: const EdgeInsets.fromLTRB(10.0, 60, 10, 30),
           child: Container(
             decoration: BoxDecoration(
                 border: Border.symmetric(),
@@ -44,8 +44,8 @@ class _PostWidgetState extends State<PostWidget> {
                     offset: Offset(0, 4),
                   ),
                 ]),
-            width: 380, // Adjust width as needed
-            height: 440, // Adjust height as needed
+            width: 440, // Adjust width as needed
+            height: 550, // Adjust height as needed
 
             child: Padding(
               padding: const EdgeInsets.all(12.0),

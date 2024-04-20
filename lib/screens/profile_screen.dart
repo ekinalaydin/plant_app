@@ -1,7 +1,8 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:plant_app/screens/login/sign_in_screen.dart';
+import 'package:plant_app/screens/user_posts_comments.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -21,8 +22,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String? _gender = "Female";
   TextEditingController oldPasswordController = TextEditingController();
   TextEditingController newPasswordController = TextEditingController();
-  final TextStyle buttonTextStyle = GoogleFonts.poppins(
-      color: Color.fromRGBO(34, 58, 51, 40), fontWeight: FontWeight.bold);
+  final TextStyle buttonTextStyle = GoogleFonts.poppins(color: Colors.black);
 
   @override
   Widget build(BuildContext context) {
@@ -46,14 +46,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               backgroundColor:
-                                  Color.fromARGB(255, 201, 224, 109),
+                                  (Color.fromRGBO(240, 241, 234, 1)),
                             ),
                             child: Text(
                               'User Profile',
-                              style: GoogleFonts.poppins(
-                                  color: Color.fromRGBO(34, 58, 51, 40),
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 12.8),
+                              style: TextStyle(color: Colors.black),
                             ),
                             onPressed: () {},
                           ),
@@ -66,13 +63,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               backgroundColor:
-                                  Color.fromARGB(255, 201, 224, 109),
+                                  (Color.fromRGBO(240, 241, 234, 1)),
                             ),
-                            child: Text('Posts and Comments',
-                                style: GoogleFonts.poppins(
-                                    color: Color.fromRGBO(34, 58, 51, 40),
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 12.8)),
+                            child: Text(
+                              'Posts and Comments',
+                              style: TextStyle(color: Colors.black),
+                            ),
                             onPressed: () {
                               Navigator.push(
                                 context,
@@ -87,46 +83,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ],
               ),
             ),
-            ListTile(
-              contentPadding: EdgeInsets.only(right: 10, left: 20),
-              leading: CircleAvatar(
-                radius: 60,
-                backgroundColor: Colors.white,
-                backgroundImage: NetworkImage(
-                    "https://pixabay.com/vectors/blank-profile-picture-mystery-man-973460/"),
-              ),
-              title: Row(
-                children: [
-                  Text(
-                    "$_name "
-                    "$_surname ",
-                    style: GoogleFonts.poppins(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 18,
-                      color: Color.fromRGBO(34, 58, 51, 50),
-                    ),
-                  ),
-                ],
-              ),
-              subtitle: Text(
-                "$_email | $_occupation | $_city",
-                style: GoogleFonts.poppins(
-                  fontWeight: FontWeight.w400,
-                  fontSize: 14,
-                  color: Color.fromRGBO(34, 58, 51, 50),
-                ),
-              ),
-            ),
             Form(
               key: _formKey,
               child: SingleChildScrollView(
-                padding: const EdgeInsets.only(top: 1.0, left: 10, right: 10),
+                padding: const EdgeInsets.only(top: 1.0, left: 0, right: 0),
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(0.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(
+                      Container(
                         width: double.maxFinite,
                         height: 100,
                         child: Row(
@@ -136,23 +102,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'Full Name',
+                                    'Name',
                                     style: GoogleFonts.poppins(
                                         color: Color.fromRGBO(34, 58, 51, 40),
                                         fontWeight: FontWeight.bold,
-                                        fontSize: 16),
+                                        fontSize: 14),
                                   ),
-                                  SizedBox(height: 4),
+                                  SizedBox(height: 8),
                                   SizedBox(
-                                    height: 50,
+                                    height: 34,
                                     child: TextFormField(
                                       textAlign: TextAlign.start,
                                       cursorHeight: 20,
                                       decoration: InputDecoration(
-                                        hintText: "$_name "
-                                            "$_surname",
-                                        hintStyle: GoogleFonts.poppins(
-                                            fontWeight: FontWeight.w500),
+                                        hintText: "Ekin",
                                         border: OutlineInputBorder(
                                           borderRadius:
                                               BorderRadius.circular(10.0),
@@ -172,105 +135,100 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ],
                               ),
                             ),
-                            // SizedBox(width: 6.0),
-                            // Expanded(
-                            //   child: Column(
-                            //     crossAxisAlignment: CrossAxisAlignment.start,
-                            //     children: [
-                            //       Text(
-                            //         'Surname',
-                            //         style: GoogleFonts.poppins(
-                            //             color: Color.fromRGBO(34, 58, 51, 40),
-                            //             fontWeight: FontWeight.bold,
-                            //             fontSize: 14),
-                            //       ),
-                            //       SizedBox(height: 4),
-                            //       SizedBox(
-                            //         height: 50,
-                            //         child: TextFormField(
-                            //           textAlign: TextAlign.start,
-                            //           cursorHeight: 20,
-                            //           decoration: InputDecoration(
-                            //             hintText: "$_surname",
-                            //             alignLabelWithHint: true,
-                            //             hintStyle: GoogleFonts.poppins(),
-                            //             border: OutlineInputBorder(
-                            //               borderRadius:
-                            //                   BorderRadius.circular(10.0),
-                            //             ),
-                            //             focusedBorder: OutlineInputBorder(
-                            //               borderRadius:
-                            //                   BorderRadius.circular(10.0),
-                            //               borderSide: BorderSide(
-                            //                 color: Colors.black,
-                            //                 width: 2.0,
-                            //               ),
-                            //             ),
-                            //             contentPadding: EdgeInsets.all(9),
-                            //           ),
-                            //         ),
-                            //       ),
-                            //     ],
-                            //   ),
-                            // ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(height: 4),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Change e-mail address',
-                              style: GoogleFonts.poppins(
-                                  color: Color.fromRGBO(34, 58, 51, 40),
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16),
-                            ),
-                            SizedBox(height: 4),
-                            SizedBox(
-                              height: 60,
-                              width:
-                                  double.infinity, // Take full available width
-                              child: TextFormField(
-                                textAlign: TextAlign.start,
-                                cursorHeight: 20,
-                                decoration: InputDecoration(
-                                  hintText: "$_email",
-                                  alignLabelWithHint: true,
-                                  hintStyle: GoogleFonts.poppins(
-                                      fontWeight: FontWeight.w500),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10.0),
+                            SizedBox(width: 8.0),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Surname',
+                                    style: GoogleFonts.poppins(
+                                        color: Color.fromRGBO(34, 58, 51, 40),
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 14),
                                   ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                    borderSide: BorderSide(
-                                      color: Colors.black,
-                                      width: 2.0,
+                                  SizedBox(height: 8),
+                                  SizedBox(
+                                    height: 34,
+                                    child: TextFormField(
+                                      textAlign: TextAlign.start,
+                                      cursorHeight: 20,
+                                      decoration: InputDecoration(
+                                        hintText: "Alaydin",
+                                        alignLabelWithHint: true,
+                                        hintStyle: GoogleFonts.poppins(),
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                          borderSide: BorderSide(
+                                            color: Colors.black,
+                                            width: 2.0,
+                                          ),
+                                        ),
+                                        contentPadding: EdgeInsets.all(9),
+                                      ),
                                     ),
                                   ),
-                                  contentPadding: EdgeInsets.all(9),
-                                  errorBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                    borderSide: BorderSide(
-                                      color: Colors.red,
-                                      width: 2.0,
-                                    ),
-                                  ),
-                                ),
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Please enter your new e-mail address';
-                                  }
-                                  return null;
-                                },
+                                ],
                               ),
                             ),
                           ],
                         ),
+                      ),
+                      SizedBox(height: 8),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Change e-mail address',
+                            style: GoogleFonts.poppins(
+                                color: Color.fromRGBO(34, 58, 51, 40),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16),
+                          ),
+                          SizedBox(height: 8),
+                          SizedBox(
+                            height: 49,
+                            width: double.infinity, // Take full available width
+                            child: TextFormField(
+                              textAlign: TextAlign.start,
+                              cursorHeight: 20,
+                              decoration: InputDecoration(
+                                hintText: "Please enter a new e-mail address",
+                                alignLabelWithHint: true,
+                                hintStyle: GoogleFonts.poppins(),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  borderSide: BorderSide(
+                                    color: Colors.black,
+                                    width: 2.0,
+                                  ),
+                                ),
+                                contentPadding: EdgeInsets.all(9),
+                                errorBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  borderSide: BorderSide(
+                                    color: Colors.red,
+                                    width: 2.0,
+                                  ),
+                                ),
+                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter your new e-mail address';
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                        ],
                       ),
                       SizedBox(height: 8),
                       Column(
@@ -283,15 +241,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16),
                           ),
-                          SizedBox(height: 4),
+                          SizedBox(height: 8),
                           SizedBox(
-                            height: 60,
+                            height: 49,
                             width: double.infinity, // Take full available width
                             child: TextFormField(
                               textAlign: TextAlign.start,
                               cursorHeight: 20,
                               decoration: InputDecoration(
-                                hintText: "$_username",
+                                hintText: "Please enter a new username",
                                 alignLabelWithHint: true,
                                 hintStyle: GoogleFonts.poppins(),
                                 border: OutlineInputBorder(
@@ -341,7 +299,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                           SizedBox(height: 4),
                           SizedBox(
-                            height: 50,
+                            height: 49,
                             width: double.infinity, // Take full available width
                             child: TextFormField(
                               textAlign: TextAlign.start,
@@ -394,7 +352,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                           SizedBox(height: 4),
                           SizedBox(
-                            height: 100,
+                            height: 65,
                             width: double.infinity, // Take full available width
                             child: TextFormField(
                               textAlign: TextAlign.start,
@@ -402,7 +360,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               decoration: InputDecoration(
                                 helperText:
                                     "Your password must be between 4 and 12 characters",
-                                helperStyle: GoogleFonts.poppins(),
                                 hintText: "Please enter a new password",
                                 alignLabelWithHint: true,
                                 hintStyle: GoogleFonts.poppins(),
@@ -416,7 +373,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     width: 2.0,
                                   ),
                                 ),
-                                contentPadding: EdgeInsets.all(8),
+                                contentPadding: EdgeInsets.all(9),
                               ),
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
@@ -439,7 +396,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ],
                       ),
                       SizedBox(
-                        height: 10,
+                        height: 14,
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -453,12 +410,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                           SizedBox(height: 4),
                           SizedBox(
-                            height: 60,
+                            height: 59,
                             child: DropdownSearch<String>(
                               dropdownDecoratorProps: DropDownDecoratorProps(
-                                baseStyle: GoogleFonts.poppins(),
                                 dropdownSearchDecoration: InputDecoration(
-                                  hintText: '$_city',
+                                  hintText: 'City',
                                   labelStyle:
                                       GoogleFonts.poppins(color: Colors.black),
                                   border: OutlineInputBorder(
@@ -593,7 +549,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                           SizedBox(height: 4),
                           SizedBox(
-                            height: 50,
+                            height: 39,
                             width: double.infinity, // Take full available width
                             child: TextFormField(
                               textAlign: TextAlign.start,
@@ -631,15 +587,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                           SizedBox(height: 4),
                           SizedBox(
-                            width: 200,
-                            height: 60,
+                            width: 180,
+                            height: 59,
                             child: DropdownSearch<String>(
                               dropdownDecoratorProps: DropDownDecoratorProps(
                                 dropdownSearchDecoration: InputDecoration(
                                   hintText: 'Gender',
-                                  hintStyle: GoogleFonts.poppins(),
-                                  labelStyle:
-                                      GoogleFonts.poppins(color: Colors.black),
+                                  labelStyle: TextStyle(color: Colors.black),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10.0),
                                   ),
@@ -659,20 +613,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   ),
                                 ),
                               ),
-                              items: [
-                                'Female',
-                                'Male',
-                                'Prefer not to',
-                              ],
+                              items: ['Female', 'Male', 'Prefer not to'],
                               onChanged: (String? value) {
                                 setState(() {
                                   _gender = value;
                                 });
                               },
                               selectedItem: _gender,
-                              validator: (
-                                String? value,
-                              ) {
+                              validator: (String? value) {
                                 if (value == null || value.isEmpty) {
                                   return 'Please select your gender';
                                 }

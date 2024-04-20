@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class DetailsWidget extends StatefulWidget {
@@ -23,7 +24,7 @@ class DetailsWidget extends StatefulWidget {
 class _DetailsWidgetState extends State<DetailsWidget> {
   TextEditingController _commentController = TextEditingController();
   List<String> _comments = [];
-  bool _isCommentBoxVisible = false;
+  Color _likeButtonColor = Colors.grey;
 
   void _submitComment() {
     final newComment = _commentController.text;
@@ -38,28 +39,27 @@ class _DetailsWidgetState extends State<DetailsWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFEFF2EA),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
       extendBodyBehindAppBar: true,
-      body: Center(
-        // decoration: BoxDecoration(
-        //   gradient: LinearGradient(
-        //     colors: [
-        //       Color(0xFF9BCA22),
-        //       Color.fromRGBO(237, 240, 230, 1),
-        //       Color.fromRGBO(236, 237, 228, 1),
-        //       Color.fromRGBO(235, 233, 221, 1),
-        //       Color.fromRGBO(237, 234, 221, 1),
-        //       Color(0xFFDEF99B),
-        //     ],
-        //     stops: [0.1, 0.25, 0.5, 0.75, 0.8, 1.0],
-        //     begin: Alignment.topLeft,
-        //     end: Alignment.bottomCenter,
-        //   ),
-        // ),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Color.fromARGB(255, 218, 242, 168),
+              Color.fromRGBO(237, 240, 230, 1),
+              Color.fromRGBO(236, 237, 228, 1),
+              Color.fromRGBO(235, 233, 221, 1),
+              Color.fromRGBO(237, 234, 221, 1),
+              Color.fromARGB(255, 218, 242, 168)
+            ],
+            stops: [0.1, 0.25, 0.5, 0.75, 0.8, 1.0],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomCenter,
+          ),
+        ),
         child: SingleChildScrollView(
           child: Stack(
             children: [
@@ -67,10 +67,8 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(20),
-                      topLeft: Radius.circular(20),
-                      bottomLeft: Radius.circular(20.0),
-                      bottomRight: Radius.circular(20.0),
+                      bottomLeft: Radius.circular(50.0),
+                      bottomRight: Radius.circular(50.0),
                     ),
                     child: Image.asset(
                       "lib/assets/images/plant.jpeg",
@@ -94,7 +92,7 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                           style: GoogleFonts.poppins(
                             fontWeight: FontWeight.w700,
                             fontSize: 18,
-                            color: Color(0xFF273E39),
+                            color: Color.fromRGBO(34, 58, 51, 40),
                           ),
                         ),
                         SizedBox(height: 8),
@@ -102,7 +100,6 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                           widget.postBody,
                           textAlign: TextAlign.justify,
                           style: GoogleFonts.poppins(
-                            color: Color(0xFF273E39),
                             fontWeight: FontWeight.w500,
                             fontSize: 14,
                           ),
@@ -121,7 +118,7 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                                 style: GoogleFonts.poppins(
                                   fontWeight: FontWeight.w600,
                                   fontSize: 12,
-                                  color: Color(0xFF273E39),
+                                  color: Color.fromRGBO(34, 58, 51, 50),
                                 ),
                               ),
                               SizedBox(width: 4),
@@ -130,7 +127,7 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                                 style: GoogleFonts.poppins(
                                   fontWeight: FontWeight.w600,
                                   fontSize: 12,
-                                  color: Color(0xFF273E39),
+                                  color: Color.fromRGBO(34, 58, 51, 50),
                                 ),
                               ),
                               Text(
@@ -141,7 +138,7 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                                 style: GoogleFonts.poppins(
                                   fontWeight: FontWeight.w600,
                                   fontSize: 12,
-                                  color: Color(0xFF273E39),
+                                  color: Color.fromRGBO(34, 58, 51, 50),
                                 ),
                               ),
                               SizedBox(width: 14),
@@ -218,13 +215,14 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                             '${_comments.length} Comments',
                             style: GoogleFonts.poppins(
                               fontWeight: FontWeight.bold,
-                              color: Color(0xFF273E39),
+                              color: Color.fromRGBO(116, 124, 122, 1),
                             ),
                           ),
                         ),
                         SizedBox(
-                          height: 4,
+                          height: 10,
                         ),
+                        SizedBox(height: 10),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: _comments.map((comment) {
