@@ -31,10 +31,7 @@ class _PostWidgetState extends State<PostWidget> {
                 border: Border.symmetric(),
                 borderRadius: BorderRadius.circular(20),
                 gradient: LinearGradient(
-                  colors: [
-                    Color.fromARGB(255, 201, 224, 109),
-                    Color.fromARGB(255, 218, 242, 168)
-                  ],
+                  colors: [Color(0xFF9BCA22), Color(0xFFDEF99B)],
                   stops: [0.25, 0.75],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
@@ -61,7 +58,7 @@ class _PostWidgetState extends State<PostWidget> {
                       "What is your question?",
                       style: GoogleFonts.poppins(
                         fontSize: 18,
-                        color: Color.fromRGBO(108, 124, 117, 0.857),
+                        color: Color(0xFF2B423D),
                         fontWeight: FontWeight.w900,
                       ),
                     ),
@@ -82,7 +79,7 @@ class _PostWidgetState extends State<PostWidget> {
                           hintText: 'Ask to Community!',
                           hintStyle: GoogleFonts.poppins(
                               fontWeight: FontWeight.w400,
-                              color: Color.fromRGBO(108, 124, 117, 0.854)),
+                              color: Color(0xFF2B423D)),
                           border: UnderlineInputBorder(
                             borderRadius: BorderRadius.circular(12.0),
                             borderSide: BorderSide(
@@ -106,14 +103,14 @@ class _PostWidgetState extends State<PostWidget> {
                           style: GoogleFonts.poppins(
                             fontSize: 18,
                             fontWeight: FontWeight.w900,
-                            color: Color.fromRGBO(108, 124, 117, 0.857),
+                            color: Color(0xFF2B423D),
                           ),
                         ),
                       ),
-                    ), // Adjust spacing between text fields
+                    ), //
                     SizedBox(
-                      width: 400, // <-- TextField width
-                      height: 200, // <-- TextField height
+                      width: 400,
+                      height: 200,
                       child: TextFormField(
                         controller: _descriptionController,
                         maxLines: null,
@@ -136,7 +133,7 @@ class _PostWidgetState extends State<PostWidget> {
                           hintText: 'Give More Detail!',
                           hintStyle: GoogleFonts.poppins(
                               fontWeight: FontWeight.w400,
-                              color: Color.fromRGBO(108, 124, 117, 0.854)),
+                              color: Color(0xFF2B423D)),
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -164,7 +161,7 @@ class _PostWidgetState extends State<PostWidget> {
                         child: TextButton.icon(
                           icon: Icon(
                             Icons.camera_alt_rounded,
-                            color: Color.fromRGBO(108, 124, 117, 0.854),
+                            color: Color(0xFF2B423D),
                           ),
                           onPressed: () {
                             _selectImage(context);
@@ -176,8 +173,7 @@ class _PostWidgetState extends State<PostWidget> {
                                 Text(
                                   "Add your photo!",
                                   style: GoogleFonts.poppins(
-                                      color:
-                                          Color.fromRGBO(108, 124, 117, 0.854)),
+                                      color: Color(0xFF2B423D)),
                                 ),
                               ],
                             ),
@@ -196,11 +192,12 @@ class _PostWidgetState extends State<PostWidget> {
                         ElevatedButton.icon(
                           icon: Icon(
                             Icons.delete_rounded,
-                            color: Colors.white,
+                            color: Color(0xFF914C1D),
                           ),
                           style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all(
-                                Color.fromRGBO(253, 220, 34, 0.704)),
+                              Color(0xFFFFF9DC),
+                            ),
                           ),
                           onPressed: () {
                             // Clear form fields functionality
@@ -209,17 +206,18 @@ class _PostWidgetState extends State<PostWidget> {
                           },
                           label: Text(
                             'Clear',
-                            style: GoogleFonts.poppins(color: Colors.white),
+                            style:
+                                GoogleFonts.poppins(color: Color(0xFF914C1D)),
                           ),
                         ),
                         ElevatedButton.icon(
                           icon: Icon(
                             Icons.send_rounded,
-                            color: Colors.white,
+                            color: Color(0xFF914C1D),
                           ),
                           style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(
-                                Color.fromRGBO(253, 220, 34, 0.704)),
+                            backgroundColor:
+                                MaterialStateProperty.all(Color(0xFFFFF9DC)),
                           ),
                           onPressed: () {
                             // Submit form functionality
@@ -234,7 +232,8 @@ class _PostWidgetState extends State<PostWidget> {
                           },
                           label: Text(
                             'Submit',
-                            style: GoogleFonts.poppins(color: Colors.white),
+                            style:
+                                GoogleFonts.poppins(color: Color(0xFF914C1D)),
                           ),
                         ),
                       ],

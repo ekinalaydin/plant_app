@@ -20,7 +20,7 @@ class HomeScreen extends StatelessWidget {
           child: AppBar(
             automaticallyImplyLeading:
                 false, // This line removes the back button
-            backgroundColor: Color.fromARGB(178, 193, 242, 155),
+            backgroundColor: Color(0xFFDEF99B),
             title: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -30,14 +30,14 @@ class HomeScreen extends StatelessWidget {
                   style: GoogleFonts.poppins(
                       fontSize: 23,
                       fontWeight: FontWeight.w500,
-                      color: Colors.white),
+                      color: Color(0xFF2B423D)),
                 ),
                 Text(
                   "Let’s Learn More About  Your Plants",
                   style: GoogleFonts.poppins(
                       fontSize: 15,
                       fontWeight: FontWeight.normal,
-                      color: Colors.white),
+                      color: Color(0xFF2B423D)),
                 ),
               ],
             ),

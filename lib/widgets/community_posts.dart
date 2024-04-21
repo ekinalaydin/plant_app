@@ -83,7 +83,7 @@ class _PostPageState extends State<PostPage> {
           title: Text(
             "Community",
             style: GoogleFonts.poppins(
-              color: Color.fromRGBO(57, 79, 74, 50),
+              color: Color(0xFF2B423D),
               fontSize: 18,
               fontWeight: FontWeight.w700,
             ),
@@ -114,7 +114,7 @@ class _PostPageState extends State<PostPage> {
                   ),
                   hintText: 'Search',
                   textStyle: MaterialStateProperty.all(GoogleFonts.poppins(
-                    color: Color.fromRGBO(57, 79, 74, 100),
+                    color: Color(0xFF2B423D),
                   )),
                 ),
               ),
@@ -147,10 +147,7 @@ class _PostPageState extends State<PostPage> {
                     ],
                     borderRadius: BorderRadius.circular(30),
                     gradient: LinearGradient(
-                      colors: [
-                        Color.fromARGB(255, 201, 224, 109),
-                        Color.fromARGB(255, 218, 242, 168)
-                      ],
+                      colors: [Color(0xFF9BCA22), Color(0xFFDEF99B)],
                       stops: [0.25, 0.75],
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
@@ -198,7 +195,7 @@ class _PostPageState extends State<PostPage> {
                                 style: GoogleFonts.poppins(
                                   fontWeight: FontWeight.w700,
                                   fontSize: 20,
-                                  color: Color.fromRGBO(34, 58, 51, 40),
+                                  color: Color(0xFF2B423D),
                                 ),
                               ),
                             ),
@@ -215,7 +212,7 @@ class _PostPageState extends State<PostPage> {
                                       style: GoogleFonts.poppins(
                                         fontWeight: FontWeight.w500,
                                         fontSize: 14,
-                                        color: Colors.black,
+                                        color: Color(0xFF2B423D),
                                       ),
                                     ),
                                     if (words.length > 20)
@@ -261,7 +258,7 @@ class _PostPageState extends State<PostPage> {
                                     style: GoogleFonts.poppins(
                                       fontWeight: FontWeight.w600,
                                       fontSize: 12,
-                                      color: Color.fromRGBO(34, 58, 51, 50),
+                                      color: Color(0xFF2B423D),
                                     ),
                                   ),
                                   SizedBox(
@@ -272,7 +269,7 @@ class _PostPageState extends State<PostPage> {
                                     style: GoogleFonts.poppins(
                                       fontWeight: FontWeight.w600,
                                       fontSize: 12,
-                                      color: Color.fromRGBO(34, 58, 51, 50),
+                                      color: Color(0xFF2B423D),
                                     ),
                                   ), // Add spacing between author name and date
                                   Text(
@@ -283,7 +280,7 @@ class _PostPageState extends State<PostPage> {
                                     style: GoogleFonts.poppins(
                                       fontWeight: FontWeight.w600,
                                       fontSize: 12,
-                                      color: Color.fromRGBO(34, 58, 51, 50),
+                                      color: Color(0xFF2B423D),
                                     ),
                                   ),
                                 ],

@@ -124,7 +124,7 @@ class _CameraScreenState extends State<CameraScreen> {
             ],
           ), // Adjust t
           child: AppBar(
-            backgroundColor: Color.fromARGB(255, 224, 228, 208),
+            backgroundColor: Color(0xFFDEF99B),
             title: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -134,7 +134,7 @@ class _CameraScreenState extends State<CameraScreen> {
                   style: GoogleFonts.poppins(
                     fontWeight: FontWeight.w700,
                     fontSize: 20,
-                    color: Color.fromRGBO(108, 124, 117, 0.857),
+                    color: Color(0xFF273E39),
                   ),
                 ),
               ],
@@ -149,7 +149,7 @@ class _CameraScreenState extends State<CameraScreen> {
                 style: GoogleFonts.poppins(
                   fontSize: 15,
                   fontWeight: FontWeight.w700,
-                  color: Color.fromRGBO(108, 124, 117, 0.857),
+                  color: Color(0xFF273E39),
                 ),
               )
             : Image.file(
@@ -168,10 +168,10 @@ class _CameraScreenState extends State<CameraScreen> {
               heroTag: 'camera_fab',
               onPressed: getImageFromCamera,
               tooltip: 'Take a Photo',
-              backgroundColor: Color.fromARGB(178, 193, 242, 155),
+              backgroundColor: Color(0xFF9BCA22),
               child: Icon(
                 Icons.camera,
-                color: Colors.green,
+                color: Colors.white,
               ),
             ),
           ),
@@ -183,10 +183,10 @@ class _CameraScreenState extends State<CameraScreen> {
               heroTag: 'gallery_fab',
               onPressed: getImageFromGallery,
               tooltip: 'Choose from Gallery',
-              backgroundColor: Color.fromARGB(178, 193, 242, 155),
+              backgroundColor: Color(0xFF9BCA22),
               child: Icon(
                 Icons.photo_library,
-                color: Colors.green,
+                color: Colors.white,
               ),
             ),
           ),
