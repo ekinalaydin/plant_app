@@ -16,9 +16,9 @@ class CardList extends StatefulWidget {
 
 class _CardListState extends State<CardList> {
   @override
-  void initState() async {
+  void initState() {
     super.initState();
-    await Provider.of<WeatherProvider>(context, listen: false)
+    Provider.of<WeatherProvider>(context, listen: false)
         .fetchWeather(); // Trigger the weather API call
   }
 

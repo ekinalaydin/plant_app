@@ -25,17 +25,17 @@ class _SignInFormState extends State<SignInForm> {
   @override
   void initState() {
     super.initState();
-    _loadUserEmailAndPassword();
+    // _loadUserEmailAndPassword();
   }
 
-  Future<void> _loadUserEmailAndPassword() async {
-    final prefs = await SharedPreferences.getInstance();
-    if (prefs.getBool('rememberMe') ?? false) {
-      _emailController.text = prefs.getString('email') ?? '';
-      _passwordController.text = prefs.getString('password') ?? '';
-      _rememberMe = true;
-    }
-  }
+  // Future<void> _loadUserEmailAndPassword() async {
+  //   final prefs = await SharedPreferences.getInstance();
+  //   if (prefs.getBool('rememberMe') ?? false) {
+  //     _emailController.text = prefs.getString('email') ?? '';
+  //     _passwordController.text = prefs.getString('password') ?? '';
+  //     _rememberMe = true;
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -271,6 +271,7 @@ class _SignInFormState extends State<SignInForm> {
   }
 
   Future<void> _processFormData(String email, String password) async {
+    try {
       // FirebaseAuth kullanarak kullanıcı girişi yap
       final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email,

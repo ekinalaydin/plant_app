@@ -5,6 +5,7 @@ import 'package:plant_app/screens/community_screen.dart';
 import 'package:plant_app/screens/create_post_screen.dart';
 import 'package:plant_app/screens/home_screen.dart';
 import 'package:plant_app/screens/profile_screen.dart';
+import 'package:plant_app/screens/map_screen.dart';
 
 class BottomNavigation extends StatefulWidget {
   BottomNavigation({Key? key}) : super(key: key);
@@ -20,9 +21,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
     HomeScreen(),
     CommunityScreen(),
     CameraScreen(),
-    Center(
-      child: Text("Contact"),
-    ),
+    MapScreen(),
     ProfileScreen(),
   ];
 
