@@ -175,7 +175,7 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                                           .viewInsets
                                           .bottom,
                                     ),
-                                    width: double.infinity,
+                                    width: 300,
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(10),
                                       border: Border.all(color: Colors.grey),

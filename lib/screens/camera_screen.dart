@@ -16,7 +16,8 @@ class _CameraScreenState extends State<CameraScreen> {
   final picker = ImagePicker();
 
   Future<void> uploadImage(String filePath) async {
-    var uri = Uri.parse('http://10.0.2.2:8080/plant/predict');
+    var uri =
+        Uri.parse('https://plant-app-f6e01.uc.r.appspot.com/plant/predict');
     var request = http.MultipartRequest('POST', uri);
 
     request.files.add(await http.MultipartFile.fromPath('image', filePath));

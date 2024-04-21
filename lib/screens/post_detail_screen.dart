@@ -1,51 +1,53 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:plant_app/models/post.dart';
+import 'package:plant_app/services/api_service.dart';
 import 'package:plant_app/widgets/details.dart';
 
-class PostDetailPage extends StatelessWidget {
+class PostDetailPage extends StatefulWidget {
+  final int postId;
+  const PostDetailPage({Key? key, required this.postId}) : super(key: key);
+
+  @override
+  _PostDetailPageState createState() => _PostDetailPageState();
+}
+
+class _PostDetailPageState extends State<PostDetailPage> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(),
-      //   child: Container(
-      //     decoration: BoxDecoration(
-      //       boxShadow: [
-      //         BoxShadow(
-      //           color: Color.fromARGB(133, 192, 197, 173),
-      //           blurRadius: 15.0,
-      //         ),
-      //       ],
-      //     ),
-      //     // here the desired height
-      //     child: AppBar(
-      //       elevation: 0.5,
-      //       backgroundColor: Colors.white,
-      //       title: Text(
-      //         "Post Detail",
-      //         style: GoogleFonts.poppins(
-      //           color: Color.fromRGBO(57, 79, 74, 50),
-      //           fontSize: 20,
-      //           fontWeight: FontWeight.w700,
-      //         ),
-      //       ),
-      //     ),
-      //   ),
-
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.only(top: 0.0),
-          child: DetailsWidget(
-            postTitle: 'What kind of soil should I use for my plant?',
-            // postSummary: 'Creating beautiful UIs with Flutter!',
-            postBody:
-                'What types of soil do you guys use for your indoor plants? I’ve been using miracle grow indoor but it seems to not do well with majority of my plants. I have more than just these but I can’t find pics. Any tips on mixing soils or types to try is appreciated! Thanks!',
-
-            authorName: 'John Doe',
-            authorProfileImage:
-                'https://upload.wikimedia.org/wikipedia/commons/5/50/User_icon-cp.svg',
-            postDate: DateTime.now(),
-          ),
-        ),
+      body: FutureBuilder<Map<String, dynamic>>(
+        future: ApiService().getPostById(widget.postId),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text("Error: ${snapshot.error.toString()}"));
+          } else if (snapshot.hasData) {
+            Post post =
+                Post.fromJson(snapshot.data!); // Assuming non-null for demo
+            return Center(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 0.0),
+                child: DetailsWidget(
+                  postTitle: post.title,
+                  postBody: post.content,
+                  authorName: post.createdByUsername,
+                  authorProfileImage: post.authorProfileImage,
+                  postDate: post.createdAt,
+                ),
+              ),
+            );
+          } else {
+            return Center(child: Text("No data available"));
+          }
+        },
       ),
     );
   }
