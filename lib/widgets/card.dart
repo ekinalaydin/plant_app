@@ -36,14 +36,14 @@ class CardWidget extends StatelessWidget {
                       style: GoogleFonts.poppins(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
-                          color: Color(0xFF2B423D)),
+                          color: Color(0xFF0D2821)),
                     ),
                     Text(
                       '20/12/2023',
                       style: GoogleFonts.poppins(
                           fontSize: 15,
                           fontWeight: FontWeight.w300,
-                          color: Color(0xFF2B423D)),
+                          color: Color(0xFF0D2821)),
                     ),
                   ],
                 ),

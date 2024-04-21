@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:plant_app/screens/camera_screen.dart';
 import 'package:plant_app/screens/community_screen.dart';
-import 'package:plant_app/screens/create_post_screen.dart';
 import 'package:plant_app/screens/home_screen.dart';
 import 'package:plant_app/screens/profile_screen.dart';
 
@@ -32,15 +30,6 @@ class _BottomNavigationState extends State<BottomNavigation> {
     });
   }
 
-  void _onCameraButtonPressed() {
-    if (_selectedTab == 1) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => CreatePostScreen()),
-      );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,26 +51,22 @@ class _BottomNavigationState extends State<BottomNavigation> {
             label: 'Community',
           ),
           BottomNavigationBarItem(
-            icon: InkWell(
-              onTap: () => _onCameraButtonPressed(),
-              borderRadius: BorderRadius.circular(24),
-              child: Container(
-                width: 48,
-                height: 48,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Color(0xFF87BB17), // Inner color
-                      Color(0xFFB4DC30), // Outer color
-                    ],
-                  ),
-                  shape: BoxShape.circle,
+            icon: Container(
+              width: 48,
+              height: 48,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Color(0xFF87BB17), // Inner color
+                    Color(0xFFB4DC30), // Outer color
+                  ],
                 ),
-                child: Icon(
-                  _selectedTab == 1 ? Icons.add : Icons.camera,
-                  size: 24,
-                  color: Colors.white,
-                ),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                Icons.camera_alt_rounded,
+                size: 24,
+                color: Colors.white,
               ),
             ),
             label: '',

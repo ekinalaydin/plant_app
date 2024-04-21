@@ -25,13 +25,16 @@ class _PostWidgetState extends State<PostWidget> {
     return SingleChildScrollView(
       child: Center(
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(10.0, 60, 10, 30),
+          padding: const EdgeInsets.fromLTRB(50.0, 100, 50, 50),
           child: Container(
             decoration: BoxDecoration(
                 border: Border.symmetric(),
                 borderRadius: BorderRadius.circular(20),
                 gradient: LinearGradient(
-                  colors: [Color(0xFF9BCA22), Color(0xFFDEF99B)],
+                  colors: [
+                    Color.fromARGB(255, 201, 224, 109),
+                    Color.fromARGB(255, 218, 242, 168)
+                  ],
                   stops: [0.25, 0.75],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
@@ -44,11 +47,11 @@ class _PostWidgetState extends State<PostWidget> {
                     offset: Offset(0, 4),
                   ),
                 ]),
-            width: 440, // Adjust width as needed
-            height: 550, // Adjust height as needed
+            width: 380, // Adjust width as needed
+            height: 440, // Adjust height as needed
 
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(12.0),
               child: Form(
                 key: _formKey,
                 child: Column(
@@ -58,13 +61,11 @@ class _PostWidgetState extends State<PostWidget> {
                       "What is your question?",
                       style: GoogleFonts.poppins(
                         fontSize: 18,
-                        color: Color(0xFF2B423D),
+                        color: Color.fromRGBO(108, 124, 117, 0.857),
                         fontWeight: FontWeight.w900,
                       ),
                     ),
                     SizedBox(
-                      height: 60,
-                      width: 50,
                       child: TextFormField(
                         controller: _askToCommunityController,
                         decoration: InputDecoration(
@@ -79,7 +80,7 @@ class _PostWidgetState extends State<PostWidget> {
                           hintText: 'Ask to Community!',
                           hintStyle: GoogleFonts.poppins(
                               fontWeight: FontWeight.w400,
-                              color: Color(0xFF2B423D)),
+                              color: Color.fromRGBO(108, 124, 117, 0.854)),
                           border: UnderlineInputBorder(
                             borderRadius: BorderRadius.circular(12.0),
                             borderSide: BorderSide(
@@ -103,14 +104,14 @@ class _PostWidgetState extends State<PostWidget> {
                           style: GoogleFonts.poppins(
                             fontSize: 18,
                             fontWeight: FontWeight.w900,
-                            color: Color(0xFF2B423D),
+                            color: Color.fromRGBO(108, 124, 117, 0.857),
                           ),
                         ),
                       ),
-                    ), //
+                    ), // Adjust spacing between text fields
                     SizedBox(
-                      width: 400,
-                      height: 200,
+                      width: 240, // <-- TextField width
+                      height: 120, // <-- TextField height
                       child: TextFormField(
                         controller: _descriptionController,
                         maxLines: null,
@@ -133,7 +134,7 @@ class _PostWidgetState extends State<PostWidget> {
                           hintText: 'Give More Detail!',
                           hintStyle: GoogleFonts.poppins(
                               fontWeight: FontWeight.w400,
-                              color: Color(0xFF2B423D)),
+                              color: Color.fromRGBO(108, 124, 117, 0.854)),
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -161,7 +162,7 @@ class _PostWidgetState extends State<PostWidget> {
                         child: TextButton.icon(
                           icon: Icon(
                             Icons.camera_alt_rounded,
-                            color: Color(0xFF2B423D),
+                            color: Color.fromRGBO(108, 124, 117, 0.854),
                           ),
                           onPressed: () {
                             _selectImage(context);
@@ -173,7 +174,8 @@ class _PostWidgetState extends State<PostWidget> {
                                 Text(
                                   "Add your photo!",
                                   style: GoogleFonts.poppins(
-                                      color: Color(0xFF2B423D)),
+                                      color:
+                                          Color.fromRGBO(108, 124, 117, 0.854)),
                                 ),
                               ],
                             ),
@@ -182,22 +184,18 @@ class _PostWidgetState extends State<PostWidget> {
                       ),
                     ),
 
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SizedBox(height: 10),
-                    ),
+                    SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         ElevatedButton.icon(
                           icon: Icon(
                             Icons.delete_rounded,
-                            color: Color(0xFF914C1D),
+                            color: Colors.white,
                           ),
                           style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all(
-                              Color(0xFFFFF9DC),
-                            ),
+                                Color.fromRGBO(253, 220, 34, 0.704)),
                           ),
                           onPressed: () {
                             // Clear form fields functionality
@@ -206,18 +204,17 @@ class _PostWidgetState extends State<PostWidget> {
                           },
                           label: Text(
                             'Clear',
-                            style:
-                                GoogleFonts.poppins(color: Color(0xFF914C1D)),
+                            style: GoogleFonts.poppins(color: Colors.white),
                           ),
                         ),
                         ElevatedButton.icon(
                           icon: Icon(
                             Icons.send_rounded,
-                            color: Color(0xFF914C1D),
+                            color: Colors.white,
                           ),
                           style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all(Color(0xFFFFF9DC)),
+                            backgroundColor: MaterialStateProperty.all(
+                                Color.fromRGBO(253, 220, 34, 0.704)),
                           ),
                           onPressed: () {
                             // Submit form functionality
@@ -232,8 +229,7 @@ class _PostWidgetState extends State<PostWidget> {
                           },
                           label: Text(
                             'Submit',
-                            style:
-                                GoogleFonts.poppins(color: Color(0xFF914C1D)),
+                            style: GoogleFonts.poppins(color: Colors.white),
                           ),
                         ),
                       ],

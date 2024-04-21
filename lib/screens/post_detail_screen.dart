@@ -6,34 +6,35 @@ class PostDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(),
-      //   child: Container(
-      //     decoration: BoxDecoration(
-      //       boxShadow: [
-      //         BoxShadow(
-      //           color: Color.fromARGB(133, 192, 197, 173),
-      //           blurRadius: 15.0,
-      //         ),
-      //       ],
-      //     ),
-      //     // here the desired height
-      //     child: AppBar(
-      //       elevation: 0.5,
-      //       backgroundColor: Colors.white,
-      //       title: Text(
-      //         "Post Detail",
-      //         style: GoogleFonts.poppins(
-      //           color: Color.fromRGBO(57, 79, 74, 50),
-      //           fontSize: 20,
-      //           fontWeight: FontWeight.w700,
-      //         ),
-      //       ),
-      //     ),
-      //   ),
-
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(70.0),
+        child: Container(
+          decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                color: Color.fromARGB(133, 192, 197, 173),
+                blurRadius: 15.0,
+              ),
+            ],
+          ),
+          // here the desired height
+          child: AppBar(
+            elevation: 0.5,
+            backgroundColor: Colors.white,
+            title: Text(
+              "Post Detail",
+              style: GoogleFonts.poppins(
+                color: Color.fromRGBO(57, 79, 74, 50),
+                fontSize: 20,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ),
+        ),
+      ),
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.only(top: 0.0),
+          padding: const EdgeInsets.only(top: 25.0),
           child: DetailsWidget(
             postTitle: 'What kind of soil should I use for my plant?',
             // postSummary: 'Creating beautiful UIs with Flutter!',
