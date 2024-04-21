@@ -111,7 +111,8 @@ class _SignInFormState extends State<SignInForm> {
                     ),
                   ),
                 ),
-                cursorColor: Colors.black, // İmleç rengi burada ayarlanıyor
+                cursorColor: Colors.black,
+                // İmleç rengi burada ayarlanıyor
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter your e-mail or username';
