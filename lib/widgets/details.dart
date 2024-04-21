@@ -38,187 +38,222 @@ class _DetailsWidgetState extends State<DetailsWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Container(
-              decoration: BoxDecoration(boxShadow: [
-                BoxShadow(
-                  color: Color.fromARGB(255, 224, 228, 208),
-                  spreadRadius: 3,
-                  blurRadius: 40,
-                  offset: Offset(0, 2),
-                ),
-              ]),
-              width: 100,
-              height: 170,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 30.0, right: 30),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
-                  child: Image.asset(
-                    "lib/assets/images/plant.jpeg",
-                    fit: BoxFit.cover,
-                    alignment: Alignment.topCenter,
-                  ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 20.0, right: 20, left: 20),
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border.symmetric(),
-                  borderRadius: BorderRadius.circular(20),
-                  gradient: LinearGradient(
-                    colors: [
-                      Color.fromARGB(255, 201, 224, 109),
-                      Color.fromARGB(255, 218, 242, 168)
-                    ],
-                    stops: [0.25, 0.75],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Color.fromRGBO(220, 226, 201, 0.498),
-                      spreadRadius: 10,
-                      blurRadius: 10,
-                      offset: Offset(0, 4),
+      backgroundColor: Color(0xFFEFF2EA),
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+      ),
+      extendBodyBehindAppBar: true,
+      body: Center(
+        // decoration: BoxDecoration(
+        //   gradient: LinearGradient(
+        //     colors: [
+        //       Color(0xFF9BCA22),
+        //       Color.fromRGBO(237, 240, 230, 1),
+        //       Color.fromRGBO(236, 237, 228, 1),
+        //       Color.fromRGBO(235, 233, 221, 1),
+        //       Color.fromRGBO(237, 234, 221, 1),
+        //       Color(0xFFDEF99B),
+        //     ],
+        //     stops: [0.1, 0.25, 0.5, 0.75, 0.8, 1.0],
+        //     begin: Alignment.topLeft,
+        //     end: Alignment.bottomCenter,
+        //   ),
+        // ),
+        child: SingleChildScrollView(
+          child: Stack(
+            children: [
+              Column(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(20),
+                      topLeft: Radius.circular(20),
+                      bottomLeft: Radius.circular(20.0),
+                      bottomRight: Radius.circular(20.0),
                     ),
-                  ],
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: Text(
-                        widget.postTitle,
-                        textAlign: TextAlign.center,
-                        style: GoogleFonts.poppins(
-                          fontWeight: FontWeight.w700,
-                          fontSize: 18,
-                          color: Color.fromRGBO(34, 58, 51, 40),
-                        ),
-                      ),
+                    child: Image.asset(
+                      "lib/assets/images/plant.jpeg",
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height *
+                          0.38, // 40% of the screen height
+                      fit: BoxFit.fitHeight,
                     ),
-                    SizedBox(height: 8),
-                    Padding(
-                      padding:
-                          const EdgeInsets.only(top: 12.0, right: 12, left: 12),
-                      child: Text(
-                        widget.postBody,
-                        textAlign: TextAlign.justify,
-                        style: GoogleFonts.poppins(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 14,
-                        ),
-                      ),
-                    ),
-                    ListTile(
-                      leading: CircleAvatar(
-                        backgroundColor: Colors.white,
-                        backgroundImage:
-                            NetworkImage(widget.authorProfileImage),
-                      ),
-                      title: Text(
-                        widget.authorName,
-                        style: GoogleFonts.poppins(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 16,
-                          color: Color.fromRGBO(34, 58, 51, 50),
-                        ),
-                      ),
-                      subtitle: Text(
-                        widget.postDate.toLocal().toString().split(' ')[0],
-                        textAlign: TextAlign.start,
-                        style: GoogleFonts.poppins(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 16,
-                          color: Color.fromRGBO(34, 58, 51, 50),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            // Add Your Comment button
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              child: ElevatedButton.icon(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Color.fromARGB(255, 246, 247, 226),
-                  shadowColor: Color.fromARGB(255, 216, 229, 160),
-                ),
-                icon: Icon(Icons.comment_sharp,
-                    color: Color.fromARGB(255, 116, 118, 107)),
-                onPressed: () {
-                  setState(() {
-                    _isCommentBoxVisible = true;
-                  });
-                },
-                label: Text(
-                  'Add Your Comment',
-                  style: GoogleFonts.poppins(
-                    fontWeight: FontWeight.bold,
-                    color: Color.fromRGBO(116, 124, 122, 1),
                   ),
-                ),
-              ),
-            ),
-            // Comment input field
-            if (_isCommentBoxVisible)
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: Colors.grey),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Row(
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 30,
+                      horizontal: 20,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Expanded(
-                          child: TextField(
-                            controller: _commentController,
-                            decoration: InputDecoration(
-                              hintText: 'Write your comment...',
-                              border: InputBorder.none,
+                        Text(
+                          widget.postTitle,
+                          textAlign: TextAlign.start,
+                          style: GoogleFonts.poppins(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 18,
+                            color: Color(0xFF273E39),
+                          ),
+                        ),
+                        SizedBox(height: 8),
+                        Text(
+                          widget.postBody,
+                          textAlign: TextAlign.justify,
+                          style: GoogleFonts.poppins(
+                            color: Color(0xFF273E39),
+                            fontWeight: FontWeight.w500,
+                            fontSize: 14,
+                          ),
+                        ),
+                        ListTile(
+                          contentPadding: EdgeInsets.only(right: 15),
+                          leading: CircleAvatar(
+                            backgroundColor: Colors.white,
+                            backgroundImage:
+                                NetworkImage(widget.authorProfileImage),
+                          ),
+                          title: Row(
+                            children: [
+                              Text(
+                                widget.authorName,
+                                style: GoogleFonts.poppins(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 12,
+                                  color: Color(0xFF273E39),
+                                ),
+                              ),
+                              SizedBox(width: 4),
+                              Text(
+                                '•',
+                                style: GoogleFonts.poppins(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 12,
+                                  color: Color(0xFF273E39),
+                                ),
+                              ),
+                              Text(
+                                widget.postDate
+                                    .toLocal()
+                                    .toString()
+                                    .split(' ')[0],
+                                style: GoogleFonts.poppins(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 12,
+                                  color: Color(0xFF273E39),
+                                ),
+                              ),
+                              SizedBox(width: 14),
+                              IconButton(
+                                icon: Icon(Icons.favorite),
+                                color:
+                                    _likeButtonColor, // Use like button color
+                                onPressed: () {
+                                  // Toggle like button color
+                                  setState(() {
+                                    _likeButtonColor =
+                                        _likeButtonColor == Colors.red
+                                            ? Colors.grey
+                                            : Colors.red;
+                                  });
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 10),
+                        TextButton(
+                          onPressed: () {
+                            showModalBottomSheet(
+                              context:
+                                  context, // Pass the context from the surrounding widget
+                              isScrollControlled:
+                                  true, // Ensure modal is scrollable when keyboard is open
+                              builder: (context) {
+                                return SingleChildScrollView(
+                                  child: Container(
+                                    padding: EdgeInsets.only(
+                                      bottom: MediaQuery.of(context)
+                                          .viewInsets
+                                          .bottom,
+                                    ),
+                                    width: double.infinity,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      border: Border.all(color: Colors.grey),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 8.0, right: 8),
+                                      child: Row(
+                                        children: [
+                                          Expanded(
+                                            child: TextField(
+                                              style: GoogleFonts.poppins(),
+                                              controller: _commentController,
+                                              decoration: InputDecoration(
+                                                hintText: 'Write your comment',
+                                                border: InputBorder.none,
+                                              ),
+                                            ),
+                                          ),
+                                          IconButton(
+                                            icon: Icon(Icons.send),
+                                            onPressed: () {
+                                              _submitComment();
+                                              Navigator.pop(
+                                                  context); // Close the bottom sheet after submitting comment
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                          child: Text(
+                            '${_comments.length} Comments',
+                            style: GoogleFonts.poppins(
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF273E39),
                             ),
                           ),
                         ),
-                        IconButton(
-                          icon: Icon(Icons.send),
-                          onPressed: () {
-                            _submitComment();
-                          },
+                        SizedBox(
+                          height: 4,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: _comments.map((comment) {
+                            return ListTile(
+                              leading: CircleAvatar(
+                                backgroundImage:
+                                    NetworkImage(widget.authorProfileImage),
+                              ),
+                              title: Text(
+                                widget.authorName,
+                                style: GoogleFonts.poppins(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14,
+                                ),
+                              ),
+                              subtitle: Text(
+                                comment,
+                                style: GoogleFonts.poppins(),
+                              ),
+                            );
+                          }).toList(),
                         ),
                       ],
                     ),
                   ),
-                ),
+                ],
               ),
-            // Existing comments
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
-                children: _comments.map((comment) {
-                  return ListTile(
-                    leading: CircleAvatar(
-                      backgroundImage: NetworkImage(widget.authorProfileImage),
-                    ),
-                    title: Text(widget.authorName),
-                    subtitle: Text(comment),
-                  );
-                }).toList(),
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

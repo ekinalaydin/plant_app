@@ -83,7 +83,7 @@ class _PostPageState extends State<PostPage> {
           title: Text(
             "Community",
             style: GoogleFonts.poppins(
-              color: Color.fromRGBO(57, 79, 74, 50),
+              color: Color(0xFF2B423D),
               fontSize: 18,
               fontWeight: FontWeight.w700,
             ),
@@ -114,7 +114,7 @@ class _PostPageState extends State<PostPage> {
                   ),
                   hintText: 'Search',
                   textStyle: MaterialStateProperty.all(GoogleFonts.poppins(
-                    color: Color.fromRGBO(57, 79, 74, 100),
+                    color: Color(0xFF2B423D),
                   )),
                 ),
               ),
@@ -156,25 +156,22 @@ class _PostPageState extends State<PostPage> {
                 },
                 child: Container(
                   decoration: BoxDecoration(
-                      border: Border.symmetric(),
-                      borderRadius: BorderRadius.circular(20),
-                      gradient: LinearGradient(
-                        colors: [
-                          Color.fromARGB(255, 201, 224, 109),
-                          Color.fromARGB(255, 218, 242, 168)
-                        ],
-                        stops: [0.25, 0.75],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Color.fromARGB(255, 224, 228, 208),
+                        spreadRadius: 3,
+                        blurRadius: 40,
+                        offset: Offset(0, 2),
                       ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Color.fromRGBO(220, 226, 201, 0.498),
-                          spreadRadius: 10,
-                          blurRadius: 10,
-                          offset: Offset(0, 4),
-                        ),
-                      ]),
+                    ],
+                    borderRadius: BorderRadius.circular(30),
+                    gradient: LinearGradient(
+                      colors: [Color(0xFF9BCA22), Color(0xFFDEF99B)],
+                      stops: [0.25, 0.75],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                  ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -196,7 +193,23 @@ class _PostPageState extends State<PostPage> {
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Expanded(
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 8.0, right: 12, left: 12),
+                              child: Text(
+                                widget.postTitle,
+                                textAlign: TextAlign.start,
+                                style: GoogleFonts.poppins(
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 20,
+                                  color: Color(0xFF2B423D),
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 8),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10.0),
                               child: RichText(
                                 text: TextSpan(
                                   children: [
@@ -205,7 +218,7 @@ class _PostPageState extends State<PostPage> {
                                       style: GoogleFonts.poppins(
                                         fontWeight: FontWeight.w500,
                                         fontSize: 14,
-                                        color: Colors.black,
+                                        color: Color(0xFF2B423D),
                                       ),
                                     ),
                                     if (words.length >
@@ -240,51 +253,68 @@ class _PostPageState extends State<PostPage> {
                                 ),
                               ),
                             ),
+                            ListTile(
+                              leading: CircleAvatar(
+                                backgroundColor: Colors.white,
+                                backgroundImage:
+                                    NetworkImage(widget.authorProfileImage),
+                              ),
+                              title: Row(
+                                children: [
+                                  Text(
+                                    widget.authorName,
+                                    style: GoogleFonts.poppins(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 12,
+                                      color: Color(0xFF2B423D),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                      width:
+                                          4), // Add spacing between author name and separator
+                                  Text(
+                                    '•',
+                                    style: GoogleFonts.poppins(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 12,
+                                      color: Color(0xFF2B423D),
+                                    ),
+                                  ), // Add spacing between author name and date
+                                  Text(
+                                    widget.postDate
+                                        .toLocal()
+                                        .toString()
+                                        .split(' ')[0],
+                                    style: GoogleFonts.poppins(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 12,
+                                      color: Color(0xFF2B423D),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              // trailing: TextButton(
+                              //   onPressed: () {
+                              //     Navigator.push(
+                              //       context,
+                              //       MaterialPageRoute(
+                              //         builder: (context) => PostDetailPage(),
+                              //       ),
+                              //     );
+                              //   },
+                              //   child: Padding(
+                              //     padding: const EdgeInsets.all(10.0),
+                              //     child: Text(
+                              //       'Comments',
+                              //       style: GoogleFonts.poppins(
+                              //         fontWeight: FontWeight.w300,
+                              //         color: Color.fromRGBO(116, 124, 122, 1),
+                              //       ),
+                              //     ),
+                              //   ),
+                              // ),
+                            ),
                           ],
-                        ),
-                      ),
-
-                      // Text(widget.postSummary),
-                      ListTile(
-                        leading: CircleAvatar(
-                          backgroundColor: Colors.white,
-                          backgroundImage:
-                              NetworkImage(widget.authorProfileImage),
-                        ),
-                        title: Text(
-                          widget.authorName,
-                          style: GoogleFonts.poppins(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 12,
-                              color: Color.fromRGBO(34, 58, 51, 50)),
-                        ),
-                        subtitle: Text(
-                            widget.postDate.toLocal().toString().split(' ')[0],
-                            textAlign: TextAlign.start,
-                            style: GoogleFonts.poppins(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 12,
-                                color: Color.fromRGBO(34, 58, 51, 50))),
-                        trailing: ElevatedButton.icon(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Color.fromARGB(255, 246, 247, 226),
-                            shadowColor: Color.fromARGB(255, 216, 229, 160),
-                          ),
-                          icon: Icon(Icons.comment_sharp,
-                              color: Color.fromARGB(255, 116, 118, 107)),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => PostDetailPage()),
-                            );
-                          },
-                          label: Text(
-                            'Comments',
-                            style: GoogleFonts.poppins(
-                                fontWeight: FontWeight.bold,
-                                color: Color.fromRGBO(116, 124, 122, 1)),
-                          ),
                         ),
                       ),
                     ],
