@@ -8,6 +8,7 @@ class DetailsWidget extends StatefulWidget {
   final String authorName;
   final String authorProfileImage;
   final DateTime postDate;
+  final String imageUrl;
 
   DetailsWidget({
     required this.postTitle,
@@ -15,6 +16,7 @@ class DetailsWidget extends StatefulWidget {
     required this.authorName,
     required this.authorProfileImage,
     required this.postDate,
+    required this.imageUrl,
   });
 
   @override
@@ -70,12 +72,41 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                       bottomLeft: Radius.circular(50.0),
                       bottomRight: Radius.circular(50.0),
                     ),
-                    child: Image.asset(
-                      "lib/assets/images/plant.jpeg",
+                    child: Image.network(
+                      widget.imageUrl,
                       width: MediaQuery.of(context).size.width,
                       height: MediaQuery.of(context).size.height *
-                          0.38, // 40% of the screen height
+                          0.38, // 38% of the screen height
                       fit: BoxFit.fitHeight,
+                      loadingBuilder: (BuildContext context, Widget child,
+                          ImageChunkEvent? loadingProgress) {
+                        if (loadingProgress == null)
+                          return child; // Image is fully loaded, return the image widget
+                        return Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.height *
+                              0.38, // Ensure the container matches the image height
+                          child: Center(
+                            child: CircularProgressIndicator(
+                              value: loadingProgress.expectedTotalBytes != null
+                                  ? loadingProgress.cumulativeBytesLoaded /
+                                      loadingProgress.expectedTotalBytes!
+                                  : null,
+                            ),
+                          ),
+                        ); // Container ensures the loading indicator is centered and maintains the height of the image
+                      },
+                      errorBuilder: (BuildContext context, Object exception,
+                          StackTrace? stackTrace) {
+                        return Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.height * 0.38,
+                          child: Center(
+                            child: Text(
+                                'Failed to load image'), // Display a message when the image fails to load
+                          ),
+                        );
+                      },
                     ),
                   ),
                   Padding(
@@ -109,7 +140,7 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                           leading: CircleAvatar(
                             backgroundColor: Colors.white,
                             backgroundImage:
-                                NetworkImage(widget.authorProfileImage),
+                                AssetImage(widget.authorProfileImage),
                           ),
                           title: Row(
                             children: [
@@ -229,7 +260,7 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                             return ListTile(
                               leading: CircleAvatar(
                                 backgroundImage:
-                                    NetworkImage(widget.authorProfileImage),
+                                    AssetImage(widget.authorProfileImage),
                               ),
                               title: Text(
                                 widget.authorName,

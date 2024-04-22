@@ -98,7 +98,7 @@ class _PostPageState extends State<PostPage> {
           ),
           Expanded(
             child: FutureBuilder<dynamic>(
-              future: ApiService().getAllPosts(),
+              future: ApiService().getAllPosts(context),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(child: CircularProgressIndicator());

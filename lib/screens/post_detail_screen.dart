@@ -41,6 +41,7 @@ class _PostDetailPageState extends State<PostDetailPage> {
                   authorName: post.createdByUsername,
                   authorProfileImage: post.authorProfileImage,
                   postDate: post.createdAt,
+                  imageUrl: post.imgUrl,
                 ),
               ),
             );

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:plant_app/models/post.dart';
+import 'package:plant_app/services/api_service.dart';
 import '../screens/post_detail_screen.dart';
 
 class PostCard extends StatefulWidget {
@@ -14,9 +15,6 @@ class PostCard extends StatefulWidget {
 }
 
 class _PostCardState extends State<PostCard> {
-  bool isLiked = false; // State to manage like status
-  int likeCount = 100; // Example initial like count
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -33,7 +31,6 @@ class _PostCardState extends State<PostCard> {
           width: 150,
           height: MediaQuery.of(context).size.height / 7,
           margin: const EdgeInsets.only(top: 8.0),
-          padding: const EdgeInsets.only(left: 10, right: 10),
           decoration: BoxDecoration(
             boxShadow: [
               BoxShadow(
@@ -53,89 +50,88 @@ class _PostCardState extends State<PostCard> {
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
             children: [
               Padding(
-                padding: const EdgeInsets.only(top: 8.0, right: 12, left: 12),
+                padding: const EdgeInsets.all(10.0),
                 child: Text(
                   widget.post.title,
-                  textAlign: TextAlign.start,
                   style: GoogleFonts.poppins(
                     fontWeight: FontWeight.w700,
-                    fontSize: 20,
+                    fontSize: 16,
                     color: Color(0xFF2B423D),
                   ),
                 ),
               ),
-              SizedBox(height: 8),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                child: RichText(
-                  textAlign: TextAlign.start,
-                  text: TextSpan(
-                    text: widget.post.content,
-                    style: GoogleFonts.poppins(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 14,
-                      color: Color(0xFF2B423D),
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
-                child: Row(
-                  children: [
-                    CircleAvatar(
-                      backgroundColor: Colors.white,
-                      backgroundImage:
-                          NetworkImage(widget.post.authorProfileImage),
-                    ),
-                    SizedBox(width: 8),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            widget.post.createdByUsername,
-                            style: GoogleFonts.poppins(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 12,
-                              color: Color(0xFF2B423D),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 18.0, right: 18),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CircleAvatar(
+                        backgroundColor: Colors.white,
+                        backgroundImage:
+                            AssetImage(widget.post.authorProfileImage),
+                      ),
+                      SizedBox(
+                        width: 12,
+                      ),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              widget.post.createdByUsername,
+                              style: GoogleFonts.poppins(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 12,
+                                color: Color(0xFF2B423D),
+                              ),
                             ),
+                            Text(
+                              DateFormat.yMMMd()
+                                  .add_Hm()
+                                  .format(widget.post.createdAt),
+                              style: GoogleFonts.poppins(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 12,
+                                color: Color(0xFF2B423D),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Column(
+                        children: [
+                          IconButton(
+                            icon: Icon(Icons.favorite),
+                            color:
+                                widget.post.isLiked ? Colors.red : Colors.grey,
+                            onPressed: () async {
+                              await ApiService()
+                                  .likePost(widget.post.id, context);
+                              setState(() {
+                                widget.post.isLiked = !widget.post.isLiked;
+                                widget.post.likeCount +=
+                                    widget.post.isLiked ? 1 : -1;
+                              });
+                            },
                           ),
                           Text(
-                            DateFormat.yMMMd()
-                                .add_Hm()
-                                .format(widget.post.createdAt),
+                            '${widget.post.likeCount}',
                             style: GoogleFonts.poppins(
-                              fontWeight: FontWeight.w600,
+                              fontWeight: FontWeight.w300,
                               fontSize: 12,
                               color: Color(0xFF2B423D),
                             ),
                           ),
                         ],
                       ),
-                    ),
-                    IconButton(
-                      icon: Icon(Icons.favorite),
-                      color: isLiked ? Colors.red : Colors.grey,
-                      onPressed: () {
-                        setState(() {
-                          isLiked = !isLiked;
-                          likeCount += isLiked ? 1 : -1;
-                        });
-                      },
-                    ),
-                    Text(
-                      '$likeCount',
-                      style: GoogleFonts.poppins(
-                        fontWeight: FontWeight.w300,
-                        fontSize: 12,
-                        color: Color(0xFF2B423D),
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ],

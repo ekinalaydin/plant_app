@@ -1,13 +1,20 @@
 import 'dart:convert';
 import 'dart:ffi';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:plant_app/services/user_provider.dart';
+import 'package:provider/provider.dart';
 
 class ApiService {
   static String baseUrl = 'https://plant-app-f6e01.uc.r.appspot.com/';
 
   // GET ALL POSTS
-  Future<Map<String, dynamic>> getAllPosts() async {
-    final response = await http.get(Uri.parse('$baseUrl/community/'));
+  Future<Map<String, dynamic>> getAllPosts(BuildContext context) async {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    final userId = userProvider.user?.userId;
+    print(userId);
+    final response =
+        await http.get(Uri.parse('$baseUrl/community/?userId=$userId'));
     if (response.statusCode == 200) {
       var decodedJson = json.decode(utf8.decode(response.bodyBytes));
       return decodedJson['data'];
@@ -28,13 +35,22 @@ class ApiService {
   }
 
   // LIKE POST
-  Future<Map<String, dynamic>> likePost(int id) async {
-    final response = await http.post(Uri.parse('$baseUrl/community/$id/likes'));
-    if (response.statusCode == 200) {
-      var decodedJson = json.decode(utf8.decode(response.bodyBytes));
-      return decodedJson['data'];
-    } else {
-      throw Exception('Failed to load data');
+  Future<void> likePost(int id, BuildContext context) async {
+    // Retrieve the userProvider using the context provided
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    final token = userProvider.user?.token;
+
+    final response = await http.post(
+      Uri.parse('$baseUrl/community/$id/likes'),
+      headers: {
+        'Authorization':
+            'Bearer $token', // Include the auth token in the header
+      },
+    );
+
+    if (response.statusCode != 204) {
+      throw Exception(
+          'Failed to load data with status code: ${response.statusCode}');
     }
   }
 }
