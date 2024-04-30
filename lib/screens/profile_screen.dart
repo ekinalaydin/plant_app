@@ -40,7 +40,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       alignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Container(
-                          width: 180,
+                          width: 150,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(
@@ -60,7 +60,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                         ),
                         Container(
-                          width: 190,
+                          width: 150,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(
@@ -69,7 +69,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               backgroundColor:
                                   Color.fromARGB(255, 201, 224, 109),
                             ),
-                            child: Text('Posts and Comments',
+                            child: Text('Posts',
                                 style: GoogleFonts.poppins(
                                     color: Color.fromRGBO(34, 58, 51, 40),
                                     fontWeight: FontWeight.w600,
