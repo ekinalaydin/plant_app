@@ -7,12 +7,12 @@ import 'package:plant_app/screens/post_detail_screen.dart';
 import 'package:plant_app/services/api_service.dart';
 import 'package:plant_app/widgets/post_card.dart';
 
-class PostPage extends StatefulWidget {
+class UserPost extends StatefulWidget {
   @override
-  _PostPageState createState() => _PostPageState();
+  _UserPostState createState() => _UserPostState();
 }
 
-class _PostPageState extends State<PostPage> {
+class _UserPostState extends State<UserPost> {
   bool _expanded = false;
   var allItems = List.generate(50, (index) => 'item $index');
   var items = [];
@@ -59,7 +59,7 @@ class _PostPageState extends State<PostPage> {
           backgroundColor: Colors.white,
           elevation: 0.5,
           title: Text(
-            "Community",
+            "My Posts",
             style: GoogleFonts.poppins(
               fontSize: 23,
               fontWeight: FontWeight.w500,
@@ -74,25 +74,6 @@ class _PostPageState extends State<PostPage> {
             padding: const EdgeInsets.only(bottom: 30, right: 20, left: 20),
             child: SizedBox(
               height: 40,
-              child: SearchBar(
-                surfaceTintColor:
-                    MaterialStateProperty.all(Color.fromRGBO(245, 246, 246, 1)),
-                backgroundColor:
-                    MaterialStateProperty.all(Color.fromRGBO(255, 255, 255, 1)),
-                overlayColor:
-                    MaterialStateProperty.all(Color.fromRGBO(240, 239, 237, 1)),
-                shadowColor: MaterialStateProperty.all(
-                    Color.fromRGBO(224, 231, 231, 100)),
-                controller: searchController,
-                leading: IconButton(
-                  onPressed: () {},
-                  icon: Icon(Icons.search),
-                ),
-                hintText: 'Search',
-                textStyle: MaterialStateProperty.all(GoogleFonts.poppins(
-                  color: Color(0xFF2B423D),
-                )),
-              ),
             ),
           ),
           Expanded(

@@ -28,7 +28,7 @@ class _PostCardState extends State<PostCard> {
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Container(
-          width: 150,
+          width: 200,
           height: MediaQuery.of(context).size.height / 7,
           margin: const EdgeInsets.only(top: 8.0),
           decoration: BoxDecoration(

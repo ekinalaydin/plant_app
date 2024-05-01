@@ -15,7 +15,7 @@ class _CameraScreenState extends State<CameraScreen> {
   File? _image;
   final picker = ImagePicker();
 
-  Future<void> uploadImage(String filePath) async {
+  Future<dynamic> uploadImage(String filePath) async {
     var uri =
         Uri.parse('https://plant-app-f6e01.uc.r.appspot.com/plant/predict');
     var request = http.MultipartRequest('POST', uri);
@@ -153,10 +153,27 @@ class _CameraScreenState extends State<CameraScreen> {
                   color: Color(0xFF273E39),
                 ),
               )
-            : Image.file(
-                _image!,
-                width: 500,
-                height: 500,
+            : FutureBuilder(
+                future: uploadImage(_image!.path),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return CircularProgressIndicator(); // Show CircularProgressIndicator while waiting
+                  } else if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}');
+                  } else if (snapshot.hasData && snapshot.data.length > 0) {
+                    // Handle successful result
+                    var label = snapshot.data[0]['label'];
+                    showInformationModal(context, label);
+                    return Image.file(
+                      _image!,
+                      width: 500,
+                      height: 500,
+                    );
+                  } else {
+                    return Text(
+                        'No data available'); // Handle case where data is null or empty
+                  }
+                },
               ),
       ),
       floatingActionButton: Column(
@@ -171,7 +188,7 @@ class _CameraScreenState extends State<CameraScreen> {
               tooltip: 'Take a Photo',
               backgroundColor: Color(0xFF9BCA22),
               child: Icon(
-                Icons.camera,
+                Icons.camera_alt_outlined,
                 color: Colors.white,
               ),
             ),

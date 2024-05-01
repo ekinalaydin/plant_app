@@ -2,7 +2,7 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:plant_app/screens/user_posts_comments.dart';
+import 'package:plant_app/screens/user_posts.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -12,10 +12,10 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   final _formKey = GlobalKey<FormState>();
   String? authorProfileImage;
-  String? _name = "Ekin";
-  String? _surname = "Alaydin";
-  String? _username = "ekinaly";
-  String? _email = "ekin@gmail.com";
+  String? _name = "Nazli";
+  String? _surname = "Ozer";
+  String? _username = "nazliozer";
+  String? _email = "nazli@gmail.com";
   String? _password;
   String? _city = "Ankara";
   String? _occupation = "Student";
@@ -28,73 +28,34 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFEFF2EA),
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        title: Text(
+          "Profile Settings",
+          style: GoogleFonts.poppins(
+              color: Color(0xFF2B423D), fontWeight: FontWeight.w500),
+        ),
+      ),
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 50.0),
+              padding: const EdgeInsets.only(top: 0),
               child: Column(
                 children: [
                   ButtonBar(
                       alignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Container(
-                          width: 150,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              backgroundColor:
-                                  Color.fromARGB(255, 201, 224, 109),
-                            ),
-                            child: Text(
-                              'User Profile',
-                              style: GoogleFonts.poppins(
-                                  color: Color.fromRGBO(34, 58, 51, 40),
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 12.8),
-                            ),
-                            onPressed: () {},
-                          ),
-                        ),
-                        Container(
-                          width: 150,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              backgroundColor:
-                                  Color.fromARGB(255, 201, 224, 109),
-                            ),
-                            child: Text('Posts',
-                                style: GoogleFonts.poppins(
-                                    color: Color.fromRGBO(34, 58, 51, 40),
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 12.8)),
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => CommentPostScreen(),
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                      ])
+                      children: <Widget>[])
                 ],
               ),
             ),
             ListTile(
               contentPadding: EdgeInsets.only(right: 10, left: 20),
               leading: CircleAvatar(
-                radius: 60,
-                backgroundColor: Colors.white,
-                backgroundImage: NetworkImage(
-                    "https://pixabay.com/vectors/blank-profile-picture-mystery-man-973460/"),
+                radius: 30,
+                backgroundColor: Color.fromARGB(255, 201, 224, 109),
+                backgroundImage: NetworkImage(""),
               ),
               title: Row(
                 children: [
@@ -110,10 +71,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ],
               ),
               subtitle: Text(
-                "$_email | $_occupation | $_city",
+                "$_username | $_email | $_occupation | $_city",
                 style: GoogleFonts.poppins(
                   fontWeight: FontWeight.w400,
-                  fontSize: 14,
+                  fontSize: 12.8,
                   color: Color.fromRGBO(34, 58, 51, 50),
                 ),
               ),

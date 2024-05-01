@@ -3,8 +3,8 @@ import 'package:plant_app/screens/camera_screen.dart';
 import 'package:plant_app/screens/community_screen.dart';
 import 'package:plant_app/screens/create_post_screen.dart';
 import 'package:plant_app/screens/home_screen.dart';
-import 'package:plant_app/screens/profile_screen.dart';
 import 'package:plant_app/screens/map_screen.dart';
+import 'package:plant_app/screens/user_option_screen.dart';
 
 class BottomNavigation extends StatefulWidget {
   BottomNavigation({Key? key}) : super(key: key);
@@ -21,7 +21,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
     CommunityScreen(),
     CameraScreen(),
     MapScreen(),
-    ProfileScreen(),
+    UserOptionScreen(),
   ];
 
   void _changeTab(int index) {
@@ -76,7 +76,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
-                  _selectedTab == 1 ? Icons.add : Icons.camera,
+                  _selectedTab == 1 ? Icons.add : Icons.camera_alt_outlined,
                   size: 24,
                   color: Colors.white,
                 ),
