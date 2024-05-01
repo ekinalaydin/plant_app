@@ -13,4 +13,5 @@ class AppColors {
   static const onBackground = Color(0xFF000000);
   static const onSurface = Color(0xFF000000);
   static const onError = Color(0xFFFFFFFF);
+  static const darkGreen = Color(0xFF012F1F);
 }
