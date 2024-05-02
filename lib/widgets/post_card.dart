@@ -78,7 +78,8 @@ class _PostCardState extends State<PostCard> {
                     children: [
                       CircleAvatar(
                         backgroundColor: AppColors.background,
-                        backgroundImage: AssetImage(widget.post.authorProfileImage),
+                        backgroundImage:
+                            AssetImage(widget.post.authorProfileImage),
                       ),
                       SizedBox(
                         width: 12,
@@ -96,7 +97,9 @@ class _PostCardState extends State<PostCard> {
                               ),
                             ),
                             Text(
-                              DateFormat.yMMMd().add_Hm().format(widget.post.createdAt),
+                              DateFormat.yMMMd()
+                                  .add_Hm()
+                                  .format(widget.post.createdAt),
                               style: GoogleFonts.poppins(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 12,
@@ -111,15 +114,19 @@ class _PostCardState extends State<PostCard> {
                           Expanded(
                             child: IconButton(
                               icon: Icon(Icons.favorite),
-                              color: widget.post.isLiked ? Colors.red : AppColors.secondaryVariant,
+                              color: widget.post.isLiked
+                                  ? Colors.red
+                                  : AppColors.secondaryVariant,
                               iconSize: MediaQuery.of(context).size.height / 35,
                               padding: EdgeInsets.zero,
                               onPressed: () async {
                                 // Like or unlike the post
-                                await ApiService().likePost(widget.post.id, context);
+                                await ApiService()
+                                    .likePost(widget.post.id, context);
                                 setState(() {
                                   widget.post.isLiked = !widget.post.isLiked;
-                                  widget.post.likeCount += widget.post.isLiked ? 1 : -1;
+                                  widget.post.likeCount +=
+                                      widget.post.isLiked ? 1 : -1;
                                 });
                               },
                             ),

@@ -19,7 +19,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
   late String? _city = "";
   late String? _occupation = "";
   late String? _gender = "";
-  
+  String? initialOccupationValue; // API'den gelen ilk değeri tutacak değişken
+
+  // late String? _oldPassword = ""; // Define _oldPassword variable here
+  // late String? _newPassword = "";
+
   TextEditingController nameController = TextEditingController();
   TextEditingController surnameController = TextEditingController();
   TextEditingController usernameController = TextEditingController();
@@ -33,10 +37,107 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final TextStyle buttonTextStyle = GoogleFonts.poppins(
       color: Color.fromRGBO(34, 58, 51, 40), fontWeight: FontWeight.bold);
 
+  bool _isNameSurnameFieldTouched =
+      false; // Flag to track whether the field is touched
+
+  String? validateFullName(String? value) {
+    if (_isNameSurnameFieldTouched) {
+      // Validation logic only executed if the field is touched
+      List<String> parts = value?.trim().split(' ') ?? [];
+      if (parts.length < 2) {
+        return 'Please enter both name and surname';
+      }
+      String name = parts[0];
+      String surname = parts.sublist(1).join(' ');
+
+      // Check if name and surname are empty
+      if (name.isEmpty || surname.isEmpty) {
+        return 'Both name and surname are required';
+      }
+
+      // Check if the new name and surname are the same as the existing values
+      // if (_name != null &&
+      //     _surname != null &&
+      //     name == _name &&
+      //     surname == _surname) {
+      //   return 'The new name is the same as the current one';
+      // }
+    }
+    return null; // Return null if validation passes or if the field hasn't been touched
+  }
+
+  bool _isEmailFieldTouched = false;
+  String? validateEmail(String? value) {
+    if (_isEmailFieldTouched) {
+      // Validation logic only executed if the field is touched
+      if (value == null || value.isEmpty) {
+        return 'Please enter your new e-mail address';
+      }
+      // Check for valid email format
+      if (!_isValidEmail(value)) {
+        return 'Please enter a valid e-mail address';
+      }
+    }
+    return null; // Return null if validation passes or if the field hasn't been touched
+  }
+
+  bool _isValidEmail(String value) {
+    // Simple email validation using a regular expression
+    final RegExp emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+    return emailRegex.hasMatch(value);
+  }
+
+  bool _isUsernameFieldTouched = false;
+  String? validateUsername(String? value) {
+    if (_isUsernameFieldTouched) {
+      // Validation logic only executed if the field is touched
+      // You can add specific validation rules here if needed
+      // For now, we return null to indicate no error
+      return null;
+    }
+    return null; // Return null if validation passes or if the field hasn't been touched
+  }
+
+  bool _isOldPasswordFieldTouched = false;
+  String? _oldPassword;
+
+  bool _isNewPasswordFieldTouched = false;
+  String? _newPassword;
+
+  String? validateOldPassword(String? value) {
+    if (_isOldPasswordFieldTouched) {
+      // Validation logic only executed if the field is touched
+      if (value == null || value.isEmpty) {
+        return 'Please enter your old password';
+      }
+    }
+    return null; // Return null if validation passes or if the field hasn't been touched
+  }
+
+  String? validateNewPassword(String? value) {
+    if (_isNewPasswordFieldTouched) {
+      // Validation logic only executed if the field is touched
+      if (value == null || value.isEmpty) {
+        return 'Please enter a password';
+      } else if (value.length < 4 || value.length > 12) {
+        return 'Your password must be between 4-12 characters';
+      } else if (!RegExp(r'[A-Z]').hasMatch(value)) {
+        return 'Your password must include at least one uppercase letter';
+      } else if (!RegExp(r'[0-9]').hasMatch(value)) {
+        return 'Your password must include at least one number';
+      } else if (!RegExp(r'[!@#$%^&*(),.?":{}|<>]').hasMatch(value)) {
+        return 'Your password must include at least one symbol';
+      } else if (_oldPassword != null && _oldPassword == value) {
+        return 'New password cannot be the same as old password';
+      }
+    }
+    return null; // Return null if validation passes or if the field hasn't been touched
+  }
+
   @override
   void initState() {
     super.initState();
-    
+
     ApiService().getProfile(context).then((data) {
       setState(() {
         _username = data['username'];
@@ -46,8 +147,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
         _gender = data['gender'];
         _name = data['name'];
         _surname = data['surname'];
+        _oldPassword = data['password'];
 
         // Initialize the controllers with the retrieved data
+        oldPasswordController.text = _oldPassword ?? '';
         usernameController.text = _username ?? '';
         emailController.text = _email ?? '';
         cityController.text = _city ?? '';
@@ -141,92 +244,97 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   ),
                                   SizedBox(height: 4),
                                   SizedBox(
-                                    height: 50,
-                                    child: TextFormField(
-                                      textAlign: TextAlign.start,
-                                      cursorHeight: 20,
-                                      decoration: InputDecoration(
-                                        hintText: "$_name "
-                                            "$_surname",
-                                        hintStyle: GoogleFonts.poppins(
-                                            fontWeight: FontWeight.w500),
-                                        border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
-                                        ),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
-                                          borderSide: BorderSide(
-                                            color: Colors.black,
-                                            width: 2.0,
+                                      height: 65,
+                                      child: TextFormField(
+                                          textAlign: TextAlign.start,
+                                          cursorHeight: 20,
+                                          decoration: InputDecoration(
+                                            hintText: "$_name $_surname",
+                                            hintStyle: GoogleFonts.poppins(
+                                                fontWeight: FontWeight.w500),
+                                            border: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10.0),
+                                            ),
+                                            focusedBorder: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10.0),
+                                              borderSide: BorderSide(
+                                                color: Colors.black,
+                                                width: 2.0,
+                                              ),
+                                            ),
+                                            contentPadding: EdgeInsets.all(9),
                                           ),
-                                        ),
-                                        contentPadding: EdgeInsets.all(9),
-                                      ),
-                                    ),
-                                  ),
+                                          validator:
+                                              validateFullName, // Assign the validator function here
+                                          controller: nameController,
+                                          onChanged: (_) {
+                                            // Set the flag to true when the user interacts with the field
+                                            setState(() {
+                                              _isNameSurnameFieldTouched = true;
+                                            });
+                                          })),
                                 ],
                               ),
                             ),
                           ],
                         ),
                       ),
-                      SizedBox(height: 4),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Change e-mail address',
-                              style: GoogleFonts.poppins(
-                                  color: Color.fromRGBO(34, 58, 51, 40),
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16),
-                            ),
-                            SizedBox(height: 4),
-                            SizedBox(
-                              height: 60,
-                              width:
-                                  double.infinity, // Take full available width
-                              child: TextFormField(
-                                textAlign: TextAlign.start,
-                                cursorHeight: 20,
-                                decoration: InputDecoration(
-                                  hintText: "$_email",
-                                  alignLabelWithHint: true,
-                                  hintStyle: GoogleFonts.poppins(
-                                      fontWeight: FontWeight.w500),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                    borderSide: BorderSide(
-                                      color: Colors.black,
-                                      width: 2.0,
-                                    ),
-                                  ),
-                                  contentPadding: EdgeInsets.all(9),
-                                  errorBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                    borderSide: BorderSide(
-                                      color: Colors.red,
-                                      width: 2.0,
-                                    ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Change e-mail address',
+                            style: GoogleFonts.poppins(
+                                color: Color.fromRGBO(34, 58, 51, 40),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16),
+                          ),
+                          SizedBox(height: 4),
+                          SizedBox(
+                            height: 60,
+                            width: double.infinity, // Take full available width
+                            child: TextFormField(
+                              textAlign: TextAlign.start,
+                              cursorHeight: 20,
+                              decoration: InputDecoration(
+                                hintText: _email ??
+                                    '', // Use the existing email as hint
+                                alignLabelWithHint: true,
+                                hintStyle: GoogleFonts.poppins(
+                                  fontWeight: FontWeight.w500,
+                                ),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  borderSide: BorderSide(
+                                    color: Colors.black,
+                                    width: 2.0,
                                   ),
                                 ),
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Please enter your new e-mail address';
-                                  }
-                                  return null;
-                                },
+                                contentPadding: EdgeInsets.all(9),
+                                errorBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  borderSide: BorderSide(
+                                    color: Colors.red,
+                                    width: 2.0,
+                                  ),
+                                ),
                               ),
+                              validator:
+                                  validateEmail, // Assign the validator function here
+                              onChanged: (_) {
+                                // Set the flag to true when the user interacts with the field
+                                setState(() {
+                                  _isEmailFieldTouched = true;
+                                });
+                              },
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                       SizedBox(height: 8),
                       Column(
@@ -247,9 +355,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               textAlign: TextAlign.start,
                               cursorHeight: 20,
                               decoration: InputDecoration(
-                                hintText: "$_username",
+                                hintText: _username ??
+                                    '', // Use the existing username as hint
                                 alignLabelWithHint: true,
-                                hintStyle: GoogleFonts.poppins(),
+                                hintStyle: GoogleFonts.poppins(
+                                  fontWeight: FontWeight.w500,
+                                ),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10.0),
                                 ),
@@ -269,11 +380,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   ),
                                 ),
                               ),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter your new username';
-                                }
-                                return null;
+                              validator:
+                                  validateUsername, // Assign the validator function here
+                              onChanged: (_) {
+                                // Set the flag to true when the user interacts with the field
+                                setState(() {
+                                  _isUsernameFieldTouched = true;
+                                });
                               },
                             ),
                           ),
@@ -286,14 +399,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           Text(
                             'Change Password',
                             style: GoogleFonts.poppins(
-                                color: Color.fromRGBO(34, 58, 51, 40),
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16),
+                              color: Color.fromRGBO(34, 58, 51, 40),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
                           ),
                           Text(
                             "Please enter your old password",
                             style: GoogleFonts.poppins(
-                                fontWeight: FontWeight.w400),
+                              fontWeight: FontWeight.w400,
+                            ),
                           ),
                           SizedBox(height: 4),
                           SizedBox(
@@ -303,9 +418,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               textAlign: TextAlign.start,
                               cursorHeight: 20,
                               decoration: InputDecoration(
-                                // helperText: "Please enter old password",
-                                // hintText: "Your old password",
-
                                 alignLabelWithHint: true,
                                 hintStyle: GoogleFonts.poppins(),
                                 border: OutlineInputBorder(
@@ -327,26 +439,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   ),
                                 ),
                               ),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter your password';
-                                }
-                                return null;
+                              onChanged: (value) {
+                                setState(() {
+                                  _isOldPasswordFieldTouched = true;
+                                  _oldPassword = value;
+                                });
                               },
+                              validator: validateOldPassword,
                             ),
                           ),
                         ],
                       ),
                       SizedBox(height: 4),
+// New Password Column with validation
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             'New Password',
                             style: GoogleFonts.poppins(
-                                color: Color.fromRGBO(34, 58, 51, 40),
-                                fontSize: 15,
-                                fontWeight: FontWeight.w600),
+                              color: Color.fromRGBO(34, 58, 51, 40),
+                              fontSize: 15,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
                           SizedBox(height: 4),
                           SizedBox(
@@ -374,26 +489,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ),
                                 contentPadding: EdgeInsets.all(8),
                               ),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter a password';
-                                } else if (value.length < 4 ||
-                                    value.length > 12) {
-                                  return 'Your password must be between 4-12 characters';
-                                } else if (!RegExp(r'[A-Z]').hasMatch(value)) {
-                                  return 'Your password must include at least one uppercase letter';
-                                } else if (!RegExp(r'[0-9]').hasMatch(value)) {
-                                  return 'Your password must include at least one number';
-                                } else if (!RegExp(r'[!@#$%^&*(),.?":{}|<>]')
-                                    .hasMatch(value)) {
-                                  return 'Your password must include at least one symbol';
-                                }
-                                return null;
+                              onChanged: (value) {
+                                setState(() {
+                                  _isNewPasswordFieldTouched = true;
+                                  _newPassword = value;
+                                });
                               },
+                              validator: validateNewPassword,
                             ),
                           ),
                         ],
                       ),
+// Error message if old and new passwords are the same
+                      if (_oldPassword != null &&
+                          _newPassword != null &&
+                          _oldPassword == _newPassword)
+                        Text(
+                          'New password cannot be the same as old password',
+                          style: TextStyle(color: Colors.red),
+                        ),
                       SizedBox(
                         height: 10,
                       ),
@@ -570,6 +684,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ),
                                 contentPadding: EdgeInsets.all(9),
                               ),
+                              onChanged: (value) {
+                                // Kullanıcı bir şeyler yazmaya başladığında initialOccupationValue'yi null yapabiliriz
+                                initialOccupationValue = null;
+                              },
+                              initialValue: initialOccupationValue,
                             ),
                           ),
                         ],
@@ -661,34 +780,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   content: Text('Your Changes are Saved!'),
                 ),
               );
-            } else if (oldPassword.isEmpty || newPassword.isEmpty) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(
-                    'Please enter your old and new passwords',
-                  ),
-                ),
-              );
-            } else if (oldPassword == newPassword) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(
-                    'Your old and new password cannot be the same',
-                  ),
-                ),
-              );
-            } else {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(
-                    'Password changed successfully.',
-                    style: GoogleFonts.poppins(
-                      color: Color.fromRGBO(34, 58, 51, 40),
-                    ),
-                  ),
-                ),
-              );
-              // You can add code here to actually change the password
             }
           },
           child: Text(

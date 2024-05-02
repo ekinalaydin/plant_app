@@ -56,6 +56,7 @@ class _PostPageState extends State<PostPage> {
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(70.0), // the desired height
         child: AppBar(
+          surfaceTintColor: Colors.transparent,
           backgroundColor: AppColors.background,
           elevation: 0.3,
           title: Text(
