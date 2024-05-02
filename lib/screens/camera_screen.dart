@@ -16,8 +16,8 @@ class _CameraScreenState extends State<CameraScreen> {
   final picker = ImagePicker();
 
   Future<void> uploadImage(String filePath) async {
-    var uri =
-        Uri.parse('https://plant-app-f6e01.uc.r.appspot.com/plant/predict');
+    var uri = Uri.parse(
+        'https://plant-app-dev-422020.ey.r.appspot.com/plant/predict');
     var request = http.MultipartRequest('POST', uri);
 
     request.files.add(await http.MultipartFile.fromPath('image', filePath));
@@ -26,15 +26,16 @@ class _CameraScreenState extends State<CameraScreen> {
       var response = await request.send();
       var responseBody = await response.stream.bytesToString();
 
-      List<dynamic> responseList = jsonDecode(responseBody);
-      String label = responseList[0]['label'];
+      Map<String, dynamic> responseList = jsonDecode(responseBody);
+
+      print(responseList);
 
       if (response.statusCode == 200) {
         // Handle successful upload
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Successfully uploaded image.')),
         );
-        showInformationModal(context, label);
+        // showInformationModal(context, label);
       } else {
         // Handle server errors or non-200 responses
         ScaffoldMessenger.of(context).showSnackBar(
