@@ -50,12 +50,6 @@ class CardWidget extends StatelessWidget {
                       Text(
                         '20/12/2023',
                         style: GoogleFonts.poppins(
-                          color: AppColors.onSurface,
-                        ),
-                      ),
-                      Text(
-                        '20/12/2023',
-                        style: GoogleFonts.poppins(
                           fontSize: 15,
                           fontWeight: FontWeight.w300,
                           color: AppColors.onSurface,

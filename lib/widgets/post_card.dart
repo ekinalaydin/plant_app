@@ -128,25 +128,6 @@ class _PostCardState extends State<PostCard> {
                               },
                             ),
                           ),
-                          Expanded(
-                            child: IconButton(
-                              icon: Icon(Icons.favorite),
-                              color: widget.post.isLiked
-                                  ? Colors.red
-                                  : AppColors.secondaryVariant,
-                              iconSize: MediaQuery.of(context).size.height / 35,
-                              padding: EdgeInsets.zero,
-                              onPressed: () async {
-                                await ApiService()
-                                    .likePost(widget.post.id, context);
-                                setState(() {
-                                  widget.post.isLiked = !widget.post.isLiked;
-                                  widget.post.likeCount +=
-                                      widget.post.isLiked ? 1 : -1;
-                                });
-                              },
-                            ),
-                          ),
                           Text(
                             '${widget.post.likeCount}',
                             style: GoogleFonts.poppins(

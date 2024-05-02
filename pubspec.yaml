@@ -37,4 +37,3 @@ flutter:
   assets:
     - lib/assets/images/
     - lib/assets/icons/
-    - lib/assets/styles/map_style.json
