@@ -3,7 +3,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:plant_app/models/post.dart';
 import 'package:plant_app/services/api_service.dart';
+import 'package:plant_app/services/post_provider.dart';
 import 'package:plant_app/themes/colors.dart';
+import 'package:provider/provider.dart';
 import '../screens/post_detail_screen.dart';
 
 class PostCard extends StatefulWidget {
@@ -110,21 +112,21 @@ class _PostCardState extends State<PostCard> {
                       Column(
                         children: [
                           Expanded(
-                            child: IconButton(
-                              icon: Icon(Icons.favorite),
-                              color: widget.post.isLiked
-                                  ? Colors.red
-                                  : AppColors.secondaryVariant,
-                              iconSize: MediaQuery.of(context).size.height / 35,
-                              padding: EdgeInsets.zero,
-                              onPressed: () async {
-                                await ApiService()
-                                    .likePost(widget.post.id, context);
-                                setState(() {
-                                  widget.post.isLiked = !widget.post.isLiked;
-                                  widget.post.likeCount +=
-                                      widget.post.isLiked ? 1 : -1;
-                                });
+                            child: Consumer<PostProvider>(
+                              builder: (context, postProvider, _) {
+                                return IconButton(
+                                  icon: Icon(Icons.favorite),
+                                  color: postProvider.isLiked(widget.post.id)
+                                      ? Colors.red
+                                      : AppColors.secondaryVariant,
+                                  iconSize:
+                                      MediaQuery.of(context).size.height / 35,
+                                  padding: EdgeInsets.zero,
+                                  onPressed: () async {
+                                    await ApiService()
+                                        .likePost(widget.post.id, context);
+                                  },
+                                );
                               },
                             ),
                           ),

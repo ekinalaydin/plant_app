@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:plant_app/models/comment.dart';
+import 'package:plant_app/services/post_provider.dart';
 import 'package:plant_app/services/user_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -36,19 +37,26 @@ class ApiService {
 
   // LIKE POST
   Future<void> likePost(int id, BuildContext context) async {
-    // Retrieve the userProvider using the context provided
     final userProvider = Provider.of<UserProvider>(context, listen: false);
-    final token = userProvider.user?.token;
+
+    if (userProvider.user == null || userProvider.user!.token == null) {
+      throw Exception('User is not logged in or token is missing');
+    }
+
+    final token = userProvider.user!.token!;
 
     final response = await http.post(
       Uri.parse('$baseUrl/posts/$id/likes'),
       headers: {
-        'Authorization':
-            'Bearer $token', // Include the auth token in the header
+        'Authorization': 'Bearer $token',
       },
     );
 
-    if (response.statusCode != 204) {
+    if (response.statusCode == 200 || response.statusCode == 204) {
+      final postProvider = Provider.of<PostProvider>(context, listen: false);
+      await postProvider
+          .likePost(id); // Update the liked post in the PostProvider
+    } else {
       throw Exception(
           'Failed to load data with status code: ${response.statusCode}');
     }
@@ -58,9 +66,9 @@ class ApiService {
   Future<List<Comment>> getComments(int id) async {
     final response = await http.get(Uri.parse('$baseUrl/posts/$id/comments'));
     if (response.statusCode == 200) {
-      var data = json.decode(response.body);
-      if (data != null && data['comments'] != null) {
-        List<dynamic> commentsJson = data['comments'];
+      var data = json.decode(utf8.decode(response.bodyBytes));
+      if (data != null && data['data']['content'] != null) {
+        List<dynamic> commentsJson = data['data']['content'];
         return commentsJson
             .map<Comment>((json) => Comment.fromJson(json))
             .toList();
@@ -130,7 +138,28 @@ class ApiService {
       throw Exception('Failed to load data');
     }
   }
+
+  //GET HISTORY
+  Future<Map<String, dynamic>> getMyHistory(BuildContext context) async {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    final token = userProvider.user?.token;
+    final response = await http.get(
+      Uri.parse('$baseUrl/history'),
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var decodedJson = json.decode(utf8.decode(response.bodyBytes));
+      print(decodedJson['data']);
+      return decodedJson['data'];
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
 }
+
 //create userin postu
 // profille ilgili seyler
 //
