@@ -15,7 +15,7 @@ class _CameraScreenState extends State<CameraScreen> {
   File? _image;
   final picker = ImagePicker();
 
-  Future<dynamic> uploadImage(String filePath) async {
+  Future<dynamic> uploadImage(String filePath, BuildContext context) async {
     var uri =
         Uri.parse('https://plantapp-2ee83.ew.r.appspot.com/plant/predict');
     var request = http.MultipartRequest('POST', uri);
@@ -24,26 +24,33 @@ class _CameraScreenState extends State<CameraScreen> {
 
     try {
       var response = await request.send();
-      var responseBody = await response.stream.bytesToString();
-
-      Map<String, dynamic> responseList = jsonDecode(responseBody);
-
-      print(responseList);
 
       if (response.statusCode == 200) {
-        // Handle successful upload
+        // Decode response if the status is successful
+        var responseBody = await response.stream.bytesToString();
+        List<dynamic> decodedList = jsonDecode(responseBody);
+        List<Map<String, dynamic>> responseList =
+            decodedList.cast<Map<String, dynamic>>();
+
+        // Display success message
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Successfully uploaded image.')),
         );
-        // showInformationModal(context, label);
+
+        // Optionally handle multiple results here
+        for (var item in responseList) {
+          showInformationModal(context, item['label']);
+        }
       } else {
-        // Handle server errors or non-200 responses
+        // Handle non-200 status codes
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Image upload failed.')),
+          SnackBar(
+              content: Text(
+                  'Image upload failed with status: ${response.statusCode}.')),
         );
       }
     } catch (e) {
-      // Handle any errors that occur during the upload
+      // Handle errors like network issues
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error: $e')),
       );
@@ -53,17 +60,10 @@ class _CameraScreenState extends State<CameraScreen> {
   void showInformationModal(BuildContext context, String label) {
     showDialog(
       context: context,
-      builder: (BuildContext context) {
+      builder: (context) {
         return AlertDialog(
-          title: Text('Disease Information'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Text(label),
-                // You can include more information from the response here
-              ],
-            ),
-          ),
+          title: Text('Plant Diagnosis'),
+          content: Text(label),
           actions: <Widget>[
             TextButton(
               child: Text('OK'),
@@ -83,7 +83,8 @@ class _CameraScreenState extends State<CameraScreen> {
     setState(() {
       if (pickedFile != null) {
         _image = File(pickedFile.path);
-        uploadImage(pickedFile.path); // Upload the image after it's selected
+        uploadImage(
+            pickedFile.path, context); // Upload the image after it's selected
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -100,7 +101,8 @@ class _CameraScreenState extends State<CameraScreen> {
     setState(() {
       if (pickedFile != null) {
         _image = File(pickedFile.path);
-        uploadImage(pickedFile.path); // Upload the image after it's selected
+        uploadImage(
+            pickedFile.path, context); // Upload the image after it's selected
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -155,7 +157,7 @@ class _CameraScreenState extends State<CameraScreen> {
                 ),
               )
             : FutureBuilder(
-                future: uploadImage(_image!.path),
+                future: uploadImage(_image!.path, context),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return CircularProgressIndicator(); // Show CircularProgressIndicator while waiting
