@@ -4,10 +4,10 @@ import 'package:plant_app/screens/login/forgot_password_screen.dart';
 import 'package:plant_app/screens/login/sign_up_screen.dart';
 import 'package:plant_app/helpers/screen_size_helper.dart';
 import 'package:plant_app/services/user_provider.dart';
+import 'package:plant_app/themes/colors.dart';
 import 'package:plant_app/widgets/bottom_navigation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class SignInForm extends StatefulWidget {
   @override
@@ -218,7 +218,7 @@ class _SignInFormState extends State<SignInForm> {
                           await _processFormData(_emailOrUsername, _password);
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xFF2DDA53),
+                          backgroundColor: AppColors.primary,
                           elevation: 5,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10.0),

@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:plant_app/models/post.dart';
 import 'package:plant_app/services/api_service.dart';
@@ -36,6 +34,7 @@ class _PostDetailPageState extends State<PostDetailPage> {
               child: Padding(
                 padding: const EdgeInsets.only(top: 0.0),
                 child: DetailsWidget(
+                  postId: post.id,
                   postTitle: post.title,
                   postBody: post.content,
                   authorName: post.createdByUsername,

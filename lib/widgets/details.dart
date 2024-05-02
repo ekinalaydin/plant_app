@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:plant_app/models/comment.dart';
+import 'package:plant_app/services/api_service.dart';
 
 class DetailsWidget extends StatefulWidget {
+  final int postId;
   final String postTitle;
   final String postBody;
   final String authorName;
@@ -11,6 +13,7 @@ class DetailsWidget extends StatefulWidget {
   final String imageUrl;
 
   DetailsWidget({
+    required this.postId,
     required this.postTitle,
     required this.postBody,
     required this.authorName,
@@ -25,15 +28,50 @@ class DetailsWidget extends StatefulWidget {
 
 class _DetailsWidgetState extends State<DetailsWidget> {
   TextEditingController _commentController = TextEditingController();
-  List<String> _comments = [];
-  Color _likeButtonColor = Colors.grey;
+  Future<List<Comment>>? _commentsFuture;
+  bool _isLoading = false; // Tracks if a comment post is in progress
 
-  void _submitComment() {
-    final newComment = _commentController.text;
-    if (newComment.isNotEmpty) {
+  @override
+  void initState() {
+    super.initState();
+    _commentsFuture = ApiService().getComments(widget.postId);
+  }
+
+  void _submitComment() async {
+    final newComment = _commentController.text.trim();
+    if (newComment.isEmpty) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('Comment cannot be empty!')));
+      return;
+    }
+
+    setState(() {
+      _isLoading = true; // Start loading before the try block
+    });
+
+    try {
+      await ApiService().postComment(widget.postId, context, newComment);
+      _commentController.clear(); // Clear the text field on successful post
+
+      // Optimistically update comments list or re-fetch comments
+      var updatedComments = await ApiService().getComments(widget.postId);
       setState(() {
-        _comments.add(newComment);
-        _commentController.clear();
+        _commentsFuture = Future.value(
+            updatedComments); // Update the future directly with new data
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Comment posted successfully!')));
+    } catch (e) {
+      // Log the error or handle it in a more refined way
+      print(
+          'Failed to post comment: $e'); // Consider logging to console or your logging infrastructure
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('Failed to post comment: $e')));
+    } finally {
+      setState(() {
+        _isLoading =
+            false; // Ensure loading state is updated even if an error occurs
       });
     }
   }
@@ -45,7 +83,6 @@ class _DetailsWidgetState extends State<DetailsWidget> {
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
-      extendBodyBehindAppBar: true,
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -63,223 +100,80 @@ class _DetailsWidgetState extends State<DetailsWidget> {
           ),
         ),
         child: SingleChildScrollView(
-          child: Stack(
+          child: Column(
             children: [
-              Column(
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(50.0),
-                      bottomRight: Radius.circular(50.0),
-                    ),
-                    child: Image.network(
-                      widget.imageUrl,
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height *
-                          0.38, // 38% of the screen height
-                      fit: BoxFit.fitHeight,
-                      loadingBuilder: (BuildContext context, Widget child,
-                          ImageChunkEvent? loadingProgress) {
-                        if (loadingProgress == null)
-                          return child; // Image is fully loaded, return the image widget
-                        return Container(
-                          width: MediaQuery.of(context).size.width,
-                          height: MediaQuery.of(context).size.height *
-                              0.38, // Ensure the container matches the image height
-                          child: Center(
-                            child: CircularProgressIndicator(
-                              value: loadingProgress.expectedTotalBytes != null
-                                  ? loadingProgress.cumulativeBytesLoaded /
-                                      loadingProgress.expectedTotalBytes!
-                                  : null,
-                            ),
-                          ),
-                        ); // Container ensures the loading indicator is centered and maintains the height of the image
-                      },
-                      errorBuilder: (BuildContext context, Object exception,
-                          StackTrace? stackTrace) {
-                        return Container(
-                          width: MediaQuery.of(context).size.width,
-                          height: MediaQuery.of(context).size.height * 0.38,
-                          child: Center(
-                            child: Text(
-                                'Failed to load image'), // Display a message when the image fails to load
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 30,
-                      horizontal: 20,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          widget.postTitle,
-                          textAlign: TextAlign.start,
+              Image.network(
+                widget.imageUrl,
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height * 0.38,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) => Center(
+                  child: Text('Failed to load image'),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(widget.postTitle,
+                        style: GoogleFonts.poppins(
+                            fontWeight: FontWeight.bold, fontSize: 18)),
+                    SizedBox(height: 8),
+                    Text(widget.postBody,
+                        style: GoogleFonts.poppins(fontSize: 14)),
+                    ListTile(
+                      leading: CircleAvatar(
+                          backgroundImage:
+                              AssetImage(widget.authorProfileImage)),
+                      title: Text(widget.authorName,
                           style: GoogleFonts.poppins(
-                            fontWeight: FontWeight.w700,
-                            fontSize: 18,
-                            color: Color.fromRGBO(34, 58, 51, 40),
-                          ),
-                        ),
-                        SizedBox(height: 8),
-                        Text(
-                          widget.postBody,
-                          textAlign: TextAlign.justify,
-                          style: GoogleFonts.poppins(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 14,
-                          ),
-                        ),
-                        ListTile(
-                          contentPadding: EdgeInsets.only(right: 15),
-                          leading: CircleAvatar(
-                            backgroundColor: Colors.white,
-                            backgroundImage:
-                                AssetImage(widget.authorProfileImage),
-                          ),
-                          title: Row(
-                            children: [
-                              Text(
-                                widget.authorName,
-                                style: GoogleFonts.poppins(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 12,
-                                  color: Color.fromRGBO(34, 58, 51, 50),
-                                ),
-                              ),
-                              SizedBox(width: 4),
-                              Text(
-                                '•',
-                                style: GoogleFonts.poppins(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 12,
-                                  color: Color.fromRGBO(34, 58, 51, 50),
-                                ),
-                              ),
-                              Text(
-                                widget.postDate
-                                    .toLocal()
-                                    .toString()
-                                    .split(' ')[0],
-                                style: GoogleFonts.poppins(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 12,
-                                  color: Color.fromRGBO(34, 58, 51, 50),
-                                ),
-                              ),
-                              SizedBox(width: 14),
-                              IconButton(
-                                icon: Icon(Icons.favorite),
-                                color:
-                                    _likeButtonColor, // Use like button color
-                                onPressed: () {
-                                  // Toggle like button color
-                                  setState(() {
-                                    _likeButtonColor =
-                                        _likeButtonColor == Colors.red
-                                            ? Colors.grey
-                                            : Colors.red;
-                                  });
-                                },
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(height: 10),
-                        TextButton(
-                          onPressed: () {
-                            showModalBottomSheet(
-                              context:
-                                  context, // Pass the context from the surrounding widget
-                              isScrollControlled:
-                                  true, // Ensure modal is scrollable when keyboard is open
-                              builder: (context) {
-                                return SingleChildScrollView(
-                                  child: Container(
-                                    padding: EdgeInsets.only(
-                                      bottom: MediaQuery.of(context)
-                                          .viewInsets
-                                          .bottom,
-                                    ),
-                                    width: 300,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      border: Border.all(color: Colors.grey),
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 8.0, right: 8),
-                                      child: Row(
-                                        children: [
-                                          Expanded(
-                                            child: TextField(
-                                              style: GoogleFonts.poppins(),
-                                              controller: _commentController,
-                                              decoration: InputDecoration(
-                                                hintText: 'Write your comment',
-                                                border: InputBorder.none,
-                                              ),
-                                            ),
-                                          ),
-                                          IconButton(
-                                            icon: Icon(Icons.send),
-                                            onPressed: () {
-                                              _submitComment();
-                                              Navigator.pop(
-                                                  context); // Close the bottom sheet after submitting comment
-                                            },
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              },
-                            );
-                          },
-                          child: Text(
-                            '${_comments.length} Comments',
-                            style: GoogleFonts.poppins(
-                              fontWeight: FontWeight.bold,
-                              color: Color.fromRGBO(116, 124, 122, 1),
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        SizedBox(height: 10),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: _comments.map((comment) {
-                            return ListTile(
-                              leading: CircleAvatar(
-                                backgroundImage:
-                                    AssetImage(widget.authorProfileImage),
-                              ),
-                              title: Text(
-                                widget.authorName,
-                                style: GoogleFonts.poppins(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 14,
-                                ),
-                              ),
-                              subtitle: Text(
-                                comment,
-                                style: GoogleFonts.poppins(),
-                              ),
-                            );
-                          }).toList(),
-                        ),
-                      ],
+                              fontWeight: FontWeight.bold, fontSize: 12)),
+                      subtitle: Text("${widget.postDate.toLocal()}"),
                     ),
-                  ),
-                ],
+                    TextFormField(
+                      controller: _commentController,
+                      decoration: InputDecoration(
+                        labelText: 'Add a comment',
+                        suffixIcon: _isLoading
+                            ? CircularProgressIndicator()
+                            : IconButton(
+                                icon: Icon(Icons.send),
+                                onPressed: _submitComment,
+                              ),
+                      ),
+                    ),
+                    FutureBuilder<List<Comment>>(
+                      future: _commentsFuture,
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return CircularProgressIndicator();
+                        } else if (snapshot.hasError) {
+                          return Text('Error: ${snapshot.error}');
+                        } else if (snapshot.hasData && snapshot.data!.isEmpty) {
+                          return Text("0 comments",
+                              style: GoogleFonts.poppins(fontSize: 16));
+                        } else {
+                          return ListView(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            children: snapshot.data!
+                                .map((comment) => ListTile(
+                                      title: Text(comment.writerUsername,
+                                          style: GoogleFonts.poppins(
+                                              fontSize: 14)),
+                                      subtitle: Text(comment.commentText,
+                                          style: GoogleFonts.poppins(
+                                              fontSize: 12)),
+                                    ))
+                                .toList(),
+                          );
+                        }
+                      },
+                    )
+                  ],
+                ),
               ),
             ],
           ),

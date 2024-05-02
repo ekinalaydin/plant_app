@@ -106,19 +106,24 @@ class _PostCardState extends State<PostCard> {
                       ),
                       Column(
                         children: [
-                          IconButton(
-                            icon: Icon(Icons.favorite),
-                            color:
-                                widget.post.isLiked ? Colors.red : Colors.grey,
-                            onPressed: () async {
-                              await ApiService()
-                                  .likePost(widget.post.id, context);
-                              setState(() {
-                                widget.post.isLiked = !widget.post.isLiked;
-                                widget.post.likeCount +=
-                                    widget.post.isLiked ? 1 : -1;
-                              });
-                            },
+                          Expanded(
+                            child: IconButton(
+                              icon: Icon(Icons.favorite),
+                              color: widget.post.isLiked
+                                  ? Colors.red
+                                  : Colors.grey,
+                              iconSize: MediaQuery.of(context).size.height / 35,
+                              padding: EdgeInsets.zero,
+                              onPressed: () async {
+                                await ApiService()
+                                    .likePost(widget.post.id, context);
+                                setState(() {
+                                  widget.post.isLiked = !widget.post.isLiked;
+                                  widget.post.likeCount +=
+                                      widget.post.isLiked ? 1 : -1;
+                                });
+                              },
+                            ),
                           ),
                           Text(
                             '${widget.post.likeCount}',
