@@ -1,25 +1,57 @@
 import 'dart:io';
-
+import 'package:http/http.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:plant_app/models/post.dart';
+import 'package:plant_app/services/api_service.dart';
 import 'package:plant_app/themes/colors.dart';
 
 class PostWidget extends StatefulWidget {
-  const PostWidget({Key? key}) : super(key: key);
+  final int postId;
+
+  const PostWidget({Key? key, required this.postId}) : super(key: key);
 
   @override
   State<PostWidget> createState() => _PostWidgetState();
 }
 
 class _PostWidgetState extends State<PostWidget> {
-  File? _image;
+  File? image;
+  late String title;
+  late String content;
+  bool _isLoading = false;
   final picker = ImagePicker();
   final _formKey = GlobalKey<FormState>(); // Define form key
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _askToCommunityController =
       TextEditingController();
+
+  void _submitPost() async {
+    final title = _askToCommunityController.text.trim();
+    final content = _descriptionController.text.trim();
+
+    if (title.isEmpty || content.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Title and content cannot be empty!')),
+      );
+      return;
+    }
+
+    setState(() => _isLoading = true);
+
+    try {
+      // Perform the post submission operation
+      await ApiService().postCommunity(title, content, image);
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to submit post: $e')),
+      );
+    } finally {
+      setState(() => _isLoading = false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

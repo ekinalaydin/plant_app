@@ -30,9 +30,13 @@ class CardWidget extends StatelessWidget {
                 } else if (snapshot.hasError) {
                   return Text('Error: ${snapshot.error}');
                 } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-                  final historyData = snapshot.data!.first;
-                  final String diseaseName = historyData['responses'][0]['label'];
-                  final String date = DateFormat('yyyy-MM-dd').format(DateTime.parse(historyData['dateTime']));
+                  final List<dynamic> historyData = snapshot.data!;
+                  final historyData1 = historyData.first;
+
+                  final String diseaseName =
+                      historyData1['responses'][0]['label'];
+                  final String date = DateFormat('yyyy-MM-dd')
+                      .format(DateTime.parse(historyData1['dateTime']));
                   return Row(
                     children: [
                       CircleAvatar(
@@ -40,7 +44,7 @@ class CardWidget extends StatelessWidget {
                         radius: 35,
                         child: ClipOval(
                           child: Image.network(
-                            historyData['imageUrl'],
+                            historyData1['imageUrl'],
                             fit: BoxFit.cover,
                             width: 60,
                             height: 60,
@@ -48,7 +52,8 @@ class CardWidget extends StatelessWidget {
                         ),
                       ),
                       SizedBox(width: 16),
-                      Expanded( // Using Expanded to avoid overflow
+                      Expanded(
+                        // Using Expanded to avoid overflow
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [

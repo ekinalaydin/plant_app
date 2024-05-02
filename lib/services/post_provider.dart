@@ -7,9 +7,13 @@ class PostProvider extends ChangeNotifier {
     return _likedPosts.contains(postId);
   }
 
-  Future<void> likePost(int postId) async {
-    // Perform the like action
+  void likePost(int postId) {
     _likedPosts.add(postId);
-    notifyListeners(); // Notify listeners that the state has changed
+    notifyListeners();
+  }
+
+  void unlikePost(int postId) {
+    _likedPosts.remove(postId);
+    notifyListeners();
   }
 }

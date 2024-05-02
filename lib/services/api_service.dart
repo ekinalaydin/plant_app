@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:js';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:plant_app/models/comment.dart';
@@ -36,7 +37,7 @@ class ApiService {
   }
 
   // LIKE POST
-  Future<void> likePost(int id, BuildContext context) async {
+  Future<Map<String, dynamic>> likePost(int id, BuildContext context) async {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
 
     if (userProvider.user == null || userProvider.user!.token == null) {
@@ -52,13 +53,11 @@ class ApiService {
       },
     );
 
-    if (response.statusCode == 200 || response.statusCode == 204) {
-      final postProvider = Provider.of<PostProvider>(context, listen: false);
-      await postProvider
-          .likePost(id); // Update the liked post in the PostProvider
+    if (response.statusCode == 200) {
+      // If the request is successful, return the updated liked post
+      return json.decode(utf8.decode(response.bodyBytes));
     } else {
-      throw Exception(
-          'Failed to load data with status code: ${response.statusCode}');
+      throw Exception('Failed to like post');
     }
   }
 
@@ -94,6 +93,7 @@ class ApiService {
       },
       body: json.encode({'text': text}),
     );
+    print(response);
 
     // Consider handling other successful status codes or using a range check
     if (response.statusCode < 200 || response.statusCode > 299) {
@@ -172,6 +172,21 @@ class ApiService {
       return decodedJson;
     } else {
       throw Exception('Failed to load data');
+    }
+  }
+
+  Future<void> postCommunity(int id, BuildContext context, String text) async {
+    // Retrieve the userProvider using the context provided
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    final token = userProvider.user?.token;
+
+    final response = await http.post(Uri.parse('$baseUrl/posts/'),
+        headers: {'Authorization': 'Bearer $token'}, body: {'text': text});
+
+    // Consider handling other successful status codes or using a range check
+    if (response.statusCode < 200 || response.statusCode > 299) {
+      throw Exception(
+          'Failed to post comment with status code: ${response.statusCode}');
     }
   }
 }

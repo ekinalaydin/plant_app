@@ -103,7 +103,6 @@ class _CardListState extends State<CardList> {
                   SizedBox(height: 10),
                   CardWidget(),
                   SizedBox(height: 10),
-                  CardWidget(),
                 ],
               ),
               SizedBox(height: 20),
