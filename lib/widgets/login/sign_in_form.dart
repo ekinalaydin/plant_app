@@ -276,7 +276,6 @@ class _SignInFormState extends State<SignInForm> {
         email: email,
         password: password,
       );
-      print(credential.user);
       // Eğer kullanıcı bilgisi null değilse ve kullanıcı "Beni Hatırla" işlevini seçtiyse
       if (credential.user != null) {
         // UserProvider'ı kullanarak kullanıcı bilgilerini kaydetme
