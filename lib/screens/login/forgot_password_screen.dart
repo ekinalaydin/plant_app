@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:plant_app/helpers/screen_size_helper.dart';
+import 'package:plant_app/themes/colors.dart';
+
 class ForgotPasswordScreen extends StatelessWidget {
   String _emailOrUsername = '';
 
@@ -39,14 +42,16 @@ class ForgotPasswordScreen extends StatelessWidget {
                       children: [
                         Text(
                           'Hello',
-                          style: TextStyle(
+                          style: GoogleFonts.poppins(
+                            color: AppColors.onSurface,
                             fontSize: screenWidth / 16,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         Text(
                           "Let's Learn More About Plants",
-                          style: TextStyle(
+                          style: GoogleFonts.poppins(
+                            color: AppColors.onSurface,
                             fontSize: screenWidth / 22,
                             fontWeight: FontWeight.w500,
                           ),
@@ -59,7 +64,7 @@ class ForgotPasswordScreen extends StatelessWidget {
               TextFormField(
                 decoration: InputDecoration(
                   labelText: 'E-mail or Username*',
-                  labelStyle: TextStyle(color: Colors.black),
+                  labelStyle: GoogleFonts.poppins(color: AppColors.onSurface),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
                   ),
@@ -105,7 +110,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                           print("Reset password");
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xFF2DDA53),
+                          backgroundColor: AppColors.primaryVariant,
                           elevation: 5,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10.0),
@@ -113,8 +118,8 @@ class ForgotPasswordScreen extends StatelessWidget {
                         ),
                         child: Text(
                           'Reset password',
-                          style: TextStyle(
-                              color: Colors.white,
+                          style: GoogleFonts.poppins(
+                              color: AppColors.onPrimary,
                               fontSize: screenWidth / 24,
                               fontWeight: FontWeight.w700),
                         ),

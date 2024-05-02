@@ -53,7 +53,8 @@ class _UserFavoritesScreenState extends State<UserFavoritesScreen> {
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(70.0), // the desired height
         child: AppBar(
-          backgroundColor: Colors.white,
+          surfaceTintColor: Colors.transparent,
+          backgroundColor: AppColors.background,
           elevation: 0.5,
           title: Text(
             "My Favorite Posts",

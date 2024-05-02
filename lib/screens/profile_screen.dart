@@ -37,31 +37,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final TextStyle buttonTextStyle = GoogleFonts.poppins(
       color: Color.fromRGBO(34, 58, 51, 40), fontWeight: FontWeight.bold);
 
-  bool _isNameSurnameFieldTouched =
+  bool _isNameFieldTouched =
       false; // Flag to track whether the field is touched
 
-  String? validateFullName(String? value) {
-    if (_isNameSurnameFieldTouched) {
-      // Validation logic only executed if the field is touched
-      List<String> parts = value?.trim().split(' ') ?? [];
-      if (parts.length < 2) {
-        return 'Please enter both name and surname';
+  String? validateName(String? value) {
+    if (_isNameFieldTouched) {
+      if (value == null || value.isEmpty) {
+        return 'Please enter your name ';
       }
-      String name = parts[0];
-      String surname = parts.sublist(1).join(' ');
+    }
+    return null; // Return null if validation passes or if the field hasn't been touched
+  }
 
-      // Check if name and surname are empty
-      if (name.isEmpty || surname.isEmpty) {
-        return 'Both name and surname are required';
+  bool _isSurNameFieldTouched = false;
+  String? validateSurname(String? value) {
+    if (_isSurNameFieldTouched) {
+      if (value == null || value.isEmpty) {
+        return 'Please enter your surname';
       }
-
-      // Check if the new name and surname are the same as the existing values
-      // if (_name != null &&
-      //     _surname != null &&
-      //     name == _name &&
-      //     surname == _surname) {
-      //   return 'The new name is the same as the current one';
-      // }
     }
     return null; // Return null if validation passes or if the field hasn't been touched
   }
@@ -69,7 +62,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   bool _isEmailFieldTouched = false;
   String? validateEmail(String? value) {
     if (_isEmailFieldTouched) {
-      // Validation logic only executed if the field is touched
       if (value == null || value.isEmpty) {
         return 'Please enter your new e-mail address';
       }
@@ -82,7 +74,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   bool _isValidEmail(String value) {
-    // Simple email validation using a regular expression
     final RegExp emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
     return emailRegex.hasMatch(value);
   }
@@ -150,6 +141,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
         _oldPassword = data['password'];
 
         // Initialize the controllers with the retrieved data
+        nameController.text = _name ?? '';
+        surnameController.text = _surname ?? '';
         oldPasswordController.text = _oldPassword ?? '';
         usernameController.text = _username ?? '';
         emailController.text = _email ?? '';
@@ -236,7 +229,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'Full Name',
+                                    'Name',
                                     style: GoogleFonts.poppins(
                                         color: Color.fromRGBO(34, 58, 51, 40),
                                         fontWeight: FontWeight.bold,
@@ -249,7 +242,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           textAlign: TextAlign.start,
                                           cursorHeight: 20,
                                           decoration: InputDecoration(
-                                            hintText: "$_name $_surname",
+                                            hintText: "$_name ",
                                             hintStyle: GoogleFonts.poppins(
                                                 fontWeight: FontWeight.w500),
                                             border: OutlineInputBorder(
@@ -267,12 +260,67 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             contentPadding: EdgeInsets.all(9),
                                           ),
                                           validator:
-                                              validateFullName, // Assign the validator function here
+                                              validateName, // Assign the validator function here
                                           controller: nameController,
                                           onChanged: (_) {
                                             // Set the flag to true when the user interacts with the field
                                             setState(() {
-                                              _isNameSurnameFieldTouched = true;
+                                              _isNameFieldTouched = true;
+                                            });
+                                          })),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        width: double.maxFinite,
+                        height: 100,
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Surname',
+                                    style: GoogleFonts.poppins(
+                                        color: Color.fromRGBO(34, 58, 51, 40),
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16),
+                                  ),
+                                  SizedBox(height: 4),
+                                  SizedBox(
+                                      height: 65,
+                                      child: TextFormField(
+                                          textAlign: TextAlign.start,
+                                          cursorHeight: 20,
+                                          decoration: InputDecoration(
+                                            hintText: _surname ?? '',
+                                            hintStyle: GoogleFonts.poppins(
+                                                fontWeight: FontWeight.w500),
+                                            border: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10.0),
+                                            ),
+                                            focusedBorder: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10.0),
+                                              borderSide: BorderSide(
+                                                color: Colors.black,
+                                                width: 2.0,
+                                              ),
+                                            ),
+                                            contentPadding: EdgeInsets.all(9),
+                                          ),
+                                          validator:
+                                              validateSurname, // Assign the validator function here
+                                          controller: surnameController,
+                                          onChanged: (_) {
+                                            // Set the flag to true when the user interacts with the field
+                                            setState(() {
+                                              _isSurNameFieldTouched = true;
                                             });
                                           })),
                                 ],
@@ -355,8 +403,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               textAlign: TextAlign.start,
                               cursorHeight: 20,
                               decoration: InputDecoration(
-                                hintText: _username ??
-                                    '', // Use the existing username as hint
+                                hintText: _username ?? '',
                                 alignLabelWithHint: true,
                                 hintStyle: GoogleFonts.poppins(
                                   fontWeight: FontWeight.w500,
@@ -500,7 +547,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                         ],
                       ),
-// Error message if old and new passwords are the same
                       if (_oldPassword != null &&
                           _newPassword != null &&
                           _oldPassword == _newPassword)
@@ -669,7 +715,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               textAlign: TextAlign.start,
                               cursorHeight: 20,
                               decoration: InputDecoration(
-                                hintText: "$_occupation",
+                                hintText: "Occupation",
                                 alignLabelWithHint: true,
                                 hintStyle: GoogleFonts.poppins(),
                                 border: OutlineInputBorder(
@@ -706,10 +752,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                           SizedBox(height: 4),
                           SizedBox(
-                            width: 200,
                             height: 60,
                             child: DropdownSearch<String>(
                               dropdownDecoratorProps: DropDownDecoratorProps(
+                                baseStyle: GoogleFonts.poppins(),
                                 dropdownSearchDecoration: InputDecoration(
                                   hintText: 'Gender',
                                   hintStyle: GoogleFonts.poppins(),
@@ -762,32 +808,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ),
             ),
-          ],
-        ),
-      ),
-      floatingActionButton: SizedBox(
-        height: 60,
-        width: 160,
-        child: FloatingActionButton(
-          backgroundColor: Color.fromARGB(255, 201, 224, 109),
-          onPressed: () {
-            String oldPassword = oldPasswordController.text;
-            String newPassword = newPasswordController.text;
-            if (_formKey.currentState!.validate()) {
-              // Do something with the form data
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('Your Changes are Saved!'),
+            SizedBox(
+              height: 60,
+              width: 160,
+              child: ElevatedButton(
+                onPressed: () {
+                  String oldPassword = oldPasswordController.text;
+                  String newPassword = newPasswordController.text;
+                  if (_formKey.currentState!.validate()) {
+                    // Do something with the form data
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Your Changes are Saved!'),
+                      ),
+                    );
+                  }
+                },
+                child: Text(
+                  "Save Changes",
+                  style: GoogleFonts.poppins(
+                      color: Color.fromRGBO(34, 58, 51, 40),
+                      fontWeight: FontWeight.bold),
                 ),
-              );
-            }
-          },
-          child: Text(
-            "Save Changes",
-            style: GoogleFonts.poppins(
-                color: Color.fromRGBO(34, 58, 51, 40),
-                fontWeight: FontWeight.bold),
-          ),
+              ),
+            ),
+          ],
         ),
       ),
     );
