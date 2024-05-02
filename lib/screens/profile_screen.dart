@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:plant_app/screens/user_posts.dart';
-import 'package:plant_app/themes/colors.dart';
+import 'package:plant_app/services/api_service.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -13,31 +13,62 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   final _formKey = GlobalKey<FormState>();
   String? authorProfileImage;
-  String? _name = "Nazli";
-  String? _surname = "Ozer";
-  String? _username = "nazliozer";
-  String? _email = "nazli@gmail.com";
-  String? _password;
-  String? _city = "Ankara";
-  String? _occupation = "Student";
-  String? _gender = "Female";
+  late String? _name = "";
+  late String? _surname = "";
+  late String? _username = "";
+  late String? _email = "";
+  late String? _city = "";
+  late String? _occupation = "";
+  late String? _gender = "";
+  TextEditingController nameController = TextEditingController();
+  TextEditingController surnameController = TextEditingController();
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController cityController = TextEditingController();
+  TextEditingController occupationController = TextEditingController();
+  TextEditingController genderController = TextEditingController();
+
   TextEditingController oldPasswordController = TextEditingController();
   TextEditingController newPasswordController = TextEditingController();
   final TextStyle buttonTextStyle = GoogleFonts.poppins(
       color: Color.fromRGBO(34, 58, 51, 40), fontWeight: FontWeight.bold);
 
   @override
+  void initState() {
+    super.initState();
+    ApiService().getProfile(context).then((data) {
+      setState(() {
+        _username = data['username'];
+        _email = data['email'];
+        _city = data['city'];
+        _occupation = data['occupation'];
+        _gender = data['gender'];
+
+        // Initialize the controllers with the retrieved data
+        usernameController.text = _username ?? '';
+        emailController.text = _email ?? '';
+        cityController.text = _city ?? '';
+        occupationController.text = _occupation ?? '';
+        genderController.text = _gender ?? '';
+      });
+    }).catchError((error) {
+      // Handle any errors that occur during the API call
+      print('Error fetching profile data: $error');
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: AppColors.background,
+        backgroundColor: Colors.white,
         title: Text(
           "Profile Settings",
           style: GoogleFonts.poppins(
-              color: AppColors.onSurface, fontWeight: FontWeight.w500),
+              color: Color(0xFF2B423D), fontWeight: FontWeight.w500),
         ),
       ),
-      backgroundColor: AppColors.background,
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -56,7 +87,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               leading: CircleAvatar(
                 radius: 30,
                 backgroundColor: Color.fromARGB(255, 201, 224, 109),
-                backgroundImage: NetworkImage(""),
+                // backgroundImage: NetworkImage(""),
               ),
               title: Row(
                 children: [
@@ -66,7 +97,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     style: GoogleFonts.poppins(
                       fontWeight: FontWeight.w600,
                       fontSize: 18,
-                      color: AppColors.onSurface,
+                      color: Color.fromRGBO(34, 58, 51, 50),
                     ),
                   ),
                 ],
@@ -74,9 +105,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
               subtitle: Text(
                 "$_username | $_email | $_occupation | $_city",
                 style: GoogleFonts.poppins(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 12.8,
-                    color: AppColors.onSurface),
+                  fontWeight: FontWeight.w400,
+                  fontSize: 12.8,
+                  color: Color.fromRGBO(34, 58, 51, 50),
+                ),
               ),
             ),
             Form(
@@ -100,7 +132,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   Text(
                                     'Full Name',
                                     style: GoogleFonts.poppins(
-                                        color: AppColors.onSurface,
+                                        color: Color.fromRGBO(34, 58, 51, 40),
                                         fontWeight: FontWeight.bold,
                                         fontSize: 16),
                                   ),
@@ -134,47 +166,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ],
                               ),
                             ),
-                            // SizedBox(width: 6.0),
-                            // Expanded(
-                            //   child: Column(
-                            //     crossAxisAlignment: CrossAxisAlignment.start,
-                            //     children: [
-                            //       Text(
-                            //         'Surname',
-                            //         style: GoogleFonts.poppins(
-                            //             color: Color.fromRGBO(34, 58, 51, 40),
-                            //             fontWeight: FontWeight.bold,
-                            //             fontSize: 14),
-                            //       ),
-                            //       SizedBox(height: 4),
-                            //       SizedBox(
-                            //         height: 50,
-                            //         child: TextFormField(
-                            //           textAlign: TextAlign.start,
-                            //           cursorHeight: 20,
-                            //           decoration: InputDecoration(
-                            //             hintText: "$_surname",
-                            //             alignLabelWithHint: true,
-                            //             hintStyle: GoogleFonts.poppins(),
-                            //             border: OutlineInputBorder(
-                            //               borderRadius:
-                            //                   BorderRadius.circular(10.0),
-                            //             ),
-                            //             focusedBorder: OutlineInputBorder(
-                            //               borderRadius:
-                            //                   BorderRadius.circular(10.0),
-                            //               borderSide: BorderSide(
-                            //                 color: Colors.black,
-                            //                 width: 2.0,
-                            //               ),
-                            //             ),
-                            //             contentPadding: EdgeInsets.all(9),
-                            //           ),
-                            //         ),
-                            //       ),
-                            //     ],
-                            //   ),
-                            // ),
                           ],
                         ),
                       ),
@@ -187,7 +178,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             Text(
                               'Change e-mail address',
                               style: GoogleFonts.poppins(
-                                  color: AppColors.onSurface,
+                                  color: Color.fromRGBO(34, 58, 51, 40),
                                   fontWeight: FontWeight.bold,
                                   fontSize: 16),
                             ),
@@ -218,7 +209,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   errorBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10.0),
                                     borderSide: BorderSide(
-                                      color: AppColors.onError,
+                                      color: Colors.red,
                                       width: 2.0,
                                     ),
                                   ),
@@ -241,7 +232,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           Text(
                             'Change username',
                             style: GoogleFonts.poppins(
-                                color: AppColors.onSurface,
+                                color: Color.fromRGBO(34, 58, 51, 40),
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16),
                           ),
@@ -270,7 +261,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 errorBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10.0),
                                   borderSide: BorderSide(
-                                    color: AppColors.onError,
+                                    color: Colors.red,
                                     width: 2.0,
                                   ),
                                 ),
@@ -292,14 +283,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           Text(
                             'Change Password',
                             style: GoogleFonts.poppins(
-                                color: AppColors.onSurface,
+                                color: Color.fromRGBO(34, 58, 51, 40),
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16),
                           ),
                           Text(
                             "Please enter your old password",
                             style: GoogleFonts.poppins(
-                                color: AppColors.onSurface,
                                 fontWeight: FontWeight.w400),
                           ),
                           SizedBox(height: 4),
@@ -351,7 +341,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           Text(
                             'New Password',
                             style: GoogleFonts.poppins(
-                                color: AppColors.onSurface,
+                                color: Color.fromRGBO(34, 58, 51, 40),
                                 fontSize: 15,
                                 fontWeight: FontWeight.w600),
                           ),
@@ -365,14 +355,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               decoration: InputDecoration(
                                 helperText:
                                     "Your password must be between 4 and 12 characters",
-                                helperStyle: GoogleFonts.poppins(
-                                  color: AppColors.onSurface,
-                                ),
+                                helperStyle: GoogleFonts.poppins(),
                                 hintText: "Please enter a new password",
                                 alignLabelWithHint: true,
-                                hintStyle: GoogleFonts.poppins(
-                                  color: AppColors.onSurface,
-                                ),
+                                hintStyle: GoogleFonts.poppins(),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10.0),
                                 ),
@@ -414,7 +400,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           Text(
                             'Change your Location',
                             style: GoogleFonts.poppins(
-                                color: AppColors.onSurface,
+                                color: Color.fromRGBO(34, 58, 51, 40),
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold),
                           ),
@@ -554,7 +540,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           Text(
                             'Change your occupation',
                             style: GoogleFonts.poppins(
-                                color: AppColors.onSurface,
+                                color: Color.fromRGBO(34, 58, 51, 40),
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold),
                           ),
@@ -592,7 +578,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           Text(
                             'Gender',
                             style: GoogleFonts.poppins(
-                                color: AppColors.onSurface,
+                                color: Color.fromRGBO(34, 58, 51, 40),
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold),
                           ),
@@ -661,7 +647,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         height: 60,
         width: 160,
         child: FloatingActionButton(
-          backgroundColor: AppColors.primaryVariant,
+          backgroundColor: Color.fromARGB(255, 201, 224, 109),
           onPressed: () {
             String oldPassword = oldPasswordController.text;
             String newPassword = newPasswordController.text;
