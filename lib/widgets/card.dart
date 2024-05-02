@@ -44,7 +44,11 @@ class CardWidget extends StatelessWidget {
                         style: GoogleFonts.poppins(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
+<<<<<<< HEAD
                           color: AppColors.onSurface,
+=======
+                          color: Color(0xFF2B423D),
+>>>>>>> origin/ekin
                         ),
                       ),
                       Text(
@@ -52,7 +56,11 @@ class CardWidget extends StatelessWidget {
                         style: GoogleFonts.poppins(
                           fontSize: 15,
                           fontWeight: FontWeight.w300,
+<<<<<<< HEAD
                           color: AppColors.onSurface,
+=======
+                          color: Color(0xFF2B423D),
+>>>>>>> origin/ekin
                         ),
                       ),
                     ],

@@ -64,7 +64,10 @@ class _PostPageState extends State<PostPage> {
             style: GoogleFonts.poppins(
               fontSize: 23,
               fontWeight: FontWeight.w500,
+<<<<<<< HEAD
               color: AppColors.onSurface,
+=======
+>>>>>>> origin/ekin
             ),
           ),
         ),

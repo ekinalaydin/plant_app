@@ -6,11 +6,15 @@ import 'package:plant_app/services/user_provider.dart';
 import 'package:provider/provider.dart';
 
 class ApiService {
+<<<<<<< HEAD
 <<<<<<< Updated upstream
   static String baseUrl = 'https://plant-app-f6e01.uc.r.appspot.com/';
 =======
   static String baseUrl = 'https://plant-f9a21.ey.r.appspot.com';
 >>>>>>> Stashed changes
+=======
+  static String baseUrl = 'https://plantapp-2ee83.ew.r.appspot.com';
+>>>>>>> origin/ekin
 
   // GET ALL POSTS
   Future<Map<String, dynamic>> getAllPosts(BuildContext context) async {

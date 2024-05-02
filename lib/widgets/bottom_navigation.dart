@@ -3,9 +3,12 @@ import 'package:plant_app/screens/camera_screen.dart';
 import 'package:plant_app/screens/community_screen.dart';
 import 'package:plant_app/screens/create_post_screen.dart';
 import 'package:plant_app/screens/home_screen.dart';
-import 'package:plant_app/screens/profile_screen.dart';
 import 'package:plant_app/screens/map_screen.dart';
+<<<<<<< HEAD
 import 'package:plant_app/themes/colors.dart';
+=======
+import 'package:plant_app/screens/user_option_screen.dart';
+>>>>>>> origin/ekin
 
 class BottomNavigation extends StatefulWidget {
   BottomNavigation({Key? key}) : super(key: key);
@@ -22,7 +25,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
     CommunityScreen(),
     CameraScreen(),
     MapScreen(),
-    ProfileScreen(),
+    UserOptionScreen(),
   ];
 
   void _changeTab(int index) {

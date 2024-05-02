@@ -16,6 +16,7 @@ class _CameraScreenState extends State<CameraScreen> {
   File? _image;
   final picker = ImagePicker();
 
+<<<<<<< HEAD
 <<<<<<< Updated upstream
   Future<dynamic> uploadImage(String filePath) async {
     var uri =
@@ -24,6 +25,11 @@ class _CameraScreenState extends State<CameraScreen> {
   Future<dynamic> uploadImage(String filePath, BuildContext context) async {
     var uri = Uri.parse('https://plant-f9a21.ey.r.appspot.com/plant/predict');
 >>>>>>> Stashed changes
+=======
+  Future<dynamic> uploadImage(String filePath) async {
+    var uri =
+        Uri.parse('https://plantapp-2ee83.ew.r.appspot.com/plant/predict');
+>>>>>>> origin/ekin
     var request = http.MultipartRequest('POST', uri);
 
     request.files.add(await http.MultipartFile.fromPath('image', filePath));
@@ -202,7 +208,11 @@ class _CameraScreenState extends State<CameraScreen> {
               backgroundColor: AppColors.primary,
               child: Icon(
                 Icons.camera_alt_outlined,
+<<<<<<< HEAD
                 color: AppColors.onPrimary,
+=======
+                color: Colors.white,
+>>>>>>> origin/ekin
               ),
             ),
           ),
