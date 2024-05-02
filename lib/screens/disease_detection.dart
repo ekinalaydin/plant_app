@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:plant_app/screens/camera_screen.dart';
+import 'package:plant_app/screens/home_screen.dart';
 import 'package:plant_app/themes/colors.dart';
 
 class DiseaseDetection extends StatefulWidget {
@@ -69,8 +71,12 @@ class _DiseaseDetectionState extends State<DiseaseDetection> {
                           color: Color(
                               0xFF233A38)), // Icon color changed to green for contrast
                       onPressed: () {
-                        Navigator.of(context)
-                            .pop(); // Ensure this context has a Navigator ancestor
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => HomeScreen(),
+                          ),
+                        ); // Ensure this context has a Navigator ancestor
                       },
                     ),
                   ),
@@ -152,7 +158,12 @@ class _DiseaseDetectionState extends State<DiseaseDetection> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          // Handle your onPressed action here
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => CameraScreen(),
+            ),
+          );
         },
         label: Text(
           'Health Check',
@@ -207,8 +218,8 @@ class TextSection extends StatelessWidget {
                   Text(
                     '- $item',
                     style: contentStyle ??
-                        TextStyle(
-                          color: Color(0xFF74857D),
+                        GoogleFonts.poppins(
+                          color: AppColors.secondary,
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
                         ),

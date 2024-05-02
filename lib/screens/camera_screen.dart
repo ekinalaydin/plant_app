@@ -8,7 +8,7 @@ import 'package:plant_app/services/user_provider.dart';
 import 'package:plant_app/themes/colors.dart';
 import 'package:provider/provider.dart';
 
-// Import the DiseaseDetection screen
+// DiseaseDetection ekranını içe aktarın
 import 'disease_detection.dart';
 
 class CameraScreen extends StatefulWidget {
@@ -19,12 +19,20 @@ class CameraScreen extends StatefulWidget {
 class _CameraScreenState extends State<CameraScreen> {
   File? _image;
   final picker = ImagePicker();
+  bool _isLoading = false; // Yükleme durumunu izlemek için bir değişken
 
   Future<void> uploadImage(String filePath, BuildContext context) async {
+    setState(() {
+      _isLoading = true; // Yükleme başladığında isLoading değerini true yapın
+    });
+
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     final token = userProvider.user?.token;
     var uri = Uri.parse('https://plant-f9a21.ey.r.appspot.com/plant/predict');
-    var request = http.MultipartRequest('POST', uri,);
+    var request = http.MultipartRequest(
+      'POST',
+      uri,
+    );
     request.headers['Authorization'] = 'Bearer $token';
     request.files.add(await http.MultipartFile.fromPath('image', filePath));
 
@@ -41,14 +49,15 @@ class _CameraScreenState extends State<CameraScreen> {
           SnackBar(content: Text('Successfully uploaded image.')),
         );
 
-        // Navigate to DiseaseDetection screen
+        // DiseaseDetection ekranına geçiş yapın
         if (responseList.isNotEmpty) {
           print(responseList);
 
           Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => DiseaseDetection(data: {...responseList[0], 'file': filePath}),
+                builder: (context) => DiseaseDetection(
+                    data: {...responseList[0], 'file': filePath}),
               ));
         }
       } else {
@@ -62,6 +71,11 @@ class _CameraScreenState extends State<CameraScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error: $e')),
       );
+    } finally {
+      setState(() {
+        _isLoading =
+            false; // İşlem tamamlandığında isLoading değerini false yapın
+      });
     }
   }
 
@@ -71,8 +85,7 @@ class _CameraScreenState extends State<CameraScreen> {
     setState(() {
       if (pickedFile != null) {
         _image = File(pickedFile.path);
-        uploadImage(
-            pickedFile.path, context); // Upload the image after it's selected
+        uploadImage(pickedFile.path, context); // Seçilen resmi yükleyin
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -92,8 +105,7 @@ class _CameraScreenState extends State<CameraScreen> {
     setState(() {
       if (pickedFile != null) {
         _image = File(pickedFile.path);
-        uploadImage(
-            pickedFile.path, context); // Upload the image after it's selected
+        uploadImage(pickedFile.path, context); // Seçilen resmi yükleyin
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -111,7 +123,7 @@ class _CameraScreenState extends State<CameraScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(79.0), // here the desired height
+        preferredSize: const Size.fromHeight(79.0),
         child: Container(
           decoration: BoxDecoration(
             boxShadow: [
@@ -139,21 +151,28 @@ class _CameraScreenState extends State<CameraScreen> {
           ),
         ),
       ),
-      body: Center(
-        child: _image == null
-            ? Text(
-                "No image selected. Please select an image.",
-                style: GoogleFonts.poppins(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.onSurface,
-                ),
-              )
-            : Image.file(
-                _image!,
-                width: 500,
-                height: 500,
-              ),
+      body: Stack(
+        alignment: Alignment.center,
+        children: [
+          Center(
+            child: _image == null
+                ? Text(
+                    "No image selected. Please select an image.",
+                    style: GoogleFonts.poppins(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.onSurface,
+                    ),
+                  )
+                : Image.file(
+                    _image!,
+                    width: 500,
+                    height: 500,
+                  ),
+          ),
+          if (_isLoading)
+            CircularProgressIndicator(), // Yükleme durumu true ise CircularProgressIndicator'ı gösterin
+        ],
       ),
       floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,

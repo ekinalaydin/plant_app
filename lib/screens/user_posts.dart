@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:plant_app/models/post.dart';
 import 'package:plant_app/services/api_service.dart';
+import 'package:plant_app/themes/colors.dart';
 import 'package:plant_app/widgets/post_card.dart';
 
 class UserPost extends StatefulWidget {
@@ -57,6 +58,7 @@ class _UserPostState extends State<UserPost> {
           title: Text(
             "My Posts",
             style: GoogleFonts.poppins(
+              color: AppColors.onSurface,
               fontSize: 23,
               fontWeight: FontWeight.w500,
             ),

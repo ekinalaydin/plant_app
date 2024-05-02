@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:plant_app/models/post.dart';
 import 'package:plant_app/services/api_service.dart';
+import 'package:plant_app/themes/colors.dart';
 import 'package:plant_app/widgets/post_card.dart';
 
 class UserFavoritesScreen extends StatefulWidget {
@@ -55,8 +56,9 @@ class _UserFavoritesScreenState extends State<UserFavoritesScreen> {
           backgroundColor: Colors.white,
           elevation: 0.5,
           title: Text(
-            "My Posts",
+            "My Favorite Posts",
             style: GoogleFonts.poppins(
+              color: AppColors.onSurface,
               fontSize: 23,
               fontWeight: FontWeight.w500,
             ),
