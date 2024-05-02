@@ -79,7 +79,17 @@ class _DetailsWidgetState extends State<DetailsWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(backgroundColor: Colors.transparent, elevation: 0),
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        title: Text(
+          widget.postTitle,
+          style: GoogleFonts.poppins(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: AppColors.onSurface),
+        ),
+      ),
       extendBodyBehindAppBar: false,
       body: SafeArea(
         child: Container(
@@ -151,10 +161,13 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                         children: [
                           Text(widget.postTitle,
                               style: GoogleFonts.poppins(
-                                  fontWeight: FontWeight.bold, fontSize: 18)),
+                                  color: AppColors.onSurface,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18)),
                           SizedBox(height: 8),
                           Text(widget.postBody,
-                              style: GoogleFonts.poppins(fontSize: 14)),
+                              style: GoogleFonts.poppins(
+                                  fontSize: 14, color: AppColors.onSurface)),
                           Row(
                             children: [
                               Expanded(
@@ -192,6 +205,8 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                             controller: _commentController,
                             decoration: InputDecoration(
                               hintText: 'Add a comment',
+                              hintStyle: GoogleFonts.poppins(
+                                  fontSize: 14, color: AppColors.onSurface),
                               suffixIcon: _isLoading
                                   ? Container(
                                       padding: EdgeInsets.all(8.0),

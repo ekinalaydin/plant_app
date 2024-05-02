@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:plant_app/themes/colors.dart';
 
 class DiseaseDetection extends StatefulWidget {
   final Map<String, dynamic> data;
@@ -71,15 +73,15 @@ class _DiseaseDetectionState extends State<DiseaseDetection> {
                   child: Text(
                     widget.data['label'],
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.white,
+                    style: GoogleFonts.poppins(
+                      color: AppColors.onPrimary,
                       fontSize: MediaQuery.of(context).size.width / 13,
                       fontWeight: FontWeight.bold,
                       shadows: [
                         Shadow(
                           offset: Offset(1.0, 1.0),
                           blurRadius: 3.0,
-                          color: Colors.black.withOpacity(0.75),
+                          color: AppColors.secondaryVariant.withOpacity(0.75),
                         ),
                       ],
                     ),
@@ -98,7 +100,7 @@ class _DiseaseDetectionState extends State<DiseaseDetection> {
                     child: Container(
                       width: MediaQuery.of(context).size.width,
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: AppColors.background,
                         borderRadius: BorderRadius.circular(10),
                         boxShadow: [
                           BoxShadow(
@@ -113,11 +115,10 @@ class _DiseaseDetectionState extends State<DiseaseDetection> {
                       child: TextSection(
                         title: 'SYMPTOMS',
                         content: widget.data['description'],
-                        titleStyle: TextStyle(
-                          fontSize: MediaQuery.of(context).size.width / 20,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF1C352F),
-                        ),
+                        titleStyle: GoogleFonts.poppins(
+                            fontSize: MediaQuery.of(context).size.width / 20,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.onSurface),
                       ),
                     ),
                   ),
@@ -141,9 +142,13 @@ class _DiseaseDetectionState extends State<DiseaseDetection> {
         onPressed: () {
           // Handle your onPressed action here
         },
-        label: Text('Health Check'),
+        label: Text(
+          'Health Check',
+          style: GoogleFonts.poppins(color: AppColors.onBackground),
+        ),
         icon: Icon(Icons.camera_alt),
-        backgroundColor: Colors.green, // Use the color from your screenshot
+        backgroundColor:
+            AppColors.primary, // Use the color from your screenshot
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
@@ -174,8 +179,8 @@ class TextSection extends StatelessWidget {
           Text(
             title,
             style: titleStyle ??
-                TextStyle(
-                  color: Color(0xFF1C352F),
+                GoogleFonts.poppins(
+                  color: AppColors.onSurface,
                   fontWeight: FontWeight.w700,
                   fontSize: 18,
                 ),
@@ -184,11 +189,10 @@ class TextSection extends StatelessWidget {
           Text(
             content,
             style: contentStyle ??
-                TextStyle(
-                  color: Color(0xFF74857D),
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                ),
+                GoogleFonts.poppins(
+                    color: AppColors.onSurface,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 14),
           ),
         ],
       ),

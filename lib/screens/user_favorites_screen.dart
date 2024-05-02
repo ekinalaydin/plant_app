@@ -67,10 +67,7 @@ class _UserFavoritesScreenState extends State<UserFavoritesScreen> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Padding(
-            padding: const EdgeInsets.only(bottom: 30, right: 20, left: 20),
-            child: SizedBox(
-              height: 40,
-            ),
+            padding: const EdgeInsets.only(bottom: 20, right: 20, left: 20),
           ),
           Expanded(
             child: FutureBuilder<dynamic>(
