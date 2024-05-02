@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:plant_app/themes/colors.dart';
 
 class PostWidget extends StatefulWidget {
   const PostWidget({Key? key}) : super(key: key);
@@ -31,7 +32,7 @@ class _PostWidgetState extends State<PostWidget> {
                 border: Border.symmetric(),
                 borderRadius: BorderRadius.circular(20),
                 gradient: LinearGradient(
-                  colors: [Color(0xFF9BCA22), Color(0xFFDEF99B)],
+                  colors: [AppColors.primary, AppColors.primaryVariant],
                   stops: [0.25, 0.75],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
@@ -58,8 +59,8 @@ class _PostWidgetState extends State<PostWidget> {
                       "What is your question?",
                       style: GoogleFonts.poppins(
                         fontSize: 18,
-                        color: Color(0xFF2B423D),
-                        fontWeight: FontWeight.w900,
+                        color: AppColors.onSurface,
+                        fontWeight: FontWeight.w800,
                       ),
                     ),
                     SizedBox(
@@ -76,12 +77,14 @@ class _PostWidgetState extends State<PostWidget> {
                           ),
                           hintText: 'Ask to Community!',
                           hintStyle: GoogleFonts.poppins(
-                              fontWeight: FontWeight.w400,
-                              color: Color(0xFF2B423D)),
+                            color: AppColors.onSecondary,
+                            fontWeight: FontWeight.w400,
+                          ),
                           border: UnderlineInputBorder(
                             borderRadius: BorderRadius.circular(12.0),
                             borderSide: BorderSide(
-                                color: Colors.white, style: BorderStyle.none),
+                                color: AppColors.secondaryVariant,
+                                style: BorderStyle.solid),
                           ),
                         ),
                         validator: (value) {
@@ -100,8 +103,8 @@ class _PostWidgetState extends State<PostWidget> {
                           "Description",
                           style: GoogleFonts.poppins(
                             fontSize: 18,
-                            fontWeight: FontWeight.w900,
-                            color: Color(0xFF2B423D),
+                            fontWeight: FontWeight.w800,
+                            color: AppColors.onSurface,
                           ),
                         ),
                       ),
@@ -130,8 +133,9 @@ class _PostWidgetState extends State<PostWidget> {
                           ),
                           hintText: 'Give More Detail!',
                           hintStyle: GoogleFonts.poppins(
-                              fontWeight: FontWeight.w400,
-                              color: Color(0xFF2B423D)),
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.onSecondary,
+                          ),
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -159,7 +163,7 @@ class _PostWidgetState extends State<PostWidget> {
                         child: TextButton.icon(
                           icon: Icon(
                             Icons.camera_alt_rounded,
-                            color: Color(0xFF2B423D),
+                            color: AppColors.onSurface,
                           ),
                           onPressed: () {
                             _selectImage(context);
@@ -171,7 +175,8 @@ class _PostWidgetState extends State<PostWidget> {
                                 Text(
                                   "Add your photo!",
                                   style: GoogleFonts.poppins(
-                                      color: Color(0xFF2B423D)),
+                                    color: AppColors.onSurface,
+                                  ),
                                 ),
                               ],
                             ),

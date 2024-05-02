@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:plant_app/screens/login/sign_in_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:plant_app/themes/colors.dart';
 import 'firebase_options.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -50,7 +51,8 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       title: 'Namer App',
       theme: ThemeData(
-        scaffoldBackgroundColor: Colors.white,
+        scaffoldBackgroundColor: AppColors.background,
+        appBarTheme: AppBarTheme(backgroundColor: AppColors.background),
         useMaterial3: true,
         textSelectionTheme: TextSelectionThemeData(
           cursorColor: Colors.black,

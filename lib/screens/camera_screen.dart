@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
+import 'package:plant_app/themes/colors.dart';
 
 class CameraScreen extends StatefulWidget {
   @override
@@ -15,9 +16,14 @@ class _CameraScreenState extends State<CameraScreen> {
   File? _image;
   final picker = ImagePicker();
 
-  Future<void> uploadImage(String filePath) async {
+<<<<<<< Updated upstream
+  Future<dynamic> uploadImage(String filePath) async {
     var uri =
         Uri.parse('https://plant-app-f6e01.uc.r.appspot.com/plant/predict');
+=======
+  Future<dynamic> uploadImage(String filePath, BuildContext context) async {
+    var uri = Uri.parse('https://plant-f9a21.ey.r.appspot.com/plant/predict');
+>>>>>>> Stashed changes
     var request = http.MultipartRequest('POST', uri);
 
     request.files.add(await http.MultipartFile.fromPath('image', filePath));
@@ -86,7 +92,10 @@ class _CameraScreenState extends State<CameraScreen> {
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('No image selected from camera.'),
+            content: Text(
+              'No image selected from camera.',
+              style: GoogleFonts.poppins(color: AppColors.onSurface),
+            ),
           ),
         );
       }
@@ -103,7 +112,10 @@ class _CameraScreenState extends State<CameraScreen> {
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('No image selected from camera.'),
+            content: Text(
+              'No image selected from gallery.',
+              style: GoogleFonts.poppins(color: AppColors.onSurface),
+            ),
           ),
         );
       }
@@ -114,26 +126,27 @@ class _CameraScreenState extends State<CameraScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(90.0), // here the desired height
+        preferredSize: const Size.fromHeight(79.0), // here the desired height
         child: Container(
           decoration: BoxDecoration(
             boxShadow: [
               BoxShadow(
-                color: Color.fromARGB(255, 84, 87, 81),
+                color: AppColors.secondaryVariant,
                 blurRadius: 20.0,
               ),
             ],
           ), // Adjust t
           child: AppBar(
-            backgroundColor: Color(0xFFDEF99B),
+            backgroundColor: AppColors.primaryVariant,
             title: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
+                  textAlign: TextAlign.center,
                   "Take a photo of your plant! ",
                   style: GoogleFonts.poppins(
-                    fontWeight: FontWeight.w700,
+                    fontWeight: FontWeight.w500,
                     fontSize: 20,
                     color: Color(0xFF273E39),
                   ),
@@ -148,15 +161,32 @@ class _CameraScreenState extends State<CameraScreen> {
             ? Text(
                 "No image selected. Please select an image.",
                 style: GoogleFonts.poppins(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w700,
-                  color: Color(0xFF273E39),
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                  color: AppColors.onSurface,
                 ),
               )
-            : Image.file(
-                _image!,
-                width: 500,
-                height: 500,
+            : FutureBuilder(
+                future: uploadImage(_image!.path),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return CircularProgressIndicator(); // Show CircularProgressIndicator while waiting
+                  } else if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}');
+                  } else if (snapshot.hasData && snapshot.data.length > 0) {
+                    // Handle successful result
+                    var label = snapshot.data[0]['label'];
+                    showInformationModal(context, label);
+                    return Image.file(
+                      _image!,
+                      width: 500,
+                      height: 500,
+                    );
+                  } else {
+                    return Text(
+                        'No data available'); // Handle case where data is null or empty
+                  }
+                },
               ),
       ),
       floatingActionButton: Column(
@@ -169,10 +199,10 @@ class _CameraScreenState extends State<CameraScreen> {
               heroTag: 'camera_fab',
               onPressed: getImageFromCamera,
               tooltip: 'Take a Photo',
-              backgroundColor: Color(0xFF9BCA22),
+              backgroundColor: AppColors.primary,
               child: Icon(
-                Icons.camera,
-                color: Colors.white,
+                Icons.camera_alt_outlined,
+                color: AppColors.onPrimary,
               ),
             ),
           ),
@@ -184,10 +214,10 @@ class _CameraScreenState extends State<CameraScreen> {
               heroTag: 'gallery_fab',
               onPressed: getImageFromGallery,
               tooltip: 'Choose from Gallery',
-              backgroundColor: Color(0xFF9BCA22),
+              backgroundColor: AppColors.primary,
               child: Icon(
                 Icons.photo_library,
-                color: Colors.white,
+                color: AppColors.onPrimary,
               ),
             ),
           ),

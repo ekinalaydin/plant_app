@@ -5,15 +5,14 @@ import 'package:plant_app/models/post.dart';
 import 'package:plant_app/screens/create_post_screen.dart';
 import 'package:plant_app/screens/post_detail_screen.dart';
 import 'package:plant_app/services/api_service.dart';
-import 'package:plant_app/themes/colors.dart';
 import 'package:plant_app/widgets/post_card.dart';
 
-class PostPage extends StatefulWidget {
+class UserPost extends StatefulWidget {
   @override
-  _PostPageState createState() => _PostPageState();
+  _UserPostState createState() => _UserPostState();
 }
 
-class _PostPageState extends State<PostPage> {
+class _UserPostState extends State<UserPost> {
   bool _expanded = false;
   var allItems = List.generate(50, (index) => 'item $index');
   var items = [];
@@ -57,14 +56,13 @@ class _PostPageState extends State<PostPage> {
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(70.0), // the desired height
         child: AppBar(
-          backgroundColor: AppColors.background,
-          elevation: 0.3,
+          backgroundColor: Colors.white,
+          elevation: 0.5,
           title: Text(
-            "Community",
+            "My Posts",
             style: GoogleFonts.poppins(
               fontSize: 23,
               fontWeight: FontWeight.w500,
-              color: AppColors.onSurface,
             ),
           ),
         ),
@@ -76,26 +74,6 @@ class _PostPageState extends State<PostPage> {
             padding: const EdgeInsets.only(bottom: 30, right: 20, left: 20),
             child: SizedBox(
               height: 40,
-              child: SearchBar(
-                surfaceTintColor: MaterialStateProperty.all(AppColors.surface),
-                backgroundColor:
-                    MaterialStateProperty.all(AppColors.background),
-                overlayColor: MaterialStateProperty.all(AppColors.onSurface),
-                shadowColor:
-                    MaterialStateProperty.all(AppColors.secondaryVariant),
-                controller: searchController,
-                leading: IconButton(
-                  onPressed: () {},
-                  icon: Icon(
-                    Icons.search,
-                    color: AppColors.onSurface,
-                  ),
-                ),
-                hintText: 'Search',
-                textStyle: MaterialStateProperty.all(GoogleFonts.poppins(
-                  color: AppColors.onSurface,
-                )),
-              ),
             ),
           ),
           Expanded(

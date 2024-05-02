@@ -5,6 +5,7 @@ import 'package:plant_app/screens/create_post_screen.dart';
 import 'package:plant_app/screens/home_screen.dart';
 import 'package:plant_app/screens/profile_screen.dart';
 import 'package:plant_app/screens/map_screen.dart';
+import 'package:plant_app/themes/colors.dart';
 
 class BottomNavigation extends StatefulWidget {
   BottomNavigation({Key? key}) : super(key: key);
@@ -36,6 +37,11 @@ class _BottomNavigationState extends State<BottomNavigation> {
         context,
         MaterialPageRoute(builder: (context) => CreatePostScreen()),
       );
+    } else {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => CameraScreen()),
+      );
     }
   }
 
@@ -45,9 +51,9 @@ class _BottomNavigationState extends State<BottomNavigation> {
       body: _pages[_selectedTab],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedTab,
-        selectedItemColor: Color(
-            0xFF2B423D), // fixedColor is deprecated, use selectedItemColor
-        unselectedItemColor: Colors.grey,
+        selectedItemColor: AppColors
+            .onSurface, // fixedColor is deprecated, use selectedItemColor
+        unselectedItemColor: AppColors.onSecondary,
         showUnselectedLabels: true,
         onTap: _changeTab,
         items: [
@@ -76,7 +82,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
-                  _selectedTab == 1 ? Icons.add : Icons.camera,
+                  _selectedTab == 1 ? Icons.add : Icons.camera_alt_outlined,
                   size: 24,
                   color: Colors.white,
                 ),
