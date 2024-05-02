@@ -8,7 +8,7 @@ class WeatherProvider with ChangeNotifier {
   get weatherData => _weatherData;
   Future<void> fetchWeather() async {
     var url = Uri.parse(
-        'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/ankara?unitGroup=metric&key=YOUR_API_KEY&contentType=json');
+        'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/ankara?unitGroup=metric&key=E2U5WK3EVD8L6GPJTTAZXGHRZ&contentType=json');
 
     try {
       var response = await http.get(url);

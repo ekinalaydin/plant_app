@@ -4,7 +4,8 @@
     <application
         android:label="plant_app"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:requestLegacyExternalStorage="true">
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -33,6 +34,6 @@
             android:value="2" />
         <meta-data
            android:name="com.google.android.geo.API_KEY"
-           android:value="AIzaSyBhOEdwdJtlAj18YwK8s_wnpdapSBghJTQ" />
+           android:value="AIzaSyB6luLWoosf5PYhPdbGk_MlYjYfeu2f8IE" />
     </application>
 </manifest>
