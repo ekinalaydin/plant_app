@@ -44,10 +44,6 @@ class _BottomNavigationState extends State<BottomNavigation> {
         MaterialPageRoute(builder: (context) => CameraScreen()),
       );
     }
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => CameraScreen()),
-    );
   }
 
   @override

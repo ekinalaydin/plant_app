@@ -93,4 +93,44 @@ class ApiService {
           'Failed to post comment with status code: ${response.statusCode}');
     }
   }
+
+  // GET FAVORITES
+  Future<Map<String, dynamic>> getFavorites(BuildContext context) async {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    final token = userProvider.user?.token;
+    final response = await http.get(
+      Uri.parse('$baseUrl/profile/likes'),
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+    );
+    if (response.statusCode == 200) {
+      var decodedJson = json.decode(utf8.decode(response.bodyBytes));
+      return decodedJson['data'];
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
+
+  // GET MY POSTS
+  Future<Map<String, dynamic>> getMyPosts(BuildContext context) async {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    final token = userProvider.user?.token;
+    print(token);
+    final response = await http.get(
+      Uri.parse('$baseUrl/profile/posts'),
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+    );
+    if (response.statusCode == 200) {
+      var decodedJson = json.decode(utf8.decode(response.bodyBytes));
+      return decodedJson['data'];
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
 }
+//create userin postu
+// profille ilgili seyler
+//

@@ -142,8 +142,8 @@ class _CameraScreenState extends State<CameraScreen> {
                 Text(
                   "Take a photo of your plant! ",
                   style: GoogleFonts.poppins(
-                    fontWeight: FontWeight.w700,
-                    color: Color(0xFF273E39),
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.onSurface,
                   ),
                 ),
               ],
