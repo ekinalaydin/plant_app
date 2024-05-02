@@ -17,7 +17,7 @@ class _CameraScreenState extends State<CameraScreen> {
 
   Future<dynamic> uploadImage(String filePath) async {
     var uri =
-        Uri.parse('https://plant-app-f6e01.uc.r.appspot.com/plant/predict');
+        Uri.parse('https://plantapp-2ee83.ew.r.appspot.com/plant/predict');
     var request = http.MultipartRequest('POST', uri);
 
     request.files.add(await http.MultipartFile.fromPath('image', filePath));

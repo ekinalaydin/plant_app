@@ -50,19 +50,19 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBhOEdwdJtlAj18YwK8s_wnpdapSBghJTQ',
-    appId: '1:228255156537:android:28428e35942887cfb640e8',
-    messagingSenderId: '228255156537',
-    projectId: 'plant-app-f6e01',
-    storageBucket: 'plant-app-f6e01.appspot.com',
+    apiKey: 'AIzaSyDfsWYawYO-Giuc9r6Twzae0KGBREg3Oxg',
+    appId: '1:768714701441:android:a65245188c22b743836b80',
+    messagingSenderId: '768714701441',
+    projectId: 'plantapp-2ee83',
+    storageBucket: 'plantapp-2ee83.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyB9gptboJL9fnh3Zfzqeo7vig57uvZj5gw',
-    appId: '1:228255156537:ios:e1c77b6bd67660abb640e8',
-    messagingSenderId: '228255156537',
-    projectId: 'plant-app-f6e01',
-    storageBucket: 'plant-app-f6e01.appspot.com',
+    apiKey: 'AIzaSyAu0Ebn0AqlOdeZKnCt1NEuhViAqZigZmI',
+    appId: '1:768714701441:ios:792eeeb182c88c46836b80',
+    messagingSenderId: '768714701441',
+    projectId: 'plantapp-2ee83',
+    storageBucket: 'plantapp-2ee83.appspot.com',
     iosBundleId: 'com.example.plantApp',
   );
 
