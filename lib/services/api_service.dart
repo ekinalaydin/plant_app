@@ -6,7 +6,7 @@ import 'package:plant_app/services/user_provider.dart';
 import 'package:provider/provider.dart';
 
 class ApiService {
-  static String baseUrl = 'https://plant-app-dev-422020.ey.r.appspot.com';
+  static String baseUrl = 'https://plantapp-2ee83.ew.r.appspot.com';
 
   // GET ALL POSTS
   Future<Map<String, dynamic>> getAllPosts(BuildContext context) async {

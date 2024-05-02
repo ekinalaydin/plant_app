@@ -138,7 +138,7 @@ class _CardListState extends State<CardList> {
                                 children: [
                                   Text(
                                     "Identifier",
-                                    style: TextStyle(
+                                    style: GoogleFonts.poppins(
                                       fontSize: 24,
                                       fontWeight: FontWeight.w500,
                                       color: Color(0xFF2B423D),
@@ -158,7 +158,8 @@ class _CardListState extends State<CardList> {
                             Icon(
                               Icons
                                   .search, // You can choose an appropriate icon
-                              color: Colors.green[800],
+                              color: Color(0xFF2B826D),
+                              size: 26,
                             ),
                           ],
                         ),
@@ -212,6 +213,7 @@ class _CardListState extends State<CardList> {
                             Icon(
                               Icons.favorite,
                               color: Color(0xFFDF5172),
+                              size: 26,
                             ),
                           ],
                         ),
