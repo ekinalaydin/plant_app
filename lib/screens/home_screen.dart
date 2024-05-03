@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:plant_app/services/user_provider.dart';
+import 'package:plant_app/themes/colors.dart';
 import 'package:plant_app/widgets/card_list.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -27,7 +28,7 @@ class HomeScreen extends StatelessWidget {
           child: AppBar(
             automaticallyImplyLeading:
                 false, // This line removes the back button
-            backgroundColor: Color(0xFFDEF99B),
+            backgroundColor: AppColors.primaryVariant,
             title: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -37,14 +38,14 @@ class HomeScreen extends StatelessWidget {
                   style: GoogleFonts.poppins(
                       fontSize: 23,
                       fontWeight: FontWeight.w500,
-                      color: Color(0xFF2B423D)),
+                      color: AppColors.onSurface),
                 ),
                 Text(
                   "Let’s Learn More About  Your Plants",
                   style: GoogleFonts.poppins(
                       fontSize: 15,
                       fontWeight: FontWeight.normal,
-                      color: Color(0xFF2B423D)),
+                      color: AppColors.onSurface),
                 ),
               ],
             ),

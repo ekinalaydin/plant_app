@@ -2,10 +2,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import 'package:plant_app/screens/login/sign_in_screen.dart';
+
 import 'package:plant_app/screens/profile_screen.dart';
 import 'package:plant_app/screens/user_comments_screen.dart';
 import 'package:plant_app/screens/user_favorites_screen.dart';
 import 'package:plant_app/screens/user_posts.dart';
+
+import 'package:plant_app/themes/colors.dart';
+
 import 'package:plant_app/widgets/user_options_card.dart';
 
 class UserOptionScreen extends StatelessWidget {
@@ -19,13 +25,13 @@ class UserOptionScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.background,
         title: Text(
           'User Profile',
           style: GoogleFonts.poppins(
               fontWeight: FontWeight.w500,
               fontSize: 23,
-              color: Color(0xFF2B423D)),
+              color: AppColors.onSurface),
         ),
       ),
       body: Padding(
@@ -37,7 +43,7 @@ class UserOptionScreen extends StatelessWidget {
               contentPadding: EdgeInsets.only(right: 5, left: 5),
               leading: CircleAvatar(
                 radius: 30,
-                backgroundColor: Color.fromARGB(255, 201, 224, 109),
+                backgroundColor: AppColors.primaryVariant,
               ),
               title: Row(
                 children: [
@@ -46,7 +52,7 @@ class UserOptionScreen extends StatelessWidget {
                     style: GoogleFonts.poppins(
                       fontWeight: FontWeight.w600,
                       fontSize: 18,
-                      color: Color(0xFF2B423D),
+                      color: AppColors.onSurface,
                     ),
                   ),
                   Text("")
@@ -57,7 +63,7 @@ class UserOptionScreen extends StatelessWidget {
                 style: GoogleFonts.poppins(
                   fontWeight: FontWeight.w400,
                   fontSize: 14,
-                  color: Color(0xFF2B423D),
+                  color: AppColors.onSurface,
                 ),
               ),
             ),
@@ -68,15 +74,22 @@ class UserOptionScreen extends StatelessWidget {
                     MaterialPageRoute(builder: (context) => ProfileScreen()),
                   );
                 },
-                child: UserOptionsCard(title: "My Profile Settings")),
+                child: UserOptionsCard(
+                  title: "My Profile Settings",
+                  iconData: Icons.settings,
+                )),
             GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => UserPost()),
-                  );
-                },
-                child: UserOptionsCard(title: "My Posts")),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => UserPost()),
+                );
+              },
+              child: UserOptionsCard(
+                title: "My Posts",
+                iconData: Icons.question_mark_outlined,
+              ),
+            ),
             GestureDetector(
                 onTap: () {
                   Navigator.push(
@@ -85,7 +98,10 @@ class UserOptionScreen extends StatelessWidget {
                         builder: (context) => UserFavoritesScreen()),
                   );
                 },
-                child: UserOptionsCard(title: "My Favorite Posts")),
+                child: UserOptionsCard(
+                  title: "My Favorite Posts",
+                  iconData: Icons.favorite,
+                )),
             GestureDetector(
                 onTap: () {
                   Navigator.push(
@@ -94,7 +110,21 @@ class UserOptionScreen extends StatelessWidget {
                         builder: (context) => UserCommentsScreen()),
                   );
                 },
-                child: UserOptionsCard(title: "My Comments")),
+                child: UserOptionsCard(
+                  title: "My Comments",
+                  iconData: Icons.insert_comment,
+                )),
+            GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => SignInScreen()),
+                  );
+                },
+                child: UserOptionsCard(
+                  title: "Log Out ",
+                  iconData: Icons.logout_sharp,
+                )),
           ],
         ),
       ),

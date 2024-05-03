@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/state_manager.dart';
 
 /// Flutter code sample for [SearchBar].
 

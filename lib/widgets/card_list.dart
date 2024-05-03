@@ -6,6 +6,7 @@ import 'package:plant_app/services/weather_provider.dart';
 import 'package:plant_app/widgets/card.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:plant_app/themes/colors.dart';
 
 class CardList extends StatefulWidget {
   @override
@@ -60,7 +61,7 @@ class _CardListState extends State<CardList> {
                     style: GoogleFonts.poppins(
                       fontSize: 22,
                       fontWeight: FontWeight.w600,
-                      color: Color(0xFF2B423D),
+                      color: AppColors.onSurface,
                     ),
                   ),
                   SizedBox(width: 25),
@@ -96,7 +97,7 @@ class _CardListState extends State<CardList> {
                     style: GoogleFonts.poppins(
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
-                      color: Color(0xFF273E39),
+                      color: AppColors.onSurface,
                     ),
                   ),
                   SizedBox(height: 10),
@@ -114,7 +115,7 @@ class _CardListState extends State<CardList> {
                     style: GoogleFonts.poppins(
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
-                      color: Color(0xFF273E39),
+                      color: AppColors.onSurface,
                     ),
                   ),
                   GestureDetector(
@@ -141,14 +142,14 @@ class _CardListState extends State<CardList> {
                                     style: GoogleFonts.poppins(
                                       fontSize: 24,
                                       fontWeight: FontWeight.w500,
-                                      color: Color(0xFF2B423D),
+                                      color: AppColors.onSurface,
                                     ),
                                   ),
                                   Text(
                                     "Tap to recognize a plant",
                                     style: GoogleFonts.poppins(
                                       fontSize: 14,
-                                      color: Color.fromARGB(255, 76, 106, 99),
+                                      color: AppColors.onSurface,
                                     ),
                                   ),
                                 ],
@@ -181,7 +182,7 @@ class _CardListState extends State<CardList> {
                     child: Container(
                       margin: EdgeInsets.only(top: 10),
                       decoration: BoxDecoration(
-                        color: Color(0xFF9BCA22),
+                        color: AppColors.primary,
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Padding(
@@ -197,14 +198,14 @@ class _CardListState extends State<CardList> {
                                   style: GoogleFonts.poppins(
                                     fontSize: 24,
                                     fontWeight: FontWeight.w500,
-                                    color: Color(0xFFFEFEFD),
+                                    color: AppColors.onPrimary,
                                   ),
                                 ),
                                 Text(
                                   "Take a photo of your plant",
                                   style: GoogleFonts.poppins(
                                     fontSize: 14,
-                                    color: Color(0xFFFEFEFD),
+                                    color: AppColors.onPrimary,
                                   ),
                                 ),
                               ],

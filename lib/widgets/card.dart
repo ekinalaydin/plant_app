@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:plant_app/screens/disease_detection.dart';
+import 'package:plant_app/themes/colors.dart';
 
 class CardWidget extends StatelessWidget {
   const CardWidget({Key? key}) : super(key: key);
@@ -43,7 +44,7 @@ class CardWidget extends StatelessWidget {
                         style: GoogleFonts.poppins(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
-                          color: Color(0xFF2B423D),
+                          color: AppColors.onSurface,
                         ),
                       ),
                       Text(
@@ -51,7 +52,7 @@ class CardWidget extends StatelessWidget {
                         style: GoogleFonts.poppins(
                           fontSize: 15,
                           fontWeight: FontWeight.w300,
-                          color: Color(0xFF2B423D),
+                          color: AppColors.onSurface,
                         ),
                       ),
                     ],
