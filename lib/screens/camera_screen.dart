@@ -16,45 +16,41 @@ class _CameraScreenState extends State<CameraScreen> {
   File? _image;
   final picker = ImagePicker();
 
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-  Future<dynamic> uploadImage(String filePath) async {
-    var uri =
-        Uri.parse('https://plant-app-f6e01.uc.r.appspot.com/plant/predict');
-=======
   Future<dynamic> uploadImage(String filePath, BuildContext context) async {
     var uri = Uri.parse('https://plant-f9a21.ey.r.appspot.com/plant/predict');
->>>>>>> Stashed changes
-=======
-  Future<dynamic> uploadImage(String filePath) async {
-    var uri =
-        Uri.parse('https://plantapp-2ee83.ew.r.appspot.com/plant/predict');
->>>>>>> origin/ekin
     var request = http.MultipartRequest('POST', uri);
 
     request.files.add(await http.MultipartFile.fromPath('image', filePath));
 
     try {
       var response = await request.send();
-      var responseBody = await response.stream.bytesToString();
-
-      List<dynamic> responseList = jsonDecode(responseBody);
-      String label = responseList[0]['label'];
 
       if (response.statusCode == 200) {
-        // Handle successful upload
+        // Decode response if the status is successful
+        var responseBody = await response.stream.bytesToString();
+        List<dynamic> decodedList = jsonDecode(responseBody);
+        List<Map<String, dynamic>> responseList =
+            decodedList.cast<Map<String, dynamic>>();
+
+        // Display success message
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Successfully uploaded image.')),
         );
-        showInformationModal(context, label);
+
+        // Optionally handle multiple results here
+        for (var item in responseList) {
+          showInformationModal(context, item['label']);
+        }
       } else {
-        // Handle server errors or non-200 responses
+        // Handle non-200 status codes
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Image upload failed.')),
+          SnackBar(
+              content: Text(
+                  'Image upload failed with status: ${response.statusCode}.')),
         );
       }
     } catch (e) {
-      // Handle any errors that occur during the upload
+      // Handle errors like network issues
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error: $e')),
       );
@@ -64,17 +60,10 @@ class _CameraScreenState extends State<CameraScreen> {
   void showInformationModal(BuildContext context, String label) {
     showDialog(
       context: context,
-      builder: (BuildContext context) {
+      builder: (context) {
         return AlertDialog(
-          title: Text('Disease Information'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Text(label),
-                // You can include more information from the response here
-              ],
-            ),
-          ),
+          title: Text('Plant Diagnosis'),
+          content: Text(label),
           actions: <Widget>[
             TextButton(
               child: Text('OK'),
@@ -94,7 +83,8 @@ class _CameraScreenState extends State<CameraScreen> {
     setState(() {
       if (pickedFile != null) {
         _image = File(pickedFile.path);
-        uploadImage(pickedFile.path); // Upload the image after it's selected
+        uploadImage(
+            pickedFile.path, context); // Upload the image after it's selected
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -114,7 +104,8 @@ class _CameraScreenState extends State<CameraScreen> {
     setState(() {
       if (pickedFile != null) {
         _image = File(pickedFile.path);
-        uploadImage(pickedFile.path); // Upload the image after it's selected
+        uploadImage(
+            pickedFile.path, context); // Upload the image after it's selected
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -149,11 +140,9 @@ class _CameraScreenState extends State<CameraScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  textAlign: TextAlign.center,
                   "Take a photo of your plant! ",
                   style: GoogleFonts.poppins(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
                     color: Color(0xFF273E39),
                   ),
                 ),
@@ -168,12 +157,12 @@ class _CameraScreenState extends State<CameraScreen> {
                 "No image selected. Please select an image.",
                 style: GoogleFonts.poppins(
                   fontSize: 16,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.w700,
                   color: AppColors.onSurface,
                 ),
               )
             : FutureBuilder(
-                future: uploadImage(_image!.path),
+                future: uploadImage(_image!.path, context),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return CircularProgressIndicator(); // Show CircularProgressIndicator while waiting
@@ -208,11 +197,7 @@ class _CameraScreenState extends State<CameraScreen> {
               backgroundColor: AppColors.primary,
               child: Icon(
                 Icons.camera_alt_outlined,
-<<<<<<< HEAD
                 color: AppColors.onPrimary,
-=======
-                color: Colors.white,
->>>>>>> origin/ekin
               ),
             ),
           ),

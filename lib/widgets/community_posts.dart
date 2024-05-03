@@ -6,6 +6,7 @@ import 'package:plant_app/screens/create_post_screen.dart';
 import 'package:plant_app/screens/post_detail_screen.dart';
 import 'package:plant_app/services/api_service.dart';
 import 'package:plant_app/themes/colors.dart';
+import 'package:plant_app/themes/colors.dart';
 import 'package:plant_app/widgets/post_card.dart';
 
 class PostPage extends StatefulWidget {
@@ -64,10 +65,7 @@ class _PostPageState extends State<PostPage> {
             style: GoogleFonts.poppins(
               fontSize: 23,
               fontWeight: FontWeight.w500,
-<<<<<<< HEAD
               color: AppColors.onSurface,
-=======
->>>>>>> origin/ekin
             ),
           ),
         ),

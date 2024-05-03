@@ -35,4 +35,8 @@ class Post {
         commentCount: json['commentCount'] ?? 0,
         imgUrl: json['imageUrl']);
   }
+  void toggleLike() {
+    isLiked = !isLiked;
+    likeCount += isLiked ? 1 : -1;
+  }
 }

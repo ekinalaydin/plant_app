@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'package:plant_app/screens/camera_screen.dart';
 import 'package:plant_app/services/weather_provider.dart';
 // import 'package:plant_app/screens/home_screen.dart';

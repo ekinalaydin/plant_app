@@ -3,10 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:plant_app/screens/user_posts.dart';
-<<<<<<< HEAD
 import 'package:plant_app/themes/colors.dart';
-=======
->>>>>>> origin/ekin
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -33,7 +30,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-<<<<<<< HEAD
         backgroundColor: AppColors.background,
         title: Text(
           "Profile Settings",
@@ -42,16 +38,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
       ),
       backgroundColor: AppColors.background,
-=======
-        backgroundColor: Colors.white,
-        title: Text(
-          "Profile Settings",
-          style: GoogleFonts.poppins(
-              color: Color(0xFF2B423D), fontWeight: FontWeight.w500),
-        ),
-      ),
-      backgroundColor: Colors.white,
->>>>>>> origin/ekin
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -70,10 +56,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               leading: CircleAvatar(
                 radius: 30,
                 backgroundColor: Color.fromARGB(255, 201, 224, 109),
-<<<<<<< HEAD
-=======
                 backgroundImage: NetworkImage(""),
->>>>>>> origin/ekin
               ),
               title: Row(
                 children: [
@@ -91,16 +74,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
               subtitle: Text(
                 "$_username | $_email | $_occupation | $_city",
                 style: GoogleFonts.poppins(
-<<<<<<< HEAD
                     fontWeight: FontWeight.w400,
                     fontSize: 12.8,
                     color: AppColors.onSurface),
-=======
-                  fontWeight: FontWeight.w400,
-                  fontSize: 12.8,
-                  color: Color.fromRGBO(34, 58, 51, 50),
-                ),
->>>>>>> origin/ekin
               ),
             ),
             Form(
@@ -718,7 +694,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   content: Text(
                     'Password changed successfully.',
                     style: GoogleFonts.poppins(
-                      color: AppColors.onSurface,
+                      color: Color.fromRGBO(34, 58, 51, 40),
                     ),
                   ),
                 ),
@@ -729,7 +705,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
           child: Text(
             "Save Changes",
             style: GoogleFonts.poppins(
-                color: AppColors.onSurface, fontWeight: FontWeight.bold),
+                color: Color.fromRGBO(34, 58, 51, 40),
+                fontWeight: FontWeight.bold),
           ),
         ),
       ),
