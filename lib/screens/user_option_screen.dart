@@ -86,15 +86,15 @@ class UserOptionScreen extends StatelessWidget {
                   );
                 },
                 child: UserOptionsCard(title: "My Favorite Posts")),
-            GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => UserCommentsScreen()),
-                  );
-                },
-                child: UserOptionsCard(title: "My Comments")),
+            // GestureDetector(
+            //     onTap: () {
+            //       Navigator.push(
+            //         context,
+            //         MaterialPageRoute(
+            //             builder: (context) => UserCommentsScreen()),
+            //       );
+            //     },
+            //     child: UserOptionsCard(title: "My Comments")),
           ],
         ),
       ),

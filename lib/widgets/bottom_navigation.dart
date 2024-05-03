@@ -36,68 +36,78 @@ class _BottomNavigationState extends State<BottomNavigation> {
         context,
         MaterialPageRoute(builder: (context) => CreatePostScreen()),
       );
+    } else {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => CameraScreen()),
+      );
     }
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => CameraScreen()),
-    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _pages[_selectedTab],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedTab,
-        selectedItemColor: Color(
-            0xFF2B423D), // fixedColor is deprecated, use selectedItemColor
-        unselectedItemColor: Colors.grey,
-        showUnselectedLabels: true,
-        onTap: _changeTab,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
+        body: _pages[_selectedTab],
+        bottomNavigationBar: Theme(
+          data: Theme.of(context).copyWith(
+            splashColor: Colors.transparent, // Making splash color transparent
+            highlightColor:
+                Colors.transparent, // Making highlight color transparent
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.people_alt_rounded),
-            label: 'Community',
-          ),
-          BottomNavigationBarItem(
-            icon: InkWell(
-              onTap: () => _onCameraButtonPressed(),
-              borderRadius: BorderRadius.circular(24),
-              child: Container(
-                width: 48,
-                height: 48,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Color(0xFF87BB17), // Inner color
-                      Color(0xFFB4DC30), // Outer color
-                    ],
-                  ),
-                  shape: BoxShape.circle,
+          child: BottomNavigationBar(
+            currentIndex: _selectedTab,
+            selectedItemColor: Color(
+                0xFF2B423D), // fixedColor is deprecated, use selectedItemColor
+            unselectedItemColor: Colors.grey,
+            showUnselectedLabels: true,
+            type: BottomNavigationBarType.fixed,
+            onTap: _changeTab,
+            items: [
+              BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.home,
                 ),
-                child: Icon(
-                  _selectedTab == 1 ? Icons.add : Icons.camera_alt_outlined,
-                  size: 24,
-                  color: Colors.white,
-                ),
+                label: 'Home',
               ),
-            ),
-            label: '',
+              BottomNavigationBarItem(
+                icon: Icon(Icons.people_alt_rounded),
+                label: 'Community',
+              ),
+              BottomNavigationBarItem(
+                icon: InkWell(
+                  onTap: () => _onCameraButtonPressed(),
+                  borderRadius: BorderRadius.circular(24),
+                  child: Container(
+                    width: 48,
+                    height: 48,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          Color(0xFF87BB17), // Inner color
+                          Color(0xFFB4DC30), // Outer color
+                        ],
+                      ),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      _selectedTab == 1 ? Icons.add : Icons.camera_alt_outlined,
+                      size: 24,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                label: '',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.map_rounded),
+                label: 'Map',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.person),
+                label: 'Profile',
+              ),
+            ],
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.map_rounded),
-            label: 'Map',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
-          ),
-        ],
-      ),
-    );
+        ));
   }
 }
