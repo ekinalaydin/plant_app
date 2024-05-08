@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:plant_app/screens/user_posts.dart';
+import 'package:plant_app/services/api_service.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -14,16 +15,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String? authorProfileImage;
   String? _name = "Nazli";
   String? _surname = "Ozer";
-  String? _username = "nazliozer";
-  String? _email = "nazli@gmail.com";
-  String? _password;
-  String? _city = "Ankara";
-  String? _occupation = "Student";
-  String? _gender = "Female";
+  late String? _username = "";
+  late String? _email = "";
+  late String? _city = "";
+  late String? _occupation = "";
+  late String? _gender = "";
   TextEditingController oldPasswordController = TextEditingController();
   TextEditingController newPasswordController = TextEditingController();
   final TextStyle buttonTextStyle = GoogleFonts.poppins(
       color: Color.fromRGBO(34, 58, 51, 40), fontWeight: FontWeight.bold);
+
+  @override
+  void initState() {
+    super.initState();
+    ApiService().getProfile(context).then((data) => setState(() {
+          _username = data['username'];
+          _email = data['email'];
+          _city = data['city'];
+          _occupation = data['occupation'];
+          _gender = data['gender'];
+        }));
+  }
 
   @override
   Widget build(BuildContext context) {

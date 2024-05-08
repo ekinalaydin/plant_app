@@ -137,4 +137,22 @@ class ApiService {
       throw Exception('Failed to load data');
     }
   }
+
+  Future<Map<String, dynamic>> getProfile(BuildContext context) async {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    final token = userProvider.user?.token;
+    print(token);
+    final response = await http.get(
+      Uri.parse('$baseUrl/profile/'),
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+    );
+    if (response.statusCode == 200) {
+      var decodedJson = json.decode(utf8.decode(response.bodyBytes));
+      return decodedJson;
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
 }
