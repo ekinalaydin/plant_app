@@ -1,8 +1,6 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:plant_app/screens/user_posts.dart';
 import 'package:plant_app/services/api_service.dart';
 
 class ProfileScreen extends StatefulWidget {

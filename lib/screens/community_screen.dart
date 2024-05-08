@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:plant_app/widgets/community_posts.dart';
-import 'package:plant_app/services/api_service.dart'; // Make sure to import your ApiService
-import 'dart:convert' show utf8;
 
 class CommunityScreen extends StatefulWidget {
   @override

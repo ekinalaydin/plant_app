@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:plant_app/screens/disease_detection.dart';
 import 'package:plant_app/themes/colors.dart';
 import 'package:plant_app/services/api_service.dart';
+import 'package:intl/intl.dart';
 
 class CardWidget extends StatelessWidget {
   const CardWidget({Key? key}) : super(key: key);
@@ -21,20 +22,17 @@ class CardWidget extends StatelessWidget {
           color: Color(0xFFF8F9F9),
           child: Padding(
             padding: const EdgeInsets.all(6.0),
-            child: FutureBuilder<Map<String, dynamic>>(
+            child: FutureBuilder<List<dynamic>>(
               future: ApiService().getMyHistory(context),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return CircularProgressIndicator();
                 } else if (snapshot.hasError) {
                   return Text('Error: ${snapshot.error}');
-                } else {
-                  final historyData = snapshot.data ?? {};
-                  final String diseaseName =
-                      historyData['responses'][0]['label'];
-                  final String date = DateTime.parse(historyData['dateTime'])
-                      .toString(); // Format the date as needed
-
+                } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                  final historyData = snapshot.data!.first;
+                  final String diseaseName = historyData['responses'][0]['label'];
+                  final String date = DateFormat('yyyy-MM-dd').format(DateTime.parse(historyData['dateTime']));
                   return Row(
                     children: [
                       CircleAvatar(
@@ -50,26 +48,28 @@ class CardWidget extends StatelessWidget {
                         ),
                       ),
                       SizedBox(width: 16),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Disease Name: $diseaseName',
-                            style: GoogleFonts.poppins(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              color: AppColors.onSurface,
+                      Expanded( // Using Expanded to avoid overflow
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Disease Name: $diseaseName',
+                              style: GoogleFonts.poppins(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                                color: AppColors.onSurface,
+                              ),
                             ),
-                          ),
-                          Text(
-                            'Date: $date',
-                            style: GoogleFonts.poppins(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w300,
-                              color: AppColors.onSurface,
+                            Text(
+                              'Date: $date',
+                              style: GoogleFonts.poppins(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w300,
+                                color: AppColors.onSurface,
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                       IconButton(
                         iconSize: 32,
@@ -77,9 +77,7 @@ class CardWidget extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => Builder(
-                                builder: (context) => DiseaseDetection(),
-                              ),
+                              builder: (context) => DiseaseDetection(),
                             ),
                           );
                         },
@@ -90,6 +88,8 @@ class CardWidget extends StatelessWidget {
                       ),
                     ],
                   );
+                } else {
+                  return Text("No history available");
                 }
               },
             ),

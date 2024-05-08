@@ -140,20 +140,18 @@ class ApiService {
   }
 
   //GET HISTORY
-  Future<Map<String, dynamic>> getMyHistory(BuildContext context) async {
+  Future<List<dynamic>> getMyHistory(BuildContext context) async {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     final token = userProvider.user?.token;
     final response = await http.get(
-      Uri.parse('$baseUrl/history'),
+      Uri.parse('$baseUrl/history/'),
       headers: {
         'Authorization': 'Bearer $token',
       },
     );
-    print(response.statusCode);
     if (response.statusCode == 200) {
       var decodedJson = json.decode(utf8.decode(response.bodyBytes));
-      print(decodedJson['data']);
-      return decodedJson['data'];
+      return decodedJson;
     } else {
       throw Exception('Failed to load data');
     }
