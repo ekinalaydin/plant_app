@@ -12,7 +12,10 @@ class CardWidget extends StatelessWidget {
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => DiseaseDetection()),
+            MaterialPageRoute(
+                builder: (context) => DiseaseDetection(
+                      data: {},
+                    )),
           );
         },
         child: Card(
@@ -64,7 +67,9 @@ class CardWidget extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (context) => Builder(
-                          builder: (context) => DiseaseDetection(),
+                          builder: (context) => DiseaseDetection(
+                            data: {},
+                          ),
                         ),
                       ),
                     );
