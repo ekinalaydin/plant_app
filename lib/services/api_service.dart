@@ -16,10 +16,8 @@ class ApiService {
     print(userId);
     final response =
         await http.get(Uri.parse('$baseUrl/posts/?userId=$userId'));
-    print(('$baseUrl/posts/?userId=$userId'));
     if (response.statusCode == 200) {
       var decodedJson = json.decode(utf8.decode(response.bodyBytes));
-      print(decodedJson);
       return decodedJson['data'];
     } else {
       throw Exception('Failed to load data');
@@ -29,10 +27,8 @@ class ApiService {
   // GET POST BY ID
   Future<Map<String, dynamic>> getPostById(int id) async {
     final response = await http.get(Uri.parse('$baseUrl/posts/$id'));
-
     if (response.statusCode == 200) {
       var decodedJson = json.decode(utf8.decode(response.bodyBytes));
-      print(decodedJson);
       return decodedJson['data'];
     } else {
       throw Exception('Failed to load data');
@@ -56,13 +52,11 @@ class ApiService {
       },
     );
 
-
-    if (response.statusCode != 200) {
-      throw Exception(
-          'Failed to load data with status code: ${response.statusCode}'); }
     if (response.statusCode == 200) {
       // If the request is successful, return the updated liked post
       return json.decode(utf8.decode(response.bodyBytes));
+    } else {
+      throw Exception('Failed to like post');
     }
   }
 
@@ -86,6 +80,7 @@ class ApiService {
 
   // POST COMMENT
   Future<void> postComment(int id, BuildContext context, String text) async {
+    // Retrieve the userProvider using the context provided
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     final token = userProvider.user?.token;
 
@@ -212,69 +207,10 @@ class ApiService {
 
     final response = await http.Response.fromStream(await request.send());
 
-    if (response.statusCode == 401) {
-      throw Exception('Authentication failed. Please login again.');
-    } else if (response.statusCode == 403) {
-      throw Exception('You do not have permission to post comments.');
-    } else if (response.statusCode < 200 || response.statusCode > 299) {
+    // Consider handling other successful status codes or using a range check
+    if (response.statusCode < 200 || response.statusCode > 299) {
       throw Exception(
           'Failed to post comment with status code: ${response.statusCode}');
-    }
-  }
-
-  // GET FAVORITES
-  Future<Map<String, dynamic>> getFavorites(BuildContext context) async {
-    final userProvider = Provider.of<UserProvider>(context, listen: false);
-    final token = userProvider.user?.token;
-    final response = await http.get(
-      Uri.parse('$baseUrl/profile/likes'),
-      headers: {
-        'Authorization': 'Bearer $token',
-      },
-    );
-    if (response.statusCode == 200) {
-      var decodedJson = json.decode(utf8.decode(response.bodyBytes));
-      print(decodedJson);
-      return decodedJson['data'];
-    } else {
-      throw Exception('Failed to load data');
-    }
-  }
-
-  // GET MY POSTS
-  Future<Map<String, dynamic>> getMyPosts(BuildContext context) async {
-    final userProvider = Provider.of<UserProvider>(context, listen: false);
-    final token = userProvider.user?.token;
-    print(token);
-    final response = await http.get(
-      Uri.parse('$baseUrl/profile/posts'),
-      headers: {
-        'Authorization': 'Bearer $token',
-      },
-    );
-    if (response.statusCode == 200) {
-      var decodedJson = json.decode(utf8.decode(response.bodyBytes));
-      return decodedJson['data'];
-    } else {
-      throw Exception('Failed to load data');
-    }
-  }
-
-  Future<Map<String, dynamic>> getProfile(BuildContext context) async {
-    final userProvider = Provider.of<UserProvider>(context, listen: false);
-    final token = userProvider.user?.token;
-    print(token);
-    final response = await http.get(
-      Uri.parse('$baseUrl/profile/'),
-      headers: {
-        'Authorization': 'Bearer $token',
-      },
-    );
-    if (response.statusCode == 200) {
-      var decodedJson = json.decode(utf8.decode(response.bodyBytes));
-      return decodedJson;
-    } else {
-      throw Exception('Failed to load data');
     }
   }
 }

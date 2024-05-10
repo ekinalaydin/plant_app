@@ -206,7 +206,7 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                                     ),
                               focusedBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(
-                                    color: AppColors.darkGreen,
+                                    color: AppColors.onSurface,
                                     width: 2.0), // Focus state
                               ),
                             ),

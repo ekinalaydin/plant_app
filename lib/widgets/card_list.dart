@@ -119,57 +119,6 @@ class _CardListState extends State<CardList> {
                   ),
                   GestureDetector(
                     onTap: () {
-
-                      // Navigator.push to Identifier screen
-                    },
-                    child: Container(
-                      margin: EdgeInsets.only(top: 10),
-                      decoration: BoxDecoration(
-                        color: Color(0xFFDEF99B),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            GestureDetector(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Identifier",
-                                    style: GoogleFonts.poppins(
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.w500,
-                                      color: AppColors.onSurface,
-                                    ),
-                                  ),
-                                  Text(
-                                    "Tap to recognize a plant",
-                                    style: GoogleFonts.poppins(
-                                      fontSize: 14,
-                                      color: AppColors.onSurface,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            SizedBox(width: 10),
-                            Icon(
-                              Icons
-                                  .search, // You can choose an appropriate icon
-                              color: Color(0xFF2B826D),
-                              size: 26,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 10), // Spacing between buttons
-                  GestureDetector(
-                    onTap: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
