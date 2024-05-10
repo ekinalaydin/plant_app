@@ -1,9 +1,8 @@
 import 'dart:convert';
-import 'dart:js';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:plant_app/models/comment.dart';
-import 'package:plant_app/services/post_provider.dart';
 import 'package:plant_app/services/user_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -175,13 +174,38 @@ class ApiService {
     }
   }
 
-  Future<void> postCommunity(int id, BuildContext context, String text) async {
+  Future<void> postCommunity(
+      BuildContext context, String title, String content, File? image) async {
     // Retrieve the userProvider using the context provided
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     final token = userProvider.user?.token;
 
-    final response = await http.post(Uri.parse('$baseUrl/posts/'),
-        headers: {'Authorization': 'Bearer $token'}, body: {'text': text});
+    final request = http.MultipartRequest(
+      'POST',
+      Uri.parse('$baseUrl/posts/'),
+    );
+
+    // Add token to headers
+    request.headers['Authorization'] = 'Bearer $token';
+
+    // Add title and content fields
+    request.fields['title'] = title;
+    request.fields['content'] = content;
+
+    // Add image if available
+    if (image != null) {
+      final fileStream = http.ByteStream(image.openRead());
+      final length = await image.length();
+      final multipartFile = http.MultipartFile(
+        'image',
+        fileStream,
+        length,
+        filename: image.path.split('/').last,
+      );
+      request.files.add(multipartFile);
+    }
+
+    final response = await http.Response.fromStream(await request.send());
 
     // Consider handling other successful status codes or using a range check
     if (response.statusCode < 200 || response.statusCode > 299) {
