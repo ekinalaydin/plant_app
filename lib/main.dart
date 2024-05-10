@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:plant_app/screens/login/sign_in_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:plant_app/services/post_provider.dart';
+import 'package:plant_app/themes/colors.dart';
 import 'firebase_options.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -19,6 +21,7 @@ void main() async {
       providers: [
         ChangeNotifierProvider(create: (_) => WeatherProvider()),
         ChangeNotifierProvider(create: (_) => UserProvider()),
+        ChangeNotifierProvider(create: (_) => PostProvider()),
       ],
       child: MyApp(),
     ),
@@ -50,7 +53,8 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       title: 'Namer App',
       theme: ThemeData(
-        scaffoldBackgroundColor: Colors.white,
+        scaffoldBackgroundColor: AppColors.background,
+        appBarTheme: AppBarTheme(backgroundColor: AppColors.background),
         useMaterial3: true,
         textSelectionTheme: TextSelectionThemeData(
           cursorColor: Colors.black,

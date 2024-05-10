@@ -9,6 +9,7 @@ class DetailsWidget extends StatefulWidget {
   final int postId;
   final String postTitle;
   final String postBody;
+
   final String authorName;
   final String authorProfileImage;
   final DateTime postDate;

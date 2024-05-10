@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
+import 'package:plant_app/themes/colors.dart';
 
 // Import the DiseaseDetection screen
 import 'disease_detection.dart';
@@ -69,7 +70,12 @@ class _CameraScreenState extends State<CameraScreen> {
             pickedFile.path, context); // Upload the image after it's selected
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('No image selected from camera.')),
+          SnackBar(
+            content: Text(
+              'No image selected from camera.',
+              style: GoogleFonts.poppins(color: AppColors.onSurface),
+            ),
+          ),
         );
       }
     });
@@ -85,7 +91,12 @@ class _CameraScreenState extends State<CameraScreen> {
             pickedFile.path, context); // Upload the image after it's selected
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('No image selected from gallery.')),
+          SnackBar(
+            content: Text(
+              'No image selected from gallery.',
+              style: GoogleFonts.poppins(color: AppColors.onSurface),
+            ),
+          ),
         );
       }
     });
@@ -95,25 +106,30 @@ class _CameraScreenState extends State<CameraScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(90.0),
+        preferredSize: const Size.fromHeight(79.0), // here the desired height
         child: Container(
           decoration: BoxDecoration(
             boxShadow: [
               BoxShadow(
-                color: Color.fromARGB(255, 84, 87, 81),
+                color: AppColors.secondaryVariant,
                 blurRadius: 20.0,
               ),
             ],
           ),
           child: AppBar(
-            backgroundColor: Color(0xFFDEF99B),
-            title: Text(
-              "Take a photo of your plant!",
-              style: GoogleFonts.poppins(
-                fontWeight: FontWeight.w700,
-                fontSize: 20,
-                color: Color(0xFF273E39),
-              ),
+            backgroundColor: AppColors.primaryVariant,
+            title: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Take a photo of your plant! ",
+                  style: GoogleFonts.poppins(
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.onSurface,
+                  ),
+                ),
+              ],
             ),
           ),
         ),
@@ -123,9 +139,9 @@ class _CameraScreenState extends State<CameraScreen> {
             ? Text(
                 "No image selected. Please select an image.",
                 style: GoogleFonts.poppins(
-                  fontSize: 15,
+                  fontSize: 16,
                   fontWeight: FontWeight.w700,
-                  color: Color(0xFF273E39),
+                  color: AppColors.onSurface,
                 ),
               )
             : Image.file(
@@ -144,10 +160,10 @@ class _CameraScreenState extends State<CameraScreen> {
               heroTag: 'camera_fab',
               onPressed: getImageFromCamera,
               tooltip: 'Take a Photo',
-              backgroundColor: Color(0xFF9BCA22),
+              backgroundColor: AppColors.primary,
               child: Icon(
                 Icons.camera_alt_outlined,
-                color: Colors.white,
+                color: AppColors.onPrimary,
               ),
             ),
           ),
@@ -159,10 +175,10 @@ class _CameraScreenState extends State<CameraScreen> {
               heroTag: 'gallery_fab',
               onPressed: getImageFromGallery,
               tooltip: 'Choose from Gallery',
-              backgroundColor: Color(0xFF9BCA22),
+              backgroundColor: AppColors.primary,
               child: Icon(
                 Icons.photo_library,
-                color: Colors.white,
+                color: AppColors.onPrimary,
               ),
             ),
           ),

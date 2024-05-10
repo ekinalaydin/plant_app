@@ -1,6 +1,5 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:plant_app/screens/user_posts.dart';
 import 'package:plant_app/services/api_service.dart';
@@ -13,13 +12,22 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   final _formKey = GlobalKey<FormState>();
   String? authorProfileImage;
-  String? _name = "Nazli";
-  String? _surname = "Ozer";
+  late String? _name = "";
+  late String? _surname = "";
   late String? _username = "";
   late String? _email = "";
   late String? _city = "";
   late String? _occupation = "";
   late String? _gender = "";
+  
+  TextEditingController nameController = TextEditingController();
+  TextEditingController surnameController = TextEditingController();
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController cityController = TextEditingController();
+  TextEditingController occupationController = TextEditingController();
+  TextEditingController genderController = TextEditingController();
+
   TextEditingController oldPasswordController = TextEditingController();
   TextEditingController newPasswordController = TextEditingController();
   final TextStyle buttonTextStyle = GoogleFonts.poppins(
@@ -28,13 +36,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     super.initState();
-    ApiService().getProfile(context).then((data) => setState(() {
-          _username = data['username'];
-          _email = data['email'];
-          _city = data['city'];
-          _occupation = data['occupation'];
-          _gender = data['gender'];
-        }));
+    
+    ApiService().getProfile(context).then((data) {
+      setState(() {
+        _username = data['username'];
+        _email = data['email'];
+        _city = data['city'];
+        _occupation = data['occupation'];
+        _gender = data['gender'];
+
+        // Initialize the controllers with the retrieved data
+        usernameController.text = _username ?? '';
+        emailController.text = _email ?? '';
+        cityController.text = _city ?? '';
+        occupationController.text = _occupation ?? '';
+        genderController.text = _gender ?? '';
+      });
+    }).catchError((error) {
+      // Handle any errors that occur during the API call
+      print('Error fetching profile data: $error');
+    });
   }
 
   @override
@@ -67,7 +88,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               leading: CircleAvatar(
                 radius: 30,
                 backgroundColor: Color.fromARGB(255, 201, 224, 109),
-                backgroundImage: NetworkImage(""),
+                // backgroundImage: NetworkImage(""),
               ),
               title: Row(
                 children: [
@@ -146,47 +167,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ],
                               ),
                             ),
-                            // SizedBox(width: 6.0),
-                            // Expanded(
-                            //   child: Column(
-                            //     crossAxisAlignment: CrossAxisAlignment.start,
-                            //     children: [
-                            //       Text(
-                            //         'Surname',
-                            //         style: GoogleFonts.poppins(
-                            //             color: Color.fromRGBO(34, 58, 51, 40),
-                            //             fontWeight: FontWeight.bold,
-                            //             fontSize: 14),
-                            //       ),
-                            //       SizedBox(height: 4),
-                            //       SizedBox(
-                            //         height: 50,
-                            //         child: TextFormField(
-                            //           textAlign: TextAlign.start,
-                            //           cursorHeight: 20,
-                            //           decoration: InputDecoration(
-                            //             hintText: "$_surname",
-                            //             alignLabelWithHint: true,
-                            //             hintStyle: GoogleFonts.poppins(),
-                            //             border: OutlineInputBorder(
-                            //               borderRadius:
-                            //                   BorderRadius.circular(10.0),
-                            //             ),
-                            //             focusedBorder: OutlineInputBorder(
-                            //               borderRadius:
-                            //                   BorderRadius.circular(10.0),
-                            //               borderSide: BorderSide(
-                            //                 color: Colors.black,
-                            //                 width: 2.0,
-                            //               ),
-                            //             ),
-                            //             contentPadding: EdgeInsets.all(9),
-                            //           ),
-                            //         ),
-                            //       ),
-                            //     ],
-                            //   ),
-                            // ),
                           ],
                         ),
                       ),

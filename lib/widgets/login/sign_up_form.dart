@@ -1,8 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:dropdown_search/dropdown_search.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:plant_app/helpers/screen_size_helper.dart';
 import 'package:plant_app/services/user_provider.dart';
+import 'package:plant_app/themes/colors.dart';
 import 'package:plant_app/widgets/bottom_navigation.dart';
 import 'package:flutter_verification_code/flutter_verification_code.dart';
 import 'package:provider/provider.dart';
@@ -54,14 +56,16 @@ class _SignUpFormState extends State<SignUpForm> {
                     children: [
                       Text(
                         'Hello',
-                        style: TextStyle(
+                        style: GoogleFonts.poppins(
+                          color: AppColors.onSurface,
                           fontSize: screenWidth / 16,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       Text(
                         "Let's Learn More About Plants",
-                        style: TextStyle(
+                        style: GoogleFonts.poppins(
+                          color: AppColors.onSurface,
                           fontSize: screenWidth / 22,
                           fontWeight: FontWeight.w500,
                         ),
@@ -79,7 +83,8 @@ class _SignUpFormState extends State<SignUpForm> {
                     child: TextFormField(
                       decoration: InputDecoration(
                         labelText: 'Name*',
-                        labelStyle: TextStyle(color: Colors.black),
+                        labelStyle:
+                            GoogleFonts.poppins(color: AppColors.onSurface),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10.0),
                         ),
@@ -93,7 +98,7 @@ class _SignUpFormState extends State<SignUpForm> {
                         errorBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10.0),
                           borderSide: BorderSide(
-                            color: Colors.red,
+                            color: AppColors.onError,
                             width: 2.0,
                           ),
                         ),
@@ -114,21 +119,22 @@ class _SignUpFormState extends State<SignUpForm> {
                     child: TextFormField(
                       decoration: InputDecoration(
                         labelText: 'Surname*',
-                        labelStyle: TextStyle(color: Colors.black),
+                        labelStyle:
+                            GoogleFonts.poppins(color: AppColors.onSurface),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10.0),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10.0),
                           borderSide: BorderSide(
-                            color: Colors.black,
+                            color: AppColors.onSurface,
                             width: 2.0,
                           ),
                         ),
                         errorBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10.0),
                           borderSide: BorderSide(
-                            color: Colors.red,
+                            color: AppColors.onError,
                             width: 2.0,
                           ),
                         ),
@@ -150,21 +156,21 @@ class _SignUpFormState extends State<SignUpForm> {
             TextFormField(
               decoration: InputDecoration(
                 labelText: 'Username*',
-                labelStyle: TextStyle(color: Colors.black),
+                labelStyle: GoogleFonts.poppins(color: AppColors.onSurface),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10.0),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10.0),
                   borderSide: BorderSide(
-                    color: Colors.black,
+                    color: AppColors.onSurface,
                     width: 2.0,
                   ),
                 ),
                 errorBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10.0),
                   borderSide: BorderSide(
-                    color: Colors.red,
+                    color: AppColors.onError,
                     width: 2.0,
                   ),
                 ),
@@ -183,21 +189,21 @@ class _SignUpFormState extends State<SignUpForm> {
             TextFormField(
               decoration: InputDecoration(
                 labelText: 'E-mail*',
-                labelStyle: TextStyle(color: Colors.black),
+                labelStyle: GoogleFonts.poppins(color: AppColors.onSurface),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10.0),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10.0),
                   borderSide: BorderSide(
-                    color: Colors.black,
+                    color: AppColors.onSurface,
                     width: 2.0,
                   ),
                 ),
                 errorBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10.0),
                   borderSide: BorderSide(
-                    color: Colors.red,
+                    color: AppColors.onError,
                     width: 2.0,
                   ),
                 ),
@@ -217,21 +223,21 @@ class _SignUpFormState extends State<SignUpForm> {
               decoration: InputDecoration(
                 labelText: 'Password*',
                 helperText: 'Your password must be between 4-12 characters.',
-                labelStyle: TextStyle(color: Colors.black),
+                labelStyle: GoogleFonts.poppins(color: AppColors.onSurface),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10.0),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10.0),
                   borderSide: BorderSide(
-                    color: Colors.black,
+                    color: AppColors.onSurface,
                     width: 2.0,
                   ),
                 ),
                 errorBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10.0),
                   borderSide: BorderSide(
-                    color: Colors.red,
+                    color: AppColors.onError,
                     width: 2.0,
                   ),
                 ),
@@ -260,21 +266,22 @@ class _SignUpFormState extends State<SignUpForm> {
               dropdownDecoratorProps: DropDownDecoratorProps(
                 dropdownSearchDecoration: InputDecoration(
                   hintText: 'City',
-                  labelStyle: TextStyle(color: Colors.black),
+                  hintStyle: GoogleFonts.poppins(color: AppColors.onSurface),
+                  labelStyle: GoogleFonts.poppins(color: AppColors.onSurface),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
                     borderSide: BorderSide(
-                      color: Colors.black,
+                      color: AppColors.onSurface,
                       width: 2.0,
                     ),
                   ),
                   errorBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
                     borderSide: BorderSide(
-                      color: Colors.red,
+                      color: AppColors.onError,
                       width: 2.0,
                     ),
                   ),
@@ -380,7 +387,7 @@ class _SignUpFormState extends State<SignUpForm> {
             TextFormField(
               decoration: InputDecoration(
                 labelText: 'Occupation',
-                labelStyle: TextStyle(color: Colors.black),
+                labelStyle: GoogleFonts.poppins(color: AppColors.onSurface),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10.0),
                 ),
@@ -394,7 +401,7 @@ class _SignUpFormState extends State<SignUpForm> {
                 errorBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10.0),
                   borderSide: BorderSide(
-                    color: Colors.red,
+                    color: AppColors.onError,
                     width: 2.0,
                   ),
                 ),
@@ -408,21 +415,22 @@ class _SignUpFormState extends State<SignUpForm> {
               dropdownDecoratorProps: DropDownDecoratorProps(
                 dropdownSearchDecoration: InputDecoration(
                   hintText: 'Gender',
-                  labelStyle: TextStyle(color: Colors.black),
+                  hintStyle: GoogleFonts.poppins(color: AppColors.onSurface),
+                  labelStyle: GoogleFonts.poppins(color: AppColors.onSurface),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
                     borderSide: BorderSide(
-                      color: Colors.black,
+                      color: AppColors.onSurface,
                       width: 2.0,
                     ),
                   ),
                   errorBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
                     borderSide: BorderSide(
-                      color: Colors.red,
+                      color: AppColors.onError,
                       width: 2.0,
                     ),
                   ),
@@ -462,7 +470,7 @@ class _SignUpFormState extends State<SignUpForm> {
                   }
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xFF2DDA53),
+                  backgroundColor: AppColors.primary,
                   elevation: 5,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10.0),
@@ -470,8 +478,8 @@ class _SignUpFormState extends State<SignUpForm> {
                 ),
                 child: Text(
                   'Sign Up',
-                  style: TextStyle(
-                      color: Colors.white,
+                  style: GoogleFonts.poppins(
+                      color: AppColors.onPrimary,
                       fontSize: screenWidth / 24,
                       fontWeight: FontWeight.w700),
                 ),

@@ -6,6 +6,8 @@ import 'package:plant_app/screens/home_screen.dart';
 import 'package:plant_app/screens/map_screen.dart';
 import 'package:plant_app/screens/user_option_screen.dart';
 
+import 'package:plant_app/themes/colors.dart';
+
 class BottomNavigation extends StatefulWidget {
   BottomNavigation({Key? key}) : super(key: key);
 
@@ -47,12 +49,18 @@ class _BottomNavigationState extends State<BottomNavigation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: _pages[_selectedTab],
-        bottomNavigationBar: Theme(
-          data: Theme.of(context).copyWith(
-            splashColor: Colors.transparent, // Making splash color transparent
-            highlightColor:
-                Colors.transparent, // Making highlight color transparent
+      body: _pages[_selectedTab],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedTab,
+        selectedItemColor: AppColors
+            .onSurface, // fixedColor is deprecated, use selectedItemColor
+        unselectedItemColor: AppColors.onSecondary,
+        showUnselectedLabels: true,
+        onTap: _changeTab,
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
           ),
           child: BottomNavigationBar(
             currentIndex: _selectedTab,

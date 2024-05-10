@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:plant_app/screens/login/forgot_password_screen.dart';
 import 'package:plant_app/screens/login/sign_up_screen.dart';
 import 'package:plant_app/helpers/screen_size_helper.dart';
@@ -43,6 +44,7 @@ class _SignInFormState extends State<SignInForm> {
     final double screenHeight = ScreenSizeHelper.getScreenHeight(context);
 
     return Scaffold(
+      backgroundColor: AppColors.background,
       key: _formKey,
       body: SingleChildScrollView(
         child: Center(
@@ -71,14 +73,16 @@ class _SignInFormState extends State<SignInForm> {
                       children: [
                         Text(
                           'Hello',
-                          style: TextStyle(
+                          style: GoogleFonts.poppins(
+                            color: AppColors.onSurface,
                             fontSize: screenWidth / 16,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         Text(
                           "Let's Learn More About Plants",
-                          style: TextStyle(
+                          style: GoogleFonts.poppins(
+                            color: AppColors.onSurface,
                             fontSize: screenWidth / 22,
                             fontWeight: FontWeight.w500,
                           ),
@@ -92,21 +96,23 @@ class _SignInFormState extends State<SignInForm> {
                 controller: _emailController,
                 decoration: InputDecoration(
                   labelText: 'E-mail or Username*',
-                  labelStyle: TextStyle(color: Colors.black),
+                  labelStyle: GoogleFonts.poppins(
+                    color: AppColors.onSurface,
+                  ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
                     borderSide: BorderSide(
-                      color: Colors.black,
+                      color: AppColors.onSurface,
                       width: 2.0,
                     ),
                   ),
                   errorBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
                     borderSide: BorderSide(
-                      color: Colors.red,
+                      color: AppColors.onError,
                       width: 2.0,
                     ),
                   ),
@@ -128,21 +134,23 @@ class _SignInFormState extends State<SignInForm> {
                 decoration: InputDecoration(
                   labelText: 'Password*',
                   helperText: 'Your password must be between 4-12 characters',
-                  labelStyle: TextStyle(color: Colors.black),
+                  labelStyle: GoogleFonts.poppins(
+                    color: AppColors.onSurface,
+                  ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
                     borderSide: BorderSide(
-                      color: Colors.black,
+                      color: AppColors.onSurface,
                       width: 2.0,
                     ),
                   ),
                   errorBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
                     borderSide: BorderSide(
-                      color: Colors.red,
+                      color: AppColors.onError,
                       width: 2.0,
                     ),
                   ),
@@ -173,12 +181,17 @@ class _SignInFormState extends State<SignInForm> {
                     fillColor:
                         MaterialStateProperty.resolveWith<Color?>((states) {
                       if (states.contains(MaterialState.selected)) {
-                        return Color(0xFF2DDA53); // Seçili durumda kutu rengi
+                        return AppColors.primary; // Seçili durumda kutu rengi
                       }
                       return Colors.transparent; // Diğer durumlarda kutu rengi
                     }),
                   ),
-                  Text('Remember me'),
+                  Text(
+                    'Remember me',
+                    style: GoogleFonts.poppins(
+                      color: AppColors.onSurface,
+                    ),
+                  ),
                 ],
               ),
               Row(
@@ -196,8 +209,8 @@ class _SignInFormState extends State<SignInForm> {
                     },
                     child: Text(
                       "Forgot password?",
-                      style: TextStyle(
-                          color: Colors.black,
+                      style: GoogleFonts.poppins(
+                          color: AppColors.onSurface,
                           decoration: TextDecoration.underline,
                           fontSize: screenWidth / 30),
                     ),
@@ -226,8 +239,8 @@ class _SignInFormState extends State<SignInForm> {
                         ),
                         child: Text(
                           'Log In',
-                          style: TextStyle(
-                              color: Colors.white,
+                          style: GoogleFonts.poppins(
+                              color: AppColors.onPrimary,
                               fontSize: screenWidth / 24,
                               fontWeight: FontWeight.w700),
                         ),
@@ -238,13 +251,14 @@ class _SignInFormState extends State<SignInForm> {
                     RichText(
                       text: TextSpan(
                         text: "Don't you have an account? ",
-                        style: TextStyle(
-                            color: Colors.black, fontSize: screenWidth / 30),
+                        style: GoogleFonts.poppins(
+                            color: AppColors.onSurface,
+                            fontSize: screenWidth / 30),
                         children: <TextSpan>[
                           TextSpan(
                             text: 'Sign up',
                             style: TextStyle(
-                                color: Colors.green,
+                                color: AppColors.primary,
                                 fontSize: screenWidth / 30),
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {

@@ -2,27 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:plant_app/models/post.dart';
+import 'package:plant_app/screens/post_detail_screen.dart';
 import 'package:plant_app/services/api_service.dart';
-import '../screens/post_detail_screen.dart';
+import 'package:plant_app/themes/colors.dart';
 
-class PostCard extends StatefulWidget {
+class PostCard extends StatelessWidget {
   final Post post;
 
   const PostCard({Key? key, required this.post}) : super(key: key);
 
   @override
-  _PostCardState createState() => _PostCardState();
-}
-
-class _PostCardState extends State<PostCard> {
-  @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        // Navigate to post detail screen
         Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => PostDetailPage(postId: widget.post.id)),
+            builder: (context) => PostDetailPage(postId: post.id),
+          ),
         );
       },
       child: Padding(
@@ -34,15 +32,15 @@ class _PostCardState extends State<PostCard> {
           decoration: BoxDecoration(
             boxShadow: [
               BoxShadow(
-                color: Color.fromARGB(255, 224, 228, 208),
-                spreadRadius: 3,
-                blurRadius: 40,
-                offset: Offset(0, 2),
+                color: AppColors.secondaryVariant,
+                spreadRadius: 1,
+                blurRadius: 15,
+                offset: Offset(0, 0.5),
               ),
             ],
             borderRadius: BorderRadius.circular(30),
             gradient: LinearGradient(
-              colors: [Color(0xFF9BCA22), Color(0xFFDEF99B)],
+              colors: [AppColors.primary, AppColors.primaryVariant],
               stops: [0.25, 0.75],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
@@ -54,27 +52,28 @@ class _PostCardState extends State<PostCard> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Padding(
-                padding: const EdgeInsets.all(10.0),
+                padding: const EdgeInsets.only(
+                    left: 14.0, right: 14, top: 8, bottom: 8),
                 child: Text(
-                  widget.post.title,
+                  post.title,
                   style: GoogleFonts.poppins(
                     fontWeight: FontWeight.w700,
                     fontSize: 16,
-                    color: Color(0xFF2B423D),
+                    color: AppColors.onSurface,
                   ),
                 ),
               ),
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 18.0, right: 18),
+                  padding: const EdgeInsets.only(
+                      left: 14.0, right: 14, top: 8, bottom: 8),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CircleAvatar(
-                        backgroundColor: Colors.white,
-                        backgroundImage:
-                            AssetImage(widget.post.authorProfileImage),
+                        backgroundColor: AppColors.background,
+                        backgroundImage: AssetImage(post.authorProfileImage),
                       ),
                       SizedBox(
                         width: 12,
@@ -84,21 +83,21 @@ class _PostCardState extends State<PostCard> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              widget.post.createdByUsername,
+                              post.createdByUsername,
                               style: GoogleFonts.poppins(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 12,
-                                color: Color(0xFF2B423D),
+                                color: AppColors.onSurface,
                               ),
                             ),
                             Text(
                               DateFormat.yMMMd()
                                   .add_Hm()
-                                  .format(widget.post.createdAt),
+                                  .format(post.createdAt),
                               style: GoogleFonts.poppins(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 12,
-                                color: Color(0xFF2B423D),
+                                color: AppColors.onSurface,
                               ),
                             ),
                           ],
@@ -109,28 +108,23 @@ class _PostCardState extends State<PostCard> {
                           Expanded(
                             child: IconButton(
                               icon: Icon(Icons.favorite),
-                              color: widget.post.isLiked
+                              color: post.isLiked
                                   ? Colors.red
-                                  : Colors.grey,
+                                  : AppColors.secondaryVariant,
                               iconSize: MediaQuery.of(context).size.height / 35,
                               padding: EdgeInsets.zero,
                               onPressed: () async {
-                                await ApiService()
-                                    .likePost(widget.post.id, context);
-                                setState(() {
-                                  widget.post.isLiked = !widget.post.isLiked;
-                                  widget.post.likeCount +=
-                                      widget.post.isLiked ? 1 : -1;
-                                });
+                                // Like or unlike the post
+                                await ApiService().likePost(post.id, context);
                               },
                             ),
                           ),
                           Text(
-                            '${widget.post.likeCount}',
+                            '${post.likeCount}',
                             style: GoogleFonts.poppins(
                               fontWeight: FontWeight.w300,
-                              fontSize: 12,
-                              color: Color(0xFF2B423D),
+                              fontSize: 11,
+                              color: AppColors.onSecondary,
                             ),
                           ),
                         ],
