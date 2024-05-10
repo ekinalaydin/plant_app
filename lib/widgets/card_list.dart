@@ -119,6 +119,7 @@ class _CardListState extends State<CardList> {
                   ),
                   GestureDetector(
                     onTap: () {
+
                       // Navigator.push to Identifier screen
                     },
                     child: Container(

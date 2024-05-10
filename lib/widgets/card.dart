@@ -15,7 +15,10 @@ class CardWidget extends StatelessWidget {
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => DiseaseDetection()),
+            MaterialPageRoute(
+                builder: (context) => DiseaseDetection(
+                      data: {},
+                    )),
           );
         },
         child: Card(
@@ -76,17 +79,21 @@ class CardWidget extends StatelessWidget {
                           ],
                         ),
                       ),
-                      IconButton(
-                        iconSize: 32,
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => DiseaseDetection(),
-                            ),
-                          );
-                        },
-                        icon: const Icon(
+
+                    ],
+                  ),
+                ),
+                IconButton(
+                  iconSize: 32,
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Builder(
+                          builder: (context) => DiseaseDetection(
+                            data: {},
+                          ),}
+                          icon: const Icon(
                           Icons.arrow_circle_right_outlined,
                           color: Color(0xFF2B826D),
                         ),

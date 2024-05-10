@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
+
   static const primary =
       Color.fromRGBO(164, 209, 39, 1); // apple-green uygulamanin ana tema rengi
   static const primaryVariant =

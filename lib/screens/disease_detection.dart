@@ -1,6 +1,16 @@
 import 'package:flutter/material.dart';
 
-class DiseaseDetection extends StatelessWidget {
+class DiseaseDetection extends StatefulWidget {
+  final Map<String, dynamic> data;
+
+  // Constructor that accepts data as a parameter
+  const DiseaseDetection({Key? key, required this.data}) : super(key: key);
+
+  @override
+  _DiseaseDetectionState createState() => _DiseaseDetectionState();
+}
+
+class _DiseaseDetectionState extends State<DiseaseDetection> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,7 +69,7 @@ class DiseaseDetection extends StatelessWidget {
                   padding: EdgeInsets.all(
                       8), // Padding for text inside the container
                   child: Text(
-                    'Abiotic',
+                    widget.data['label'],
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.white,
@@ -102,7 +112,7 @@ class DiseaseDetection extends StatelessWidget {
                       padding: EdgeInsets.all(8),
                       child: TextSection(
                         title: 'SYMPTOMS',
-                        content: 'The symptoms text goes here...',
+                        content: widget.data['description'],
                         titleStyle: TextStyle(
                           fontSize: MediaQuery.of(context).size.width / 20,
                           fontWeight: FontWeight.bold,

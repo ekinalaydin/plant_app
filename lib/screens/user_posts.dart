@@ -1,9 +1,6 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:plant_app/models/post.dart';
-import 'package:plant_app/screens/create_post_screen.dart';
-import 'package:plant_app/screens/post_detail_screen.dart';
 import 'package:plant_app/services/api_service.dart';
 import 'package:plant_app/widgets/post_card.dart';
 
@@ -13,7 +10,6 @@ class UserPost extends StatefulWidget {
 }
 
 class _UserPostState extends State<UserPost> {
-  bool _expanded = false;
   var allItems = List.generate(50, (index) => 'item $index');
   var items = [];
   var searchHistory = [];
@@ -78,7 +74,7 @@ class _UserPostState extends State<UserPost> {
           ),
           Expanded(
             child: FutureBuilder<dynamic>(
-              future: ApiService().getAllPosts(context),
+              future: ApiService().getMyPosts(context),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(child: CircularProgressIndicator());

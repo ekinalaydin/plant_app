@@ -1,6 +1,7 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:plant_app/screens/user_posts.dart';
 import 'package:plant_app/services/api_service.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -18,6 +19,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   late String? _city = "";
   late String? _occupation = "";
   late String? _gender = "";
+  
   TextEditingController nameController = TextEditingController();
   TextEditingController surnameController = TextEditingController();
   TextEditingController usernameController = TextEditingController();
@@ -34,6 +36,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     super.initState();
+    
     ApiService().getProfile(context).then((data) {
       setState(() {
         _username = data['username'];
