@@ -1,23 +1,26 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
-
-/// Flutter code sample for [SearchBar].
+import 'package:sqflite/sqflite.dart';
+import 'package:path/path.dart';
 
 class SearchBarApp extends StatefulWidget {
-  const SearchBarApp({super.key});
+  const SearchBarApp({Key? key}) : super(key: key);
 
   @override
-  State<SearchBarApp> createState() => _SearchBarAppState();
+  _SearchBarAppState createState() => _SearchBarAppState();
 }
 
 class _SearchBarAppState extends State<SearchBarApp> {
-  var allItems = List.generate(50, (index) => 'item $index');
-  var items = [];
-  var searchHistory = [];
+  late List<String> allItems;
+  List<String> items = [];
   final TextEditingController searchController = TextEditingController();
+
+  late Database _database;
 
   @override
   void initState() {
     super.initState();
+    initDatabase();
     searchController.addListener(queryListener);
   }
 
@@ -28,22 +31,40 @@ class _SearchBarAppState extends State<SearchBarApp> {
     searchController.dispose();
   }
 
+  Future<void> initDatabase() async {
+    _database = await openDatabase(
+      join(await getDatabasesPath(), 'posts_database.db'),
+      onCreate: (db, version) {
+        return db.execute(
+          'CREATE TABLE posts(id INTEGER PRIMARY KEY, title TEXT)',
+        );
+      },
+      version: 1,
+    );
+    await populateDatabase();
+  }
+
+  Future<void> populateDatabase() async {
+    await _database.insert('posts', {'title': 'Example Post 1'});
+    await _database.insert('posts', {'title': 'Another Post 2'});
+    // Add more sample data as needed
+    await search('');
+  }
+
   void queryListener() {
     search(searchController.text);
   }
 
-  void search(String query) {
-    if (query.isEmpty) {
-      setState(() {
-        items = allItems;
-      });
-    } else {
-      setState(() {
-        items = allItems
-            .where((e) => e.toLowerCase().contains(query.toLowerCase()))
-            .toList();
-      });
-    }
+  Future<void> search(String query) async {
+    final List<Map<String, dynamic>> result = await _database.query(
+      'posts',
+      where: "title LIKE ?",
+      whereArgs: ['%$query%'],
+    );
+
+    setState(() {
+      items = result.map((e) => e['title'].toString()).toList();
+    });
   }
 
   @override
@@ -53,33 +74,26 @@ class _SearchBarAppState extends State<SearchBarApp> {
         child: Padding(
           padding: const EdgeInsets.only(left: 8, right: 8),
           child: Column(
-            // mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              SizedBox(
-                height: 16,
-              ),
-              SearchBar(
+              SizedBox(height: 16),
+              TextField(
                 controller: searchController,
-                leading: IconButton(
-                  onPressed: () {},
-                  icon: Icon(Icons.search),
+                decoration: InputDecoration(
+                  prefixIcon: Icon(Icons.search),
+                  hintText: 'Search',
                 ),
-                hintText: 'Search',
               ),
-              ListView.builder(
-                  itemCount: items.isEmpty ? allItems.length : items.length,
+              Expanded(
+                child: ListView.builder(
+                  itemCount: items.length,
                   itemBuilder: (context, index) {
-                    final item = items.isEmpty ? allItems[index] : items[index];
-                    return Card(
-                      child: Column(children: [
-                        Text("Name: $item"),
-                        SizedBox(
-                          height: 8,
-                        ),
-                        Text(item)
-                      ]),
+                    final item = items[index];
+                    return ListTile(
+                      title: Text(item),
                     );
-                  })
+                  },
+                ),
+              ),
             ],
           ),
         ),

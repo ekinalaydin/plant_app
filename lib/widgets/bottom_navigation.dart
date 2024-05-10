@@ -5,6 +5,7 @@ import 'package:plant_app/screens/create_post_screen.dart';
 import 'package:plant_app/screens/home_screen.dart';
 import 'package:plant_app/screens/map_screen.dart';
 import 'package:plant_app/screens/user_option_screen.dart';
+
 import 'package:plant_app/themes/colors.dart';
 
 class BottomNavigation extends StatefulWidget {
@@ -43,10 +44,6 @@ class _BottomNavigationState extends State<BottomNavigation> {
         MaterialPageRoute(builder: (context) => CameraScreen()),
       );
     }
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => CameraScreen()),
-    );
   }
 
   @override

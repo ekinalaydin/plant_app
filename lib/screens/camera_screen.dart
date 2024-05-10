@@ -140,12 +140,10 @@ class _CameraScreenState extends State<CameraScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  textAlign: TextAlign.center,
                   "Take a photo of your plant! ",
                   style: GoogleFonts.poppins(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 23,
-                    color: Color(0xFF273E39),
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.onSurface,
                   ),
                 ),
               ],

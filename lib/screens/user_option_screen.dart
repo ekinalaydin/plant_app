@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:plant_app/screens/login/sign_in_screen.dart';
@@ -15,11 +13,19 @@ import 'package:plant_app/themes/colors.dart';
 import 'package:plant_app/widgets/user_options_card.dart';
 
 class UserOptionScreen extends StatelessWidget {
-  String? _name = "Nazli";
-  String? _surname = "Ozer";
-  String? _username = "nazliozer";
-  String? _email = "nazli@gmail.com";
-  String? _city = "Ankara";
+  late String? _name = "";
+  late String? _surname = "";
+  late String? _username = "";
+  late String? _email = "";
+  late String? _city = "";
+
+  TextEditingController nameController = TextEditingController();
+  TextEditingController surnameController = TextEditingController();
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController cityController = TextEditingController();
+  TextEditingController occupationController = TextEditingController();
+  TextEditingController genderController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {

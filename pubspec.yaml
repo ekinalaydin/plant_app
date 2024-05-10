@@ -26,7 +26,7 @@ dependencies:
   shared_preferences: ^2.2.3
   google_maps_flutter: ^2.6.1
   permission_handler: ^8.1.4+2
-
+  sqflite: ^2.3.3+1
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -37,4 +37,3 @@ flutter:
   assets:
     - lib/assets/images/
     - lib/assets/icons/
-    - lib/assets/styles/map_style.json

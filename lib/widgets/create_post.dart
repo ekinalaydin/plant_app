@@ -1,25 +1,59 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:plant_app/screens/community_screen.dart';
+import 'package:plant_app/services/api_service.dart';
 import 'package:plant_app/themes/colors.dart';
 
 class PostWidget extends StatefulWidget {
-  const PostWidget({Key? key}) : super(key: key);
-
   @override
   State<PostWidget> createState() => _PostWidgetState();
 }
 
 class _PostWidgetState extends State<PostWidget> {
-  File? _image;
+  File? image;
+  bool _isLoading = false;
   final picker = ImagePicker();
   final _formKey = GlobalKey<FormState>(); // Define form key
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _askToCommunityController =
       TextEditingController();
+
+  void _submitPost() async {
+    final title = _askToCommunityController.text.trim();
+    final content = _descriptionController.text.trim();
+
+    if (title.isEmpty || content.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Title and content cannot be empty!')),
+      );
+      return;
+    }
+
+    setState(() => _isLoading = true);
+
+    try {
+      await ApiService().postCommunity(context, title, content, image!);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Your Question is Submitted!'),
+        ),
+      );
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => CommunityScreen(),
+        ),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to submit post: $e')),
+      );
+    } finally {
+      setState(() => _isLoading = false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -203,6 +237,9 @@ class _PostWidgetState extends State<PostWidget> {
                             // Clear form fields functionality
                             _descriptionController.clear();
                             _askToCommunityController.clear();
+                            setState(() {
+                              image = null;
+                            });
                           },
                           label: Text(
                             'Clear',
@@ -223,11 +260,7 @@ class _PostWidgetState extends State<PostWidget> {
                             // Submit form functionality
                             if (_formKey.currentState!.validate()) {
                               // Do something with the form data
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text('Your Question is Submitted!'),
-                                ),
-                              );
+                              _submitPost();
                             }
                           },
                           label: Text(
@@ -254,7 +287,7 @@ class _PostWidgetState extends State<PostWidget> {
 
     setState(() {
       if (pickedFile != null) {
-        _image = File(pickedFile.path);
+        image = File(pickedFile.path);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(

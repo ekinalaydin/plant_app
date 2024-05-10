@@ -23,12 +23,6 @@ class _MapScreenState extends State<MapScreen> {
   @override
   void initState() {
     super.initState();
-    _loadMapStyle();
-  }
-
-  Future<void> _loadMapStyle() async {
-    style = await rootBundle.loadString('assets/styles/map_style.json');
-    setState(() {});
   }
 
   void _onMapCreated(GoogleMapController controller) {
