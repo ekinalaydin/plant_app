@@ -10,12 +10,17 @@ class ApiService {
   static String baseUrl = 'https://plant-f9a21.ey.r.appspot.com';
 
   // GET ALL POSTS
-  Future<Map<String, dynamic>> getAllPosts(BuildContext context) async {
+  Future<Map<String, dynamic>> getAllPosts(
+      BuildContext context, String? search) async {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
-    final userId = userProvider.user?.userId;
-    print(userId);
-    final response =
-        await http.get(Uri.parse('$baseUrl/posts/?userId=$userId'));
+    final token = userProvider.user?.token;
+
+    final response = await http.get(
+      Uri.parse('$baseUrl/posts/?search=${search ?? ''}'),
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+    );
     if (response.statusCode == 200) {
       var decodedJson = json.decode(utf8.decode(response.bodyBytes));
       return decodedJson['data'];

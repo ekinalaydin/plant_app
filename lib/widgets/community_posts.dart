@@ -1,11 +1,7 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:plant_app/models/post.dart';
-import 'package:plant_app/screens/create_post_screen.dart';
-import 'package:plant_app/screens/post_detail_screen.dart';
 import 'package:plant_app/services/api_service.dart';
-import 'package:plant_app/themes/colors.dart';
 import 'package:plant_app/themes/colors.dart';
 import 'package:plant_app/widgets/post_card.dart';
 
@@ -20,10 +16,12 @@ class _PostPageState extends State<PostPage> {
   var items = [];
   var searchHistory = [];
   final TextEditingController searchController = TextEditingController();
+  late Future<dynamic> _future;
 
   @override
   void initState() {
     super.initState();
+    _future = ApiService().getAllPosts(context, null);
     searchController.addListener(queryListener);
   }
 
@@ -34,20 +32,12 @@ class _PostPageState extends State<PostPage> {
     searchController.dispose();
   }
 
-  void queryListener() {
-    search(searchController.text);
-  }
+  void queryListener() {}
 
-  void search(String query) {
-    if (query.isEmpty) {
+  void search(String query) async {
+    if (query.isNotEmpty) {
       setState(() {
-        items = allItems;
-      });
-    } else {
-      setState(() {
-        items = allItems
-            .where((e) => e.toLowerCase().contains(query.toLowerCase()))
-            .toList();
+        _future = ApiService().getAllPosts(context, query);
       });
     }
   }
@@ -78,10 +68,13 @@ class _PostPageState extends State<PostPage> {
             child: SizedBox(
               height: 40,
               child: SearchBar(
+                onSubmitted: (query) {
+                  search(query);
+                },
                 surfaceTintColor: MaterialStateProperty.all(AppColors.surface),
                 backgroundColor:
                     MaterialStateProperty.all(AppColors.background),
-                overlayColor: MaterialStateProperty.all(AppColors.onSurface),
+                overlayColor: MaterialStateProperty.all(AppColors.onPrimary),
                 shadowColor:
                     MaterialStateProperty.all(AppColors.secondaryVariant),
                 controller: searchController,
@@ -101,7 +94,9 @@ class _PostPageState extends State<PostPage> {
           ),
           Expanded(
             child: FutureBuilder<dynamic>(
-              future: ApiService().getAllPosts(context),
+              future: searchController.text.isEmpty
+                  ? ApiService().getAllPosts(context, null)
+                  : ApiService().getAllPosts(context, searchController.text),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(child: CircularProgressIndicator());
@@ -110,14 +105,12 @@ class _PostPageState extends State<PostPage> {
                       child: Text('Error: ${snapshot.error.toString()}'));
                 } else if (snapshot.hasData) {
                   var data = snapshot.data as Map<String, dynamic>;
-                  var posts = data['content']
-                      as List<dynamic>; // Correctly cast to List<dynamic>
+                  var posts = data['content'] as List<dynamic>;
                   if (posts.isNotEmpty) {
                     return ListView.builder(
                       itemCount: posts.length,
                       itemBuilder: (context, index) {
-                        Post post = Post.fromJson(posts[
-                            index]); // Convert each post data to a Post object
+                        Post post = Post.fromJson(posts[index]);
                         return PostCard(post: post);
                       },
                     );

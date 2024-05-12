@@ -44,6 +44,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
         _city = data['city'];
         _occupation = data['occupation'];
         _gender = data['gender'];
+        _name = data['name'];
+        _surname = data['surname'];
 
         // Initialize the controllers with the retrieved data
         usernameController.text = _username ?? '';
