@@ -30,8 +30,16 @@ class ApiService {
   }
 
   // GET POST BY ID
-  Future<Map<String, dynamic>> getPostById(int id) async {
-    final response = await http.get(Uri.parse('$baseUrl/posts/$id'));
+  Future<Map<String, dynamic>> getPostById(BuildContext context, int id) async {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    final token = userProvider.user?.token;
+
+    final response = await http.get(
+      Uri.parse('$baseUrl/posts/$id'),
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+    );
     if (response.statusCode == 200) {
       var decodedJson = json.decode(utf8.decode(response.bodyBytes));
       return decodedJson['data'];
@@ -161,7 +169,7 @@ class ApiService {
     }
   }
 
-    //GET HISTORY
+  //GET HISTORY
   Future<List<dynamic>> getHistorySummary(BuildContext context) async {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     final token = userProvider.user?.token;
@@ -178,7 +186,6 @@ class ApiService {
       throw Exception('Failed to load data');
     }
   }
-
 
   Future<Map<String, dynamic>> getProfile(BuildContext context) async {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
@@ -198,10 +205,9 @@ class ApiService {
     }
   }
 
-    Future<String> getCity(BuildContext context) async {
+  Future<String> getCity(BuildContext context) async {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     final token = userProvider.user?.token;
-
 
     final response = await http.get(
       Uri.parse('$baseUrl/profile/city'),

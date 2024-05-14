@@ -21,7 +21,7 @@ class _PostDetailPageState extends State<PostDetailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: FutureBuilder<Map<String, dynamic>>(
-        future: ApiService().getPostById(widget.postId),
+        future: ApiService().getPostById(context, widget.postId),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
@@ -41,6 +41,7 @@ class _PostDetailPageState extends State<PostDetailPage> {
                   authorProfileImage: post.authorProfileImage,
                   postDate: post.createdAt,
                   imageUrl: post.imgUrl,
+                  isLiked: post.isLiked,
                 ),
               ),
             );

@@ -9,21 +9,21 @@ class DetailsWidget extends StatefulWidget {
   final int postId;
   final String postTitle;
   final String postBody;
-
   final String authorName;
   final String authorProfileImage;
   final DateTime postDate;
   final String imageUrl;
+  bool isLiked;
 
-  DetailsWidget({
-    required this.postId,
-    required this.postTitle,
-    required this.postBody,
-    required this.authorName,
-    required this.authorProfileImage,
-    required this.postDate,
-    required this.imageUrl,
-  });
+  DetailsWidget(
+      {required this.postId,
+      required this.postTitle,
+      required this.postBody,
+      required this.authorName,
+      required this.authorProfileImage,
+      required this.postDate,
+      required this.imageUrl,
+      required this.isLiked});
 
   @override
   State<DetailsWidget> createState() => _DetailsWidgetState();
@@ -33,7 +33,6 @@ class _DetailsWidgetState extends State<DetailsWidget> {
   TextEditingController _commentController = TextEditingController();
   Future<List<Comment>>? _commentsFuture;
   bool _isLoading = false;
-  Color _likeButtonColor = Colors.grey;
 
   @override
   void initState() {
@@ -189,14 +188,18 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                               ),
                               IconButton(
                                 icon: Icon(Icons.favorite),
-                                color: _likeButtonColor,
-                                onPressed: () {
-                                  setState(() {
-                                    _likeButtonColor =
-                                        _likeButtonColor == Colors.red
-                                            ? Colors.grey
-                                            : Colors.red;
-                                  });
+                                color:
+                                    widget.isLiked ? Colors.red : Colors.grey,
+                                onPressed: () async {
+                                  try {
+                                    await ApiService().likePost(widget.postId, context);
+                                    setState(() {
+                                      widget.isLiked = !widget.isLiked;
+                                    });
+                                  } catch (e) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(content: Text(e.toString())));
+                                  }
                                 },
                               ),
                             ],

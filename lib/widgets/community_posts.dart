@@ -26,6 +26,16 @@ class _PostPageState extends State<PostPage> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (ModalRoute.of(context)!.isCurrent) {
+      setState(() {
+        _future = ApiService().getAllPosts(context, searchController.text);
+      });
+    }
+  }
+
+  @override
   void dispose() {
     super.dispose();
     searchController.removeListener(queryListener);
@@ -35,11 +45,9 @@ class _PostPageState extends State<PostPage> {
   void queryListener() {}
 
   void search(String query) async {
-    if (query.isNotEmpty) {
-      setState(() {
-        _future = ApiService().getAllPosts(context, query);
-      });
-    }
+    setState(() {
+      _future = ApiService().getAllPosts(context, query);
+    });
   }
 
   @override
@@ -94,9 +102,7 @@ class _PostPageState extends State<PostPage> {
           ),
           Expanded(
             child: FutureBuilder<dynamic>(
-              future: searchController.text.isEmpty
-                  ? ApiService().getAllPosts(context, null)
-                  : ApiService().getAllPosts(context, searchController.text),
+              future: ApiService().getAllPosts(context, searchController.text),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(child: CircularProgressIndicator());
