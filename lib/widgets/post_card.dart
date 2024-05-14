@@ -6,11 +6,16 @@ import 'package:plant_app/screens/post_detail_screen.dart';
 import 'package:plant_app/services/api_service.dart';
 import 'package:plant_app/themes/colors.dart';
 
-class PostCard extends StatelessWidget {
+class PostCard extends StatefulWidget {
   final Post post;
 
   const PostCard({Key? key, required this.post}) : super(key: key);
 
+  @override
+  _PostCardState createState() => _PostCardState();
+}
+
+class _PostCardState extends State<PostCard> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -19,7 +24,7 @@ class PostCard extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => PostDetailPage(postId: post.id),
+            builder: (context) => PostDetailPage(postId: widget.post.id),
           ),
         );
       },
@@ -55,7 +60,7 @@ class PostCard extends StatelessWidget {
                 padding: const EdgeInsets.only(
                     left: 14.0, right: 14, top: 8, bottom: 8),
                 child: Text(
-                  post.title,
+                  widget.post.title,
                   style: GoogleFonts.poppins(
                     fontWeight: FontWeight.w700,
                     fontSize: 16,
@@ -73,7 +78,7 @@ class PostCard extends StatelessWidget {
                     children: [
                       CircleAvatar(
                         backgroundColor: AppColors.background,
-                        backgroundImage: AssetImage(post.authorProfileImage),
+                        backgroundImage: AssetImage(widget.post.authorProfileImage),
                       ),
                       SizedBox(
                         width: 12,
@@ -83,7 +88,7 @@ class PostCard extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              post.createdByUsername,
+                              widget.post.createdByUsername,
                               style: GoogleFonts.poppins(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 12,
@@ -91,9 +96,7 @@ class PostCard extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              DateFormat.yMMMd()
-                                  .add_Hm()
-                                  .format(post.createdAt),
+                              DateFormat.yMMMd().add_Hm().format(widget.post.createdAt),
                               style: GoogleFonts.poppins(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 12,
@@ -108,19 +111,21 @@ class PostCard extends StatelessWidget {
                           Expanded(
                             child: IconButton(
                               icon: Icon(Icons.favorite),
-                              color: post.isLiked
-                                  ? Colors.red
-                                  : AppColors.secondaryVariant,
+                              color: widget.post.isLiked ? Colors.red : AppColors.secondaryVariant,
                               iconSize: MediaQuery.of(context).size.height / 35,
                               padding: EdgeInsets.zero,
                               onPressed: () async {
                                 // Like or unlike the post
-                                await ApiService().likePost(post.id, context);
+                                await ApiService().likePost(widget.post.id, context);
+                                setState(() {
+                                  widget.post.isLiked = !widget.post.isLiked;
+                                  widget.post.likeCount += widget.post.isLiked ? 1 : -1;
+                                });
                               },
                             ),
                           ),
                           Text(
-                            '${post.likeCount}',
+                            '${widget.post.likeCount}',
                             style: GoogleFonts.poppins(
                               fontWeight: FontWeight.w300,
                               fontSize: 11,

@@ -169,9 +169,9 @@ class _CardListState extends State<CardList> {
                             ),
                             SizedBox(width: 10),
                             Icon(
-                              Icons.favorite,
-                              color: Color(0xFFDF5172),
-                              size: 26,
+                              Icons.health_and_safety,
+                              color: AppColors.onPrimary,
+                              size: 28,
                             ),
                           ],
                         ),

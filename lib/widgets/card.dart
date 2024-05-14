@@ -24,48 +24,63 @@ class CardWidget extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: history.map((historyData) {
-                  final String date = DateFormat('yyyy-MM-dd').format(DateTime.parse(historyData['dateTime']));
+                  final String date = DateFormat('yyyy-MM-dd')
+                      .format(DateTime.parse(historyData['dateTime']));
                   return Padding(
                     padding: const EdgeInsets.symmetric(vertical: 5.0),
-                    child: Card(
-                      color: Color(0xFFF8F9F9),
-                      child: ListTile(
-                        leading: CircleAvatar(
-                          backgroundColor: Color(0xFFE3E9E9),
-                          radius: 30,
-                          backgroundImage: NetworkImage(historyData['imageUrl']),
-                        ),
-                        title: Text(
-                          'Disease Name: ${historyData['responses'][0]['label']}',
-                          style: GoogleFonts.poppins(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                            color: AppColors.onSurface,
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DiseaseDetection(
+                              data: historyData['responses'][0],
+                            ),
                           ),
-                        ),
-                        subtitle: Text(
-                          'Date: $date',
-                          style: GoogleFonts.poppins(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w300,
-                            color: AppColors.onSurface,
+                        );
+                      },
+                      child: Card(
+                        color: Color(0xFFF8F9F9),
+                        child: ListTile(
+                          leading: CircleAvatar(
+                            backgroundColor: Color(0xFFE3E9E9),
+                            radius: 30,
+                            backgroundImage:
+                                NetworkImage(historyData['imageUrl']),
                           ),
-                        ),
-                        trailing: IconButton(
-                          icon: const Icon(
-                            Icons.arrow_circle_right_outlined,
-                            color: Color(0xFF2B826D),
+                          title: Text(
+                            'Disease Name: ${historyData['responses'][0]['label']}',
+                            style: GoogleFonts.poppins(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              color: AppColors.onSurface,
+                            ),
                           ),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => DiseaseDetection(
-                                  data: historyData['responses'][0],
+                          subtitle: Text(
+                            'Date: $date',
+                            style: GoogleFonts.poppins(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w300,
+                              color: AppColors.onSurface,
+                            ),
+                          ),
+                          trailing: IconButton(
+                            icon: const Icon(
+                              Icons.arrow_circle_right_outlined,
+                              color: Color(0xFF2B826D),
+                              size: 28,
+                            ),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => DiseaseDetection(
+                                    data: historyData['responses'][0],
+                                  ),
                                 ),
-                              ),
-                            );
-                          },
+                              );
+                            },
+                          ),
                         ),
                       ),
                     ),

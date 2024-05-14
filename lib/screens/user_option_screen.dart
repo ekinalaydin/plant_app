@@ -7,25 +7,59 @@ import 'package:plant_app/screens/profile_screen.dart';
 import 'package:plant_app/screens/user_comments_screen.dart';
 import 'package:plant_app/screens/user_favorites_screen.dart';
 import 'package:plant_app/screens/user_posts.dart';
+import 'package:plant_app/services/api_service.dart';
 
 import 'package:plant_app/themes/colors.dart';
 
 import 'package:plant_app/widgets/user_options_card.dart';
 
-class UserOptionScreen extends StatelessWidget {
+class UserOptionScreen extends StatefulWidget {
+  @override
+  State<UserOptionScreen> createState() => _UserOptionScreenState();
+}
+
+class _UserOptionScreenState extends State<UserOptionScreen> {
   late String? _name = "";
+
   late String? _surname = "";
+
   late String? _username = "";
+
   late String? _email = "";
+
   late String? _city = "";
 
   TextEditingController nameController = TextEditingController();
+
   TextEditingController surnameController = TextEditingController();
+
   TextEditingController usernameController = TextEditingController();
+
   TextEditingController emailController = TextEditingController();
+
   TextEditingController cityController = TextEditingController();
-  TextEditingController occupationController = TextEditingController();
-  TextEditingController genderController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    ApiService().getProfile(context).then((data) {
+      setState(() {
+        _name = data['name'];
+        _surname = data['surname'];
+        _username = data['username'];
+        _email = data['email'];
+        _city = data['city'];
+
+        // Initialize the controllers with the retrieved data
+        usernameController.text = _username ?? '';
+        emailController.text = _email ?? '';
+        cityController.text = _city ?? '';
+      });
+    }).catchError((error) {
+      // Handle any errors that occur during the API call
+      print('Error fetching profile data: $error');
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,34 +79,45 @@ class UserOptionScreen extends StatelessWidget {
         child: ListView(
           padding: EdgeInsets.all(6.0),
           children: [
-            ListTile(
-              contentPadding: EdgeInsets.only(right: 5, left: 5),
-              leading: CircleAvatar(
-                radius: 30,
-                backgroundColor: AppColors.primaryVariant,
-              ),
-              title: Row(
-                children: [
-                  Text(
-                    "$_name $_surname",
-                    style: GoogleFonts.poppins(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 18,
-                      color: AppColors.onSurface,
-                    ),
-                  ),
-                  Text("")
-                ],
-              ),
-              subtitle: Text(
-                "$_username | $_email | $_city",
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                textAlign: TextAlign.center,
+                "Please Select an Option",
                 style: GoogleFonts.poppins(
-                  fontWeight: FontWeight.w400,
-                  fontSize: 14,
-                  color: AppColors.onSurface,
-                ),
+                    fontSize: 18,
+                    color: Color(0xFF2B826D),
+                    fontWeight: FontWeight.w700),
               ),
             ),
+            // ListTile(
+            //   contentPadding: EdgeInsets.only(right: 5, left: 5),
+            //   leading: CircleAvatar(
+            //     radius: 30,
+            //     backgroundColor: AppColors.primaryVariant,
+            //   ),
+            //   title: Row(
+            //     children: [
+            //       Text(
+            //         "$_name $_surname",
+            //         style: GoogleFonts.poppins(
+            //           fontWeight: FontWeight.w600,
+            //           fontSize: 18,
+            //           color: AppColors.onSurface,
+            //         ),
+            //       ),
+            //       Text("")
+            //     ],
+            //   ),
+            //   subtitle: Text(
+            //     "$_username | $_email | $_city",
+            //     style: GoogleFonts.poppins(
+            //       fontWeight: FontWeight.w400,
+            //       fontSize: 14,
+            //       color: AppColors.onSurface,
+            //     ),
+            //   ),
+            // ),
             GestureDetector(
                 onTap: () {
                   Navigator.push(
