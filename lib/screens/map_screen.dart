@@ -1,8 +1,13 @@
+import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:plant_app/services/api_service.dart';
+import 'package:plant_app/services/user_provider.dart';
+import 'package:provider/provider.dart';
 
 class MapScreen extends StatefulWidget {
   @override
@@ -10,25 +15,42 @@ class MapScreen extends StatefulWidget {
 }
 
 class _MapScreenState extends State<MapScreen> {
+  Completer<GoogleMapController> _controller = Completer();
   GoogleMapController? mapController;
   String style = '';
   bool _locationPermissionGranted = false;
   final Set<Marker> _markers = {};
   final Random _random = Random();
   final Map<String, Color> _markerColors = {};
-  static final CameraPosition _initialCameraPosition = CameraPosition(
-    target: LatLng(39.92077, 32.85411), // Ankara's coordinates
+  late CameraPosition _initialCameraPosition = CameraPosition(
+    target: LatLng(0.0, 0.0), // Default coordinates
     zoom: 10.0,
   );
+  late Location location;
   @override
   void initState() {
     super.initState();
+    _getCoordinates();
+  }
+
+  void _getCoordinates() async {
+    String city = Provider.of<UserProvider>(context, listen: false).city!;
+    List<Location> locations = await locationFromAddress(city);
+    Location location = locations[0];
+    setState(() {
+      this.location = location;
+    });
+    final GoogleMapController controller = await _controller.future;
+    controller.moveCamera(CameraUpdate.newCameraPosition(CameraPosition(
+      target: LatLng(location.latitude, location.longitude),
+      zoom: 10.0,
+    )));
+    _addRandomMarkers();
   }
 
   void _onMapCreated(GoogleMapController controller) {
-    mapController = controller;
+    _controller.complete(controller);
     _checkPermissions();
-    _addRandomMarkers();
   }
 
   void _checkPermissions() async {
@@ -45,26 +67,40 @@ class _MapScreenState extends State<MapScreen> {
     }
   }
 
-  void _addRandomMarkers() {
+  void _addRandomMarkers() async {
+    List<dynamic> data = await ApiService().getHistorySummary(context);
+
     _markers.clear();
     _markerColors.clear();
     List<Color> colors = [
-      Colors.red,
-      Colors.green,
-      Colors.blue
+      //Colors.red,
+      //Colors.green,
+      //Colors.blue
     ]; // Marker colors
-    for (int i = 0; i < 3; i++) {
+
+    Random random = Random();
+    for (int i = 0; i < data.length; i++) {
+      colors.add(Color.fromRGBO(
+        random.nextInt(256), // Generates a random value for Red (0-255)
+        random.nextInt(256), // Generates a random value for Green (0-255)
+        random.nextInt(256), // Generates a random value for Blue (0-255)
+        1.0, // Opacity (1.0 for fully opaque)
+      ));
+    }
+
+    for (int i = 0; i < data.length; i++) {
       final LatLng randomLocation = LatLng(
-          39.92077 + (_random.nextDouble() * 0.1 - 0.05), // Randomize latitude
-          32.85411 + (_random.nextDouble() * 0.1 - 0.05) // Randomize longitude
+          location.latitude +
+              (_random.nextDouble() * 0.1 - 0.05), // Randomize latitude
+          location.longitude +
+              (_random.nextDouble() * 0.1 - 0.05) // Randomize longitude
           );
       String markerId = 'marker_$i';
       Marker newMarker = Marker(
         markerId: MarkerId(markerId),
         position: randomLocation,
         infoWindow: InfoWindow(
-          title: 'Marker $i',
-          snippet: 'A randomly placed marker',
+          title: '${data[i]['label']} (${data[i]['count']})',
         ),
         icon: BitmapDescriptor.defaultMarkerWithHue(_colorToHue(colors[i])),
       );
@@ -76,15 +112,8 @@ class _MapScreenState extends State<MapScreen> {
 
   // Helper method to convert Color to BitmapDescriptor Hue
   double _colorToHue(Color color) {
-    double hue = 0.0;
-    if (color == Colors.red) {
-      hue = BitmapDescriptor.hueRed;
-    } else if (color == Colors.green) {
-      hue = BitmapDescriptor.hueGreen;
-    } else if (color == Colors.blue) {
-      hue = BitmapDescriptor.hueBlue;
-    }
-    return hue;
+    HSVColor hsvColor = HSVColor.fromColor(color);
+    return hsvColor.hue;
   }
 
   void _showMarkerInfo(BuildContext context) {
@@ -92,7 +121,7 @@ class _MapScreenState extends State<MapScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Marker Information'),
+          title: Text('Diseases on Map'),
           content: SingleChildScrollView(
             child: ListBody(
               children: _markers.map((marker) {

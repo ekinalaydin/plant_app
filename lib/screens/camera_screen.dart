@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
+import 'package:plant_app/services/user_provider.dart';
 import 'package:plant_app/themes/colors.dart';
+import 'package:provider/provider.dart';
 
 // Import the DiseaseDetection screen
 import 'disease_detection.dart';
@@ -19,8 +21,11 @@ class _CameraScreenState extends State<CameraScreen> {
   final picker = ImagePicker();
 
   Future<void> uploadImage(String filePath, BuildContext context) async {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    final token = userProvider.user?.token;
     var uri = Uri.parse('https://plant-f9a21.ey.r.appspot.com/plant/predict');
-    var request = http.MultipartRequest('POST', uri);
+    var request = http.MultipartRequest('POST', uri,);
+    request.headers['Authorization'] = 'Bearer $token';
     request.files.add(await http.MultipartFile.fromPath('image', filePath));
 
     try {

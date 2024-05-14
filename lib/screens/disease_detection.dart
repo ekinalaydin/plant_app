@@ -112,7 +112,7 @@ class _DiseaseDetectionState extends State<DiseaseDetection> {
                       padding: EdgeInsets.all(8),
                       child: TextSection(
                         title: 'SYMPTOMS',
-                        content: widget.data['description'],
+                        content: widget.data['description']['symptoms'],
                         titleStyle: TextStyle(
                           fontSize: MediaQuery.of(context).size.width / 20,
                           fontWeight: FontWeight.bold,
@@ -124,12 +124,12 @@ class _DiseaseDetectionState extends State<DiseaseDetection> {
                   SizedBox(height: 16),
                   TextSection(
                     title: 'CULTURAL TREATMENT',
-                    content: 'The cultural treatment text goes here...',
+                    content: widget.data['description']['treatments']['cultural'],
                   ),
                   SizedBox(height: 16),
                   TextSection(
                     title: 'CHEMICAL TREATMENT',
-                    content: 'The chemical treatment text goes here...',
+                    content: widget.data['description']['treatments']['chemical'],
                   ),
                 ],
               ),
@@ -149,20 +149,19 @@ class _DiseaseDetectionState extends State<DiseaseDetection> {
     );
   }
 }
-
 class TextSection extends StatelessWidget {
   final String title;
-  final String content;
+  final dynamic content; // Accepts either a string or a list of strings
   final TextStyle? titleStyle; // Optional custom style for the title
   final TextStyle? contentStyle; // Optional custom style for the content
 
-  const TextSection(
-      {Key? key,
-      required this.title,
-      required this.content,
-      this.titleStyle,
-      this.contentStyle})
-      : super(key: key);
+  const TextSection({
+    Key? key,
+    required this.title,
+    required this.content,
+    this.titleStyle,
+    this.contentStyle,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -181,15 +180,33 @@ class TextSection extends StatelessWidget {
                 ),
           ),
           SizedBox(height: 8),
-          Text(
-            content,
-            style: contentStyle ??
-                TextStyle(
-                  color: Color(0xFF74857D),
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                ),
-          ),
+          // Check if content is a list of strings
+          if (content is List)
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                for (var item in content)
+                  Text(
+                    '- $item',
+                    style: contentStyle ??
+                        TextStyle(
+                          color: Color(0xFF74857D),
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                  ),
+              ],
+            )
+          else
+            Text(
+              content.toString(),
+              style: contentStyle ??
+                  TextStyle(
+                    color: Color(0xFF74857D),
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+            ),
         ],
       ),
     );

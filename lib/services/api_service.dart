@@ -161,10 +161,29 @@ class ApiService {
     }
   }
 
+    //GET HISTORY
+  Future<List<dynamic>> getHistorySummary(BuildContext context) async {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    final token = userProvider.user?.token;
+    final response = await http.get(
+      Uri.parse('$baseUrl/history/summary'),
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+    );
+    if (response.statusCode == 200) {
+      var decodedJson = json.decode(utf8.decode(response.bodyBytes));
+      return decodedJson;
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
+
+
   Future<Map<String, dynamic>> getProfile(BuildContext context) async {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     final token = userProvider.user?.token;
-    print(token);
+
     final response = await http.get(
       Uri.parse('$baseUrl/profile/'),
       headers: {
@@ -174,6 +193,24 @@ class ApiService {
     if (response.statusCode == 200) {
       var decodedJson = json.decode(utf8.decode(response.bodyBytes));
       return decodedJson;
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
+
+    Future<String> getCity(BuildContext context) async {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    final token = userProvider.user?.token;
+
+
+    final response = await http.get(
+      Uri.parse('$baseUrl/profile/city'),
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+    );
+    if (response.statusCode == 200) {
+      return response.body;
     } else {
       throw Exception('Failed to load data');
     }

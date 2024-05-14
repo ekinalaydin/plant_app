@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:plant_app/screens/camera_screen.dart';
+import 'package:plant_app/services/user_provider.dart';
 import 'package:plant_app/services/weather_provider.dart';
 // import 'package:plant_app/screens/home_screen.dart';
 import 'package:plant_app/widgets/card.dart';
@@ -17,8 +18,15 @@ class _CardListState extends State<CardList> {
   @override
   void initState() {
     super.initState();
-    Provider.of<WeatherProvider>(context, listen: false)
-        .fetchWeather(); // Trigger the weather API call
+    _fetchWeather();
+  }
+
+  void _fetchWeather() async {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final userProvider = Provider.of<UserProvider>(context, listen: false);
+      await userProvider.initCity(context);
+      Provider.of<WeatherProvider>(context, listen: false).fetchWeather(userProvider.city!);
+    });
   }
 
   String formatDate(String dateString) {
