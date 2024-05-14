@@ -48,7 +48,7 @@ class _CameraScreenState extends State<CameraScreen> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => DiseaseDetection(data: responseList[0]),
+                builder: (context) => DiseaseDetection(data: {...responseList[0], 'file': filePath}),
               ));
         }
       } else {

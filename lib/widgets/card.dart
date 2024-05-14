@@ -34,7 +34,7 @@ class CardWidget extends StatelessWidget {
                           context,
                           MaterialPageRoute(
                             builder: (context) => DiseaseDetection(
-                              data: historyData['responses'][0],
+                              data: {...historyData['responses'][0], 'imageUrl': historyData['imageUrl']},
                             ),
                           ),
                         );

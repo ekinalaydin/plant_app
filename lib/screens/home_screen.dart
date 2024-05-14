@@ -52,10 +52,7 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(18.0),
-        child: CardList(), // SignUpForm widget'ını çağırın
-      ),
+      body: CardList(), // SignUpForm widget'ını çağırın
     );
   }
 }

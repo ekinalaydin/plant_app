@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:plant_app/themes/colors.dart';
@@ -28,13 +30,21 @@ class _DiseaseDetectionState extends State<DiseaseDetection> {
                     bottomLeft: Radius.circular(50.0),
                     bottomRight: Radius.circular(50.0),
                   ),
-                  child: Image.asset(
-                    "lib/assets/images/apple.jpeg",
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height *
-                        0.4, // 40% of the screen height
-                    fit: BoxFit.cover,
-                  ),
+                  child: widget.data['file'] != null
+                      ? Image.file(
+                          File(widget.data['file']),
+                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.height *
+                              0.4, // 40% of the screen height
+                          fit: BoxFit.cover,
+                        )
+                      : (Image.network(
+                          widget.data['imageUrl'],
+                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.height *
+                              0.4, // 40% of the screen height
+                          fit: BoxFit.cover,
+                        )),
                 ),
                 Positioned(
                   top: MediaQuery.of(context)
@@ -125,12 +135,14 @@ class _DiseaseDetectionState extends State<DiseaseDetection> {
                   SizedBox(height: 16),
                   TextSection(
                     title: 'CULTURAL TREATMENT',
-                    content: widget.data['description']['treatments']['cultural'],
+                    content: widget.data['description']['treatments']
+                        ['cultural'],
                   ),
                   SizedBox(height: 16),
                   TextSection(
                     title: 'CHEMICAL TREATMENT',
-                    content: widget.data['description']['treatments']['chemical'],
+                    content: widget.data['description']['treatments']
+                        ['chemical'],
                   ),
                 ],
               ),
@@ -154,6 +166,7 @@ class _DiseaseDetectionState extends State<DiseaseDetection> {
     );
   }
 }
+
 class TextSection extends StatelessWidget {
   final String title;
   final dynamic content; // Accepts either a string or a list of strings
