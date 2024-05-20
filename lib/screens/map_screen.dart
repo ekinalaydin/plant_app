@@ -89,10 +89,13 @@ class _MapScreenState extends State<MapScreen> {
     }
 
     for (int i = 0; i < data.length; i++) {
+      List<Location> locations = await locationFromAddress(data[i]['city']);
+      Location clocation = locations[0];
+
       final LatLng randomLocation = LatLng(
-          location.latitude +
+          clocation.latitude +
               (_random.nextDouble() * 0.1 - 0.05), // Randomize latitude
-          location.longitude +
+          clocation.longitude +
               (_random.nextDouble() * 0.1 - 0.05) // Randomize longitude
           );
       String markerId = 'marker_$i';

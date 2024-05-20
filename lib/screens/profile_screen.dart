@@ -669,7 +669,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               textAlign: TextAlign.start,
                               cursorHeight: 20,
                               decoration: InputDecoration(
-                                hintText: "Occupation",
+                                hintText: "$_occupation",
                                 alignLabelWithHint: true,
                                 hintStyle: GoogleFonts.poppins(),
                                 border: OutlineInputBorder(
