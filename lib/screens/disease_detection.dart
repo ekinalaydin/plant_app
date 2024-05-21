@@ -71,12 +71,8 @@ class _DiseaseDetectionState extends State<DiseaseDetection> {
                           color: Color(
                               0xFF233A38)), // Icon color changed to green for contrast
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => HomeScreen(),
-                          ),
-                        ); // Ensure this context has a Navigator ancestor
+                        Navigator.pop(
+                            context); // Ensure this context has a Navigator ancestor
                       },
                     ),
                   ),

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -166,16 +167,25 @@ class _UserOptionScreenState extends State<UserOptionScreen> {
                   iconData: Icons.insert_comment,
                 )),
             GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
+              onTap: () async {
+                try {
+                  await FirebaseAuth.instance.signOut();
+                  Navigator.of(context).pushReplacement(
                     MaterialPageRoute(builder: (context) => SignInScreen()),
                   );
-                },
-                child: UserOptionsCard(
-                  title: "Log Out ",
-                  iconData: Icons.logout_sharp,
-                )),
+                } catch (e) {
+                  print('Error occurred while logging out: $e');
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                        content: Text('An error occurred while logging out')),
+                  );
+                }
+              },
+              child: UserOptionsCard(
+                title: "Log Out ",
+                iconData: Icons.logout_sharp,
+              ),
+            )
           ],
         ),
       ),
