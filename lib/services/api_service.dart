@@ -9,6 +9,44 @@ import 'package:provider/provider.dart';
 class ApiService {
   static String baseUrl = 'https://plant-f9a21.ey.r.appspot.com';
 
+  // SIGN UP USER
+  Future<dynamic> signUp(
+      BuildContext context,
+      String name,
+      String surname,
+      String email,
+      String username,
+      String password,
+      String? occupation,
+      String gender,
+      String? city) async {
+    final response = await http.post(
+      Uri.parse('$baseUrl/auth/register'),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: json.encode({
+        'email': email,
+        'username': username,
+        'password': password,
+        'occupation': occupation,
+        'gender': gender,
+        'city': city,
+        'name': name,
+        'surname': surname
+      }),
+    );
+
+    // Consider handling other successful status codes or using a range check
+    if (response.statusCode < 200 || response.statusCode > 299) {
+      print(response.body);
+      throw Exception(
+          'Failed to sign up with status code: ${response.statusCode}');
+    }
+
+    return response;
+  }
+
   // GET ALL POSTS
   Future<Map<String, dynamic>> getAllPosts(
       BuildContext context, String? search) async {

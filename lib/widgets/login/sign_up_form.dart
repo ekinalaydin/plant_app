@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:plant_app/helpers/screen_size_helper.dart';
+import 'package:plant_app/screens/login/sign_in_screen.dart';
+import 'package:plant_app/services/api_service.dart';
 import 'package:plant_app/services/user_provider.dart';
 import 'package:plant_app/themes/colors.dart';
 import 'package:plant_app/widgets/bottom_navigation.dart';
@@ -465,7 +467,8 @@ class _SignUpFormState extends State<SignUpForm> {
                       email: _email ?? '',
                       password: _password ?? '',
                       gender: _gender ?? '',
-                      address: _city ?? '',
+                      city: _city ?? '',
+                      occupation: _occupation ?? '',
                     );
                   }
                 },
@@ -498,27 +501,22 @@ class _SignUpFormState extends State<SignUpForm> {
     required String email,
     required String password,
     required String gender,
-    required String address,
     String? occupation,
     String? city,
   }) async {
     try {
-      // Firebase kullanarak kullanıcı kaydı yapın
-      UserCredential credential =
-          await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
+      
+      final credential = await ApiService().signUp(context, name, familyName, email, nickname, password, occupation, gender, city);
 
       // Kullanıcının oluşturulduğunu kontrol edin
-      if (credential.user != null) {
+      if (credential != null) {
         // UserProvider kullanarak uygulama genelinde kullanıcı bilgilerini kaydedin
         final userProvider = Provider.of<UserProvider>(context, listen: false);
 
         // Kayıttan sonra kullanıcıyı anasayfaya yönlendirin
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => BottomNavigation()),
+          MaterialPageRoute(builder: (context) => SignInScreen()),
         );
       }
     } on FirebaseAuthException catch (e) {
