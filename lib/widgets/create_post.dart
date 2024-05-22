@@ -19,6 +19,7 @@ class _PostWidgetState extends State<PostWidget> {
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _askToCommunityController =
       TextEditingController();
+  bool _photoSelected = false;
 
   void _submitPost() async {
     final title = _askToCommunityController.text.trim();
@@ -199,15 +200,17 @@ class _PostWidgetState extends State<PostWidget> {
                             Icons.camera_alt_rounded,
                             color: AppColors.onSurface,
                           ),
-                          onPressed: () {
-                            _selectImage(context);
-                          },
+                          onPressed: _photoSelected
+                              ? null
+                              : () => _selectImage(context),
                           label: Padding(
                             padding: const EdgeInsets.all(6.0),
                             child: Column(
                               children: [
                                 Text(
-                                  "Add your photo!",
+                                  _photoSelected
+                                      ? "Photo is selected!"
+                                      : "Add your photo!",
                                   style: GoogleFonts.poppins(
                                     color: AppColors.onSurface,
                                   ),
@@ -288,6 +291,8 @@ class _PostWidgetState extends State<PostWidget> {
     setState(() {
       if (pickedFile != null) {
         image = File(pickedFile.path);
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text('Image successfully selected from gallery.')));
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
