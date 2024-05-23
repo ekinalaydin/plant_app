@@ -7,7 +7,9 @@ class SignUpScreen extends StatelessWidget {
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(29.9),
-        child: AppBar(),
+        child: AppBar(
+          surfaceTintColor: Colors.transparent,
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
