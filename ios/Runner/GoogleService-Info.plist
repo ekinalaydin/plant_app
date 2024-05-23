@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>API_KEY</key>
-	<string>AIzaSyAu0Ebn0AqlOdeZKnCt1NEuhViAqZigZmI</string>
+	<string>AIzaSyBUb9cB09utD_4_f3aDY9nReAJWokK1EW4</string>
 	<key>GCM_SENDER_ID</key>
-	<string>768714701441</string>
+	<string>324299840486</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.example.plantApp</string>
 	<key>PROJECT_ID</key>
-	<string>plantapp-2ee83</string>
+	<string>plant-f9a21</string>
 	<key>STORAGE_BUCKET</key>
-	<string>plantapp-2ee83.appspot.com</string>
+	<string>plant-f9a21.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:768714701441:ios:792eeeb182c88c46836b80</string>
+	<string>1:324299840486:ios:cf7fd50059f97316379427</string>
 </dict>
 </plist>

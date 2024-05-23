@@ -12,6 +12,7 @@ import 'services/weather_provider.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
+    name: 'plant',
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
