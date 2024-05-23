@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
-
   static const primary =
       Color.fromRGBO(164, 209, 39, 1); // apple-green uygulamanin ana tema rengi
   static const primaryVariant =
@@ -16,6 +15,7 @@ class AppColors {
       1); // antiflash-white (örneğin, kağıt, kartlar) arka plan rengi olarak kullanılır.
   static const error =
       Color.fromRGBO(231, 236, 236, 1); // dark-slate-gray ERROR ARKA PLANI
+  static const Color warning = Color.fromARGB(255, 222, 172, 23);
   static const onPrimary = Color.fromRGBO(
       253, 254, 251, 1); // baby-powder PRIMARY UZERINDEKILERIN RENGI.
   static const onSecondary =

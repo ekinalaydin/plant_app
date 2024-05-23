@@ -17,14 +17,97 @@ class SignInForm extends StatefulWidget {
 
 class _SignInFormState extends State<SignInForm> {
   final _formKey = GlobalKey<FormState>();
-  String _email = '';
+  String _emailOrUsername = '';
   String _password = '';
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  bool _rememberMe = false;
+
+  String? _validateEmailOrUsername(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'This field is required';
+    }
+
+    // Regular expression for email validation
+    final RegExp emailRegExp = RegExp(
+      r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
+    );
+
+    // Regular expression for username validation (example: alphanumeric and underscores, 3-16 characters)
+    final RegExp usernameRegExp = RegExp(
+      r'^[a-zA-Z0-9_]{3,16}$',
+    );
+
+    if (emailRegExp.hasMatch(value)) {
+      return null; // Valid email
+    } else if (usernameRegExp.hasMatch(value)) {
+      return null; // Valid username
+    } else {
+      return 'Please enter a valid email or username';
+    }
+  }
+
+  String? _validatePassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'This field is required';
+    } else if (value.length < 4 || value.length > 12) {
+      return 'Your password must be between 4-12 characters';
+    }
+    return null;
+  }
+
+  Future<void> _processFormData(String email, String password) async {
+    try {
+      // FirebaseAuth kullanarak kullanıcı girişi yap
+      final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      // Eğer kullanıcı bilgisi null değilse ve kullanıcı "Beni Hatırla" işlevini seçtiyse
+      if (credential.user != null) {
+        // UserProvider'ı kullanarak kullanıcı bilgilerini kaydetme
+        final userProvider = Provider.of<UserProvider>(context, listen: false);
+        String? token =
+            await credential.user!.getIdToken(); // Token alınır ve beklenir
+        userProvider.login(
+          credential.user!.displayName ?? '',
+          credential.user!.uid,
+          token ?? '',
+        );
+        // Kullanıcı girişi başarılı olduktan sonra ana sayfaya yönlendir
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => BottomNavigation()),
+        );
+      }
+    } on FirebaseAuthException catch (e) {
+      // FirebaseAuth'tan gelen hataları işle
+      String errorMessage = 'An error occurred. Please try again later.';
+      if (e.code == 'user-not-found') {
+        errorMessage = 'No user found for that email.';
+      } else if (e.code == 'wrong-password') {
+        errorMessage = 'Wrong password provided for that user.';
+      }
+      // Kullanıcıya hata mesajı göster
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(errorMessage)),
+      );
+    }
+  }
+
+  void _submitForm() {
+    if (_formKey.currentState?.validate() ?? false) {
+      // Form is valid, proceed with further actions (e.g., authentication)
+      print('Form is valid');
+      // Add your form submission code here
+    } else {
+      print('Form is invalid');
+    }
+  }
 
   @override
   void initState() {
     super.initState();
+    // _loadUserEmailAndPassword();
   }
 
   @override
@@ -57,29 +140,27 @@ class _SignInFormState extends State<SignInForm> {
                         ),
                       ),
                       // Hoşgeldiniz Metni
-                      Flexible(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Hello',
-                              style: GoogleFonts.poppins(
-                                color: AppColors.onSurface,
-                                fontSize: screenWidth / 16,
-                                fontWeight: FontWeight.bold,
-                              ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Hello',
+                            style: GoogleFonts.poppins(
+                              color: AppColors.onSurface,
+                              fontSize: screenWidth / 16,
+                              fontWeight: FontWeight.bold,
                             ),
-                            Text(
-                              "Let's Learn More About Plants",
-                              style: GoogleFonts.poppins(
-                                color: AppColors.onSurface,
-                                fontSize: screenWidth / 22,
-                                fontWeight: FontWeight.w500,
-                              ),
+                          ),
+                          Text(
+                            "Let's Learn More About Plants",
+                            style: GoogleFonts.poppins(
+                              color: AppColors.onSurface,
+                              fontSize: screenWidth / 22,
+                              fontWeight: FontWeight.w500,
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -87,7 +168,7 @@ class _SignInFormState extends State<SignInForm> {
                 TextFormField(
                   controller: _emailController,
                   decoration: InputDecoration(
-                    labelText: 'E-mail*',
+                    labelText: 'E-mail or Username*',
                     labelStyle: GoogleFonts.poppins(
                       color: AppColors.onSurface,
                     ),
@@ -109,23 +190,30 @@ class _SignInFormState extends State<SignInForm> {
                       ),
                     ),
                   ),
-                  cursorColor: Colors.black, // İmleç rengi burada ayarlanıyor
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your e-mail or username';
-                    }
-                    return null;
-                  },
+                  cursorColor: Colors.black,
+                  validator: _validateEmailOrUsername,
                   onChanged: (value) {
-                    _email = value;
+                    setState(() {
+                      _emailOrUsername = value;
+                    });
                   },
                 ),
+                // Error message for email or username
+                if (_validateEmailOrUsername(_emailOrUsername) != null)
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8.0),
+                    child: Text(
+                      _validateEmailOrUsername(
+                          _emailOrUsername)!, // Display the error message
+                      style: GoogleFonts.poppins(color: AppColors.warning),
+                    ),
+                  ),
                 SizedBox(height: 8.0),
                 TextFormField(
                   controller: _passwordController,
                   decoration: InputDecoration(
                     labelText: 'Password*',
-                    // helperText: 'Your password must be between 4-12 characters',
+                    helperText: 'Your password must be between 4-12 characters',
                     labelStyle: GoogleFonts.poppins(
                       color: AppColors.onSurface,
                     ),
@@ -147,7 +235,7 @@ class _SignInFormState extends State<SignInForm> {
                       ),
                     ),
                   ),
-                  cursorColor: Colors.black, // İmleç rengi burada ayarlanıyor
+                  cursorColor: Colors.black,
                   obscureText: true,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -158,8 +246,45 @@ class _SignInFormState extends State<SignInForm> {
                     return null;
                   },
                   onChanged: (value) {
-                    _password = value;
+                    setState(() {
+                      _password = value;
+                    });
                   },
+                ),
+
+                if (_validatePassword(_password) != null)
+                  Padding(
+                    padding: const EdgeInsets.only(left: 12.0),
+                    child: Text(
+                      _validatePassword(_password)!,
+                      style: GoogleFonts.poppins(color: AppColors.warning),
+                    ),
+                  ),
+                Row(
+                  children: <Widget>[
+                    Checkbox(
+                      value: _rememberMe,
+                      onChanged: (bool? value) {
+                        setState(() {
+                          _rememberMe = value!;
+                        });
+                      },
+                      fillColor:
+                          MaterialStateProperty.resolveWith<Color?>((states) {
+                        if (states.contains(MaterialState.selected)) {
+                          return AppColors.primary; // Seçili durumda kutu rengi
+                        }
+                        return Colors
+                            .transparent; // Diğer durumlarda kutu rengi
+                      }),
+                    ),
+                    Text(
+                      'Remember me',
+                      style: GoogleFonts.poppins(
+                        color: AppColors.onSurface,
+                      ),
+                    ),
+                  ],
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
@@ -195,9 +320,7 @@ class _SignInFormState extends State<SignInForm> {
                         height: screenHeight / 20,
                         child: ElevatedButton(
                           onPressed: () async {
-                            if (_formKey.currentState!.validate()) {
-                              await _processFormData(_email, _password);
-                            }
+                            await _processFormData(_emailOrUsername, _password);
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppColors.primary,
@@ -251,42 +374,5 @@ class _SignInFormState extends State<SignInForm> {
         ),
       ),
     );
-  }
-
-  Future<void> _processFormData(String email, String password) async {
-    try {
-      // FirebaseAuth kullanarak kullanıcı girişi yap
-      final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-      // Eğer kullanıcı bilgisi null değilse ve kullanıcı "Beni Hatırla" işlevini seçtiyse
-      if (credential.user != null) {
-        // UserProvider'ı kullanarak kullanıcı bilgilerini kaydetme
-        final userProvider = Provider.of<UserProvider>(context, listen: false);
-        String? token =
-            await credential.user!.getIdToken(); // Token alınır ve beklenir
-        userProvider.login(
-          credential.user!.displayName ?? '',
-          credential.user!.uid,
-          token ?? '',
-        );
-        // Kullanıcı girişi başarılı olduktan sonra ana sayfaya yönlendir
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => BottomNavigation()),
-        );
-      }
-    } on FirebaseAuthException catch (e) {
-      // FirebaseAuth'tan gelen hataları işle
-      String errorMessage = 'An error occurred. Please try again later.';
-      if (e.code == 'user-not-found') {
-      } else if (e.code == 'wrong-password') {
-        errorMessage = 'Wrong password provided for that user.';
-      }
-      // Kullanıcıya hata mesajı göster
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(errorMessage)),
-      );
-    }
   }
 }
