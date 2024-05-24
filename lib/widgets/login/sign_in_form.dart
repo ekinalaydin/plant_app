@@ -50,8 +50,6 @@ class _SignInFormState extends State<SignInForm> {
   String? _validatePassword(String? value) {
     if (value == null || value.isEmpty) {
       return 'This field is required';
-    } else if (value.length < 4 || value.length > 12) {
-      return 'Your password must be between 4-12 characters';
     }
     return null;
   }
@@ -213,7 +211,6 @@ class _SignInFormState extends State<SignInForm> {
                   controller: _passwordController,
                   decoration: InputDecoration(
                     labelText: 'Password*',
-                    helperText: 'Your password must be between 4-12 characters',
                     labelStyle: GoogleFonts.poppins(
                       color: AppColors.onSurface,
                     ),
@@ -256,7 +253,8 @@ class _SignInFormState extends State<SignInForm> {
                   Padding(
                     padding: const EdgeInsets.only(left: 12.0),
                     child: Text(
-                      _validatePassword(_password)!,
+                      _validatePassword(
+                          _password)!, // Display the error message
                       style: GoogleFonts.poppins(color: AppColors.warning),
                     ),
                   ),
