@@ -1,9 +1,11 @@
 import 'dart:convert';
+import 'dart:ffi';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:plant_app/models/comment.dart';
 import 'package:plant_app/services/user_provider.dart';
+import 'package:plant_app/services/weather_provider.dart';
 import 'package:provider/provider.dart';
 
 class ApiService {
@@ -39,7 +41,7 @@ class ApiService {
 
     // Consider handling other successful status codes or using a range check
     if (response.statusCode < 200 || response.statusCode > 299) {
-      print(response.body);
+      print(response);
       throw Exception(
           'Failed to sign up with status code: ${response.statusCode}');
     }
@@ -297,6 +299,46 @@ class ApiService {
     if (response.statusCode < 200 || response.statusCode > 299) {
       throw Exception(
           'Failed to post comment with status code: ${response.statusCode}');
+    }
+  }
+
+  Future<void> updateProfile(
+      BuildContext context,
+      String? name,
+      String? surname,
+      String? email,
+      String? username,
+      String? password,
+      String? city,
+      String? occupation) async {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    final token = userProvider.user?.token;
+
+    final response = await http.post(
+      Uri.parse('$baseUrl/profile/${userProvider.user?.userId}'),
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json',
+      },
+      body: json.encode({
+        'email': email,
+        'password': password,
+        'username': username,
+        'occupation': occupation,
+        'city': city,
+        'name': name,
+        'surname': surname,
+      }),
+    );
+    if (response.statusCode == 200) {
+      if (username != null) userProvider.user?.username = username;
+      if (city != null) {
+        userProvider.city = city;
+        await Provider.of<WeatherProvider>(context, listen: false)
+            .fetchWeather(city);
+      }
+    } else {
+      throw Exception('Failed to load data');
     }
   }
 }

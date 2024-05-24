@@ -17,11 +17,10 @@ class SignInForm extends StatefulWidget {
 
 class _SignInFormState extends State<SignInForm> {
   final _formKey = GlobalKey<FormState>();
-  String _emailOrUsername = '';
+  String _email = '';
   String _password = '';
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  bool _rememberMe = false;
 
   String? _validateEmailOrUsername(String? value) {
     if (value == null || value.isEmpty) {
@@ -43,7 +42,7 @@ class _SignInFormState extends State<SignInForm> {
     } else if (usernameRegExp.hasMatch(value)) {
       return null; // Valid username
     } else {
-      return 'Please enter a valid email or username';
+      return 'Please enter a valid email';
     }
   }
 
@@ -107,7 +106,6 @@ class _SignInFormState extends State<SignInForm> {
   @override
   void initState() {
     super.initState();
-    // _loadUserEmailAndPassword();
   }
 
   @override
@@ -140,27 +138,29 @@ class _SignInFormState extends State<SignInForm> {
                         ),
                       ),
                       // Hoşgeldiniz Metni
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Hello',
-                            style: GoogleFonts.poppins(
-                              color: AppColors.onSurface,
-                              fontSize: screenWidth / 16,
-                              fontWeight: FontWeight.bold,
+                      Flexible(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Hello',
+                              style: GoogleFonts.poppins(
+                                color: AppColors.onSurface,
+                                fontSize: screenWidth / 16,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                          ),
-                          Text(
-                            "Let's Learn More About Plants",
-                            style: GoogleFonts.poppins(
-                              color: AppColors.onSurface,
-                              fontSize: screenWidth / 22,
-                              fontWeight: FontWeight.w500,
+                            Text(
+                              "Let's Learn More About Plants",
+                              style: GoogleFonts.poppins(
+                                color: AppColors.onSurface,
+                                fontSize: screenWidth / 22,
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ],
                   ),
@@ -168,7 +168,7 @@ class _SignInFormState extends State<SignInForm> {
                 TextFormField(
                   controller: _emailController,
                   decoration: InputDecoration(
-                    labelText: 'E-mail or Username*',
+                    labelText: 'E-mail*',
                     labelStyle: GoogleFonts.poppins(
                       color: AppColors.onSurface,
                     ),
@@ -194,17 +194,17 @@ class _SignInFormState extends State<SignInForm> {
                   validator: _validateEmailOrUsername,
                   onChanged: (value) {
                     setState(() {
-                      _emailOrUsername = value;
+                      _email = value;
                     });
                   },
                 ),
                 // Error message for email or username
-                if (_validateEmailOrUsername(_emailOrUsername) != null)
+                if (_validateEmailOrUsername(_email) != null)
                   Padding(
                     padding: const EdgeInsets.only(left: 8.0),
                     child: Text(
                       _validateEmailOrUsername(
-                          _emailOrUsername)!, // Display the error message
+                          _email)!, // Display the error message
                       style: GoogleFonts.poppins(color: AppColors.warning),
                     ),
                   ),
@@ -261,32 +261,6 @@ class _SignInFormState extends State<SignInForm> {
                     ),
                   ),
                 Row(
-                  children: <Widget>[
-                    Checkbox(
-                      value: _rememberMe,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          _rememberMe = value!;
-                        });
-                      },
-                      fillColor:
-                          MaterialStateProperty.resolveWith<Color?>((states) {
-                        if (states.contains(MaterialState.selected)) {
-                          return AppColors.primary; // Seçili durumda kutu rengi
-                        }
-                        return Colors
-                            .transparent; // Diğer durumlarda kutu rengi
-                      }),
-                    ),
-                    Text(
-                      'Remember me',
-                      style: GoogleFonts.poppins(
-                        color: AppColors.onSurface,
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     GestureDetector(
@@ -320,7 +294,7 @@ class _SignInFormState extends State<SignInForm> {
                         height: screenHeight / 20,
                         child: ElevatedButton(
                           onPressed: () async {
-                            await _processFormData(_emailOrUsername, _password);
+                            await _processFormData(_email, _password);
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppColors.primary,

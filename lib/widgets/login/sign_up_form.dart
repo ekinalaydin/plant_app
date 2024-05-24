@@ -7,7 +7,6 @@ import 'package:plant_app/screens/login/sign_in_screen.dart';
 import 'package:plant_app/services/api_service.dart';
 import 'package:plant_app/services/user_provider.dart';
 import 'package:plant_app/themes/colors.dart';
-import 'package:plant_app/widgets/bottom_navigation.dart';
 import 'package:provider/provider.dart';
 
 class SignUpForm extends StatefulWidget {
@@ -33,7 +32,7 @@ class _SignUpFormState extends State<SignUpForm> {
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
-          padding: EdgeInsets.only(top: 16.0, bottom: 16.0),
+          padding: EdgeInsets.all(16.0),
           child: Form(
             key: _formKey,
             child: Column(
@@ -476,7 +475,7 @@ class _SignUpFormState extends State<SignUpForm> {
                     ),
                   ),
                 ),
-                SizedBox(height: 50.0), // Alt kısma daha fazla boşluk ekledik
+                SizedBox(height: 50.0),
                 SizedBox(
                   width: screenWidth / 1.5,
                   height: screenHeight / 20,
@@ -537,13 +536,31 @@ class _SignUpFormState extends State<SignUpForm> {
 
       // Kullanıcının oluşturulduğunu kontrol edin
       if (credential != null) {
-        // UserProvider kullanarak uygulama genelinde kullanıcı bilgilerini kaydedin
-        final userProvider = Provider.of<UserProvider>(context, listen: false);
-
-        // Kayıttan sonra kullanıcıyı anasayfaya yönlendirin
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => SignInScreen()),
+        // Kullanıcı başarıyla oluşturuldu mesajı göster
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Success'),
+              content: Text('User created successfully!'),
+              actions: <Widget>[
+                TextButton(
+                  child: Text('OK'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    // UserProvider kullanarak uygulama genelinde kullanıcı bilgilerini kaydedin
+                    final userProvider =
+                        Provider.of<UserProvider>(context, listen: false);
+                    // Kayıttan sonra kullanıcıyı giriş sayfasına yönlendirin
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => SignInScreen()),
+                    );
+                  },
+                ),
+              ],
+            );
+          },
         );
       }
     } on FirebaseAuthException catch (e) {

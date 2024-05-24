@@ -154,18 +154,18 @@ class _UserOptionScreenState extends State<UserOptionScreen> {
                   title: "My Favorite Posts",
                   iconData: Icons.favorite,
                 )),
-            GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => UserCommentsScreen()),
-                  );
-                },
-                child: UserOptionsCard(
-                  title: "My Comments",
-                  iconData: Icons.insert_comment,
-                )),
+            // GestureDetector(
+            //     onTap: () {
+            //       Navigator.push(
+            //         context,
+            //         MaterialPageRoute(
+            //             builder: (context) => UserCommentsScreen()),
+            //       );
+            //     },
+            //     child: UserOptionsCard(
+            //       title: "My Comments",
+            //       iconData: Icons.insert_comment,
+            //     )),
             GestureDetector(
               onTap: () async {
                 try {
