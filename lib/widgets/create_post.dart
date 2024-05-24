@@ -15,22 +15,37 @@ class _PostWidgetState extends State<PostWidget> {
   File? image;
   bool _isLoading = false;
   final picker = ImagePicker();
-  final _formKey = GlobalKey<FormState>(); // Define form key
+  final _formKey = GlobalKey<FormState>();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _askToCommunityController =
       TextEditingController();
   bool _photoSelected = false;
+  bool _submitButtonClicked = false;
+
+  bool _isImagePickerActive = false;
+
+  String? _validateField(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'This field is required';
+    }
+    return null;
+  }
+
+  String? _validateImage(File? image) {
+    if (image == null) {
+      return 'Please select an image';
+    }
+    return null;
+  }
 
   void _submitPost() async {
-    final title = _askToCommunityController.text.trim();
-    final content = _descriptionController.text.trim();
-
-    if (title.isEmpty || content.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Title and content cannot be empty!')),
-      );
+    if (!_formKey.currentState!.validate() || _validateImage(image) != null) {
+      setState(() {});
       return;
     }
+
+    final title = _askToCommunityController.text.trim();
+    final content = _descriptionController.text.trim();
 
     setState(() => _isLoading = true);
 
@@ -64,25 +79,25 @@ class _PostWidgetState extends State<PostWidget> {
           padding: const EdgeInsets.fromLTRB(10.0, 60, 10, 30),
           child: Container(
             decoration: BoxDecoration(
-                border: Border.symmetric(),
-                borderRadius: BorderRadius.circular(20),
-                gradient: LinearGradient(
-                  colors: [AppColors.primary, AppColors.primaryVariant],
-                  stops: [0.25, 0.75],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
+              border: Border.symmetric(),
+              borderRadius: BorderRadius.circular(20),
+              gradient: LinearGradient(
+                colors: [AppColors.primary, AppColors.primaryVariant],
+                stops: [0.25, 0.75],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Color.fromRGBO(220, 226, 201, 0.498),
+                  spreadRadius: 10,
+                  blurRadius: 10,
+                  offset: Offset(0, 4),
                 ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Color.fromRGBO(220, 226, 201, 0.498),
-                    spreadRadius: 10,
-                    blurRadius: 10,
-                    offset: Offset(0, 4),
-                  ),
-                ]),
-            width: 440, // Adjust width as needed
-            height: 550, // Adjust height as needed
-
+              ],
+            ),
+            width: 440,
+            height: 550,
             child: Padding(
               padding: const EdgeInsets.all(12.0),
               child: Form(
@@ -91,7 +106,7 @@ class _PostWidgetState extends State<PostWidget> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Text(
-                      "What is your question?",
+                      "What is your question?*",
                       style: GoogleFonts.poppins(
                         fontSize: 18,
                         color: AppColors.onSurface,
@@ -102,6 +117,8 @@ class _PostWidgetState extends State<PostWidget> {
                       child: TextFormField(
                         controller: _askToCommunityController,
                         decoration: InputDecoration(
+                          errorStyle: GoogleFonts.poppins(
+                              color: AppColors.onError, fontSize: 12),
                           filled: true,
                           fillColor: Colors.white,
                           suffixIcon: IconButton(
@@ -122,12 +139,7 @@ class _PostWidgetState extends State<PostWidget> {
                                 style: BorderStyle.solid),
                           ),
                         ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your question';
-                          }
-                          return null;
-                        },
+                        validator: _validateField,
                       ),
                     ),
                     SizedBox(
@@ -135,7 +147,7 @@ class _PostWidgetState extends State<PostWidget> {
                       child: Padding(
                         padding: const EdgeInsets.only(top: 15.0, bottom: 4),
                         child: Text(
-                          "Description",
+                          "Description*",
                           style: GoogleFonts.poppins(
                             fontSize: 18,
                             fontWeight: FontWeight.w800,
@@ -143,16 +155,16 @@ class _PostWidgetState extends State<PostWidget> {
                           ),
                         ),
                       ),
-                    ), //
-                    SizedBox(
-                      width: 400,
-                      height: 200,
+                    ),
+                    Flexible(
                       child: TextFormField(
                         controller: _descriptionController,
                         maxLines: null,
                         expands: true,
                         keyboardType: TextInputType.multiline,
                         decoration: InputDecoration(
+                          errorStyle: GoogleFonts.poppins(
+                              color: AppColors.onError, fontSize: 12),
                           border: UnderlineInputBorder(
                             borderRadius: BorderRadius.circular(12.0),
                             borderSide: BorderSide(style: BorderStyle.none),
@@ -162,7 +174,6 @@ class _PostWidgetState extends State<PostWidget> {
                           suffixIcon: IconButton(
                             icon: Icon(Icons.clear),
                             onPressed: () {
-                              // Clear text field when clear button is pressed
                               _descriptionController.clear();
                             },
                           ),
@@ -172,17 +183,10 @@ class _PostWidgetState extends State<PostWidget> {
                             color: AppColors.onSecondary,
                           ),
                         ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your description';
-                          }
-                          return null;
-                        },
+                        validator: _validateField,
                       ),
                     ),
-                    SizedBox(
-                      height: 10,
-                    ), // Adjust spacing between text fields and camera icon
+                    SizedBox(height: 10),
                     Padding(
                       padding:
                           const EdgeInsets.only(left: 40.0, right: 40, top: 10),
@@ -192,36 +196,72 @@ class _PostWidgetState extends State<PostWidget> {
                           border: Border.all(color: Colors.white),
                           borderRadius: BorderRadius.circular(12.0),
                         ),
-                        width: 40,
+                        width: 80,
                         height: 50,
-                        // alignment: Alignment.center,
-                        child: TextButton.icon(
-                          icon: Icon(
-                            Icons.camera_alt_rounded,
-                            color: AppColors.onSurface,
-                          ),
-                          onPressed: _photoSelected
-                              ? null
-                              : () => _selectImage(context),
-                          label: Padding(
-                            padding: const EdgeInsets.all(6.0),
-                            child: Column(
-                              children: [
-                                Text(
-                                  _photoSelected
-                                      ? "Photo is selected!"
-                                      : "Add your photo!",
-                                  style: GoogleFonts.poppins(
-                                    color: AppColors.onSurface,
-                                  ),
+                        child: Column(
+                          children: [
+                            TextButton.icon(
+                              icon: Icon(
+                                Icons.camera_alt_rounded,
+                                color: AppColors.onSurface,
+                              ),
+                              onPressed: _photoSelected || _isImagePickerActive
+                                  ? null
+                                  : () => _selectImage(context),
+                              label: Padding(
+                                padding: const EdgeInsets.all(2.0),
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      _photoSelected
+                                          ? "Photo is selected!"
+                                          : "Add your photo!*",
+                                      style: GoogleFonts.poppins(
+                                        color: AppColors.onSurface,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    if (_submitButtonClicked &&
+                        !_photoSelected &&
+                        _validateImage(image) != null)
+                      Center(
+                        child: Text(
+                          _validateImage(image)!,
+                          style: GoogleFonts.poppins(
+                            fontSize: 12,
+                            color: AppColors.onError,
+                          ),
+                        ),
+                      ),
+                    if (_photoSelected)
+                      TextButton.icon(
+                        icon: Icon(
+                          Icons.cancel,
+                          color: AppColors.onSurface,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            image = null;
+                            _photoSelected = false;
+                          });
+                        },
+                        label: Padding(
+                          padding: const EdgeInsets.all(6.0),
+                          child: Text(
+                            "Remove photo",
+                            style: GoogleFonts.poppins(
+                              color: AppColors.onSurface,
                             ),
                           ),
                         ),
                       ),
-                    ),
-
                     SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -237,11 +277,11 @@ class _PostWidgetState extends State<PostWidget> {
                             ),
                           ),
                           onPressed: () {
-                            // Clear form fields functionality
                             _descriptionController.clear();
                             _askToCommunityController.clear();
                             setState(() {
                               image = null;
+                              _photoSelected = false;
                             });
                           },
                           label: Text(
@@ -260,11 +300,12 @@ class _PostWidgetState extends State<PostWidget> {
                                 MaterialStateProperty.all(Color(0xFFFFF9DC)),
                           ),
                           onPressed: () {
-                            // Submit form functionality
-                            if (_formKey.currentState!.validate()) {
-                              // Do something with the form data
-                              _submitPost();
-                            }
+                            setState(() {
+                              _submitButtonClicked = true;
+                              if (_formKey.currentState!.validate()) {
+                                _submitPost();
+                              }
+                            });
                           },
                           label: Text(
                             'Submit',
@@ -284,13 +325,21 @@ class _PostWidgetState extends State<PostWidget> {
     );
   }
 
-  // Function to select image
   void _selectImage(BuildContext context) async {
+    if (_isImagePickerActive) return;
+
+    setState(() {
+      _isImagePickerActive = true;
+    });
+
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
 
     setState(() {
+      _isImagePickerActive = false;
+
       if (pickedFile != null) {
         image = File(pickedFile.path);
+        _photoSelected = true;
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text('Image successfully selected from gallery.')));
       } else {
