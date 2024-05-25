@@ -19,6 +19,7 @@ class _SignInFormState extends State<SignInForm> {
   final _formKey = GlobalKey<FormState>();
   String _email = '';
   String _password = '';
+  bool _isPasswordVisible = false;
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
@@ -212,9 +213,21 @@ class _SignInFormState extends State<SignInForm> {
                           width: 2.0,
                         ),
                       ),
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _isPasswordVisible
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _isPasswordVisible = !_isPasswordVisible;
+                          });
+                        },
+                      ),
                     ),
                     cursorColor: Colors.black,
-                    obscureText: true,
+                    obscureText: !_isPasswordVisible,
                     validator: _validatePassword,
                     onChanged: (value) {
                       setState(() {

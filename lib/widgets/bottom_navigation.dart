@@ -9,14 +9,15 @@ import 'package:plant_app/screens/user_option_screen.dart';
 import 'package:plant_app/themes/colors.dart';
 
 class BottomNavigation extends StatefulWidget {
-  BottomNavigation({Key? key}) : super(key: key);
+  final int initialIndex;
+  BottomNavigation({Key? key, this.initialIndex = 0}) : super(key: key);
 
   @override
   _BottomNavigationState createState() => _BottomNavigationState();
 }
 
 class _BottomNavigationState extends State<BottomNavigation> {
-  int _selectedTab = 0;
+  late int _selectedTab;
 
   final List<Widget> _pages = [
     HomeScreen(),
@@ -25,6 +26,12 @@ class _BottomNavigationState extends State<BottomNavigation> {
     MapScreen(),
     UserOptionScreen(),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedTab = widget.initialIndex;
+  }
 
   void _changeTab(int index) {
     setState(() {
@@ -37,7 +44,9 @@ class _BottomNavigationState extends State<BottomNavigation> {
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => CreatePostScreen()),
-      );
+      ).then((_) {
+        _changeTab(1); // Ensure the Community tab is selected after returning
+      });
     } else {
       Navigator.push(
         context,
@@ -52,8 +61,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
       body: _pages[_selectedTab],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedTab,
-        selectedItemColor: AppColors
-            .onSurface, // fixedColor is deprecated, use selectedItemColor
+        selectedItemColor: AppColors.onSurface,
         unselectedItemColor: AppColors.onSecondary,
         showUnselectedLabels: true,
         onTap: _changeTab,

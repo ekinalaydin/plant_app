@@ -56,12 +56,7 @@ class _PostWidgetState extends State<PostWidget> {
           content: Text('Your Question is Submitted!'),
         ),
       );
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => CommunityScreen(),
-        ),
-      );
+      Navigator.pop(context); // Go back to the previous screen
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Failed to submit post: $e')),

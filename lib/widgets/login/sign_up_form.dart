@@ -24,6 +24,7 @@ class _SignUpFormState extends State<SignUpForm> {
   String? _city;
   String? _occupation;
   String? _gender;
+  bool _isPasswordVisible = false;
 
   @override
   Widget build(BuildContext context) {
@@ -247,8 +248,20 @@ class _SignUpFormState extends State<SignUpForm> {
                         width: 2.0,
                       ),
                     ),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _isPasswordVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _isPasswordVisible = !_isPasswordVisible;
+                        });
+                      },
+                    ),
                   ),
-                  obscureText: true,
+                  obscureText: !_isPasswordVisible,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter a password';
@@ -541,11 +554,32 @@ class _SignUpFormState extends State<SignUpForm> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text('Success'),
-              content: Text('User created successfully!'),
+              backgroundColor: AppColors.primary,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0),
+              ),
+              title: Text(
+                'Success',
+                style: GoogleFonts.poppins(
+                  color: AppColors.onPrimary,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              content: Text(
+                'User created successfully! Please sign in!',
+                style: GoogleFonts.poppins(
+                  color: AppColors.onPrimary,
+                ),
+              ),
               actions: <Widget>[
                 TextButton(
-                  child: Text('OK'),
+                  child: Text(
+                    'OK',
+                    style: GoogleFonts.poppins(
+                      color: AppColors.onPrimary,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                   onPressed: () {
                     Navigator.of(context).pop();
                     // UserProvider kullanarak uygulama genelinde kullanıcı bilgilerini kaydedin
