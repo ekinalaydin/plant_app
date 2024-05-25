@@ -12,7 +12,7 @@ class CardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: FutureBuilder<List<dynamic>>(
-        future: ApiService().getMyHistory(context),
+        future: ApiService().getMyHistory(context, 3),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return CircularProgressIndicator();

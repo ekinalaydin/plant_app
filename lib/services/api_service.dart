@@ -159,7 +159,7 @@ class ApiService {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     final token = userProvider.user?.token;
     final response = await http.get(
-      Uri.parse('$baseUrl/profile/likes'),
+      Uri.parse('$baseUrl/profile/likes?search=$search'),
       headers: {
         'Authorization': 'Bearer $token',
       },
@@ -179,7 +179,7 @@ class ApiService {
     final token = userProvider.user?.token;
     print(token);
     final response = await http.get(
-      Uri.parse('$baseUrl/profile/posts'),
+      Uri.parse('$baseUrl/profile/posts?search=$search'),
       headers: {
         'Authorization': 'Bearer $token',
       },
@@ -193,11 +193,11 @@ class ApiService {
   }
 
   //GET HISTORY
-  Future<List<dynamic>> getMyHistory(BuildContext context) async {
+  Future<List<dynamic>> getMyHistory(BuildContext context, int? limit) async {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     final token = userProvider.user?.token;
     final response = await http.get(
-      Uri.parse('$baseUrl/history/'),
+      Uri.parse('$baseUrl/history/?limit=$limit'),
       headers: {
         'Authorization': 'Bearer $token',
       },
