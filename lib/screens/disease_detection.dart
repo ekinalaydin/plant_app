@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:plant_app/screens/camera_screen.dart';
 import 'package:plant_app/themes/colors.dart';
@@ -255,19 +256,28 @@ class TextSection extends StatelessWidget {
           if (showAiPowered) // Conditionally show "AI Powered" subtext and icon
             Row(
               children: [
-                Icon(Icons.smart_toy, color: AppColors.primary, size: 16),
-                SizedBox(width: 4),
                 Text(
-                  'GeminiAI Powered',
+                  'Powered by GeminiAI',
                   style: GoogleFonts.poppins(
-                    color: AppColors.primary,
+                    color: AppColors.secondary,
                     fontSize: 12,
-                    fontWeight: FontWeight.w600,
+                    fontWeight: FontWeight.w300,
                   ),
                 ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 3.0),
+                  child: Container(
+                    width: 20, // Adjust the width as needed
+                    height: 20,
+                    child: Image.asset(
+                      "lib/assets/icons/gemini-icon.png",
+                    ),
+                  ),
+                ),
+                SizedBox(width: 4),
               ],
             ),
-          SizedBox(height: 8),
+          SizedBox(height: 4),
           // Check if content is a list of strings
           if (content is List)
             Column(

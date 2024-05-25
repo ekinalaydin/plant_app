@@ -154,7 +154,8 @@ class ApiService {
   }
 
   // GET FAVORITES
-  Future<Map<String, dynamic>> getFavorites(BuildContext context) async {
+  Future<Map<String, dynamic>> getFavorites(
+      BuildContext context, String? search) async {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     final token = userProvider.user?.token;
     final response = await http.get(
@@ -172,7 +173,8 @@ class ApiService {
   }
 
   // GET MY POSTS
-  Future<Map<String, dynamic>> getMyPosts(BuildContext context) async {
+  Future<Map<String, dynamic>> getMyPosts(
+      BuildContext context, String? search) async {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     final token = userProvider.user?.token;
     print(token);
