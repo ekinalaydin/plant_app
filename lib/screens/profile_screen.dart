@@ -21,7 +21,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   late String? _city = "";
   late String? _occupation = "";
   late String? _gender = "";
-  String? initialOccupationValue;
 
   TextEditingController nameController = TextEditingController();
   TextEditingController surnameController = TextEditingController();
@@ -352,6 +351,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ),
                               ),
                               validator: validateEmail,
+                              controller: emailController,
                               onChanged: (_) {
                                 setState(() {
                                   _isEmailFieldTouched = true;
@@ -405,6 +405,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ),
                               ),
                               validator: validateUsername,
+                              controller: usernameController,
                               onChanged: (_) {
                                 setState(() {
                                   _isUsernameFieldTouched = true;
@@ -455,7 +456,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               onChanged: (value) {
                                 setState(() {
                                   _isNewPasswordFieldTouched = true;
-                                  newPasswordController.text = value;
                                 });
                               },
                               validator: validateNewPassword,
@@ -508,7 +508,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               onChanged: (value) {
                                 setState(() {
                                   _isConfirmPasswordFieldTouched = true;
-                                  confirmPasswordController.text = value;
                                 });
                               },
                               validator: validateConfirmPassword,
@@ -646,6 +645,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               onChanged: (String? value) {
                                 setState(() {
                                   _city = value;
+                                  cityController.text = value ?? '';
                                 });
                               },
                               selectedItem: _city,
@@ -678,7 +678,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               textAlign: TextAlign.start,
                               cursorHeight: 20,
                               decoration: InputDecoration(
-                                hintText: "Occupation",
+                                hintText: _occupation ?? '',
                                 alignLabelWithHint: true,
                                 hintStyle: GoogleFonts.poppins(),
                                 border: OutlineInputBorder(
@@ -693,10 +693,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ),
                                 contentPadding: EdgeInsets.all(9),
                               ),
+                              controller: occupationController,
                               onChanged: (value) {
-                                initialOccupationValue = null;
+                                setState(() {
+                                  _occupation = value;
+                                });
                               },
-                              initialValue: initialOccupationValue,
                             ),
                           ),
                         ],
@@ -750,12 +752,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               onChanged: (String? value) {
                                 setState(() {
                                   _gender = value;
+                                  genderController.text = value ?? '';
                                 });
                               },
                               selectedItem: _gender,
-                              validator: (
-                                String? value,
-                              ) {
+                              validator: (String? value) {
                                 if (value == null || value.isEmpty) {
                                   return 'Please select your gender';
                                 }
@@ -789,6 +790,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         newPasswordController.text,
                         cityController.text,
                         occupationController.text,
+                        genderController.text,
                       );
 
                       ScaffoldMessenger.of(context).showSnackBar(
