@@ -15,11 +15,23 @@ class _UserPostState extends State<UserPost> {
   var items = [];
   var searchHistory = [];
   final TextEditingController searchController = TextEditingController();
+  late Future<dynamic> _future;
 
   @override
   void initState() {
     super.initState();
+    _future = ApiService().getMyPosts(context, null);
     searchController.addListener(queryListener);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (ModalRoute.of(context)!.isCurrent) {
+      setState(() {
+        _future = ApiService().getMyPosts(context, searchController.text);
+      });
+    }
   }
 
   @override
@@ -29,22 +41,12 @@ class _UserPostState extends State<UserPost> {
     searchController.dispose();
   }
 
-  void queryListener() {
-    search(searchController.text);
-  }
+  void queryListener() {}
 
-  void search(String query) {
-    if (query.isEmpty) {
-      setState(() {
-        items = allItems;
-      });
-    } else {
-      setState(() {
-        items = allItems
-            .where((e) => e.toLowerCase().contains(query.toLowerCase()))
-            .toList();
-      });
-    }
+  void search(String query) async {
+    setState(() {
+      _future = ApiService().getMyPosts(context, query);
+    });
   }
 
   @override
@@ -70,14 +72,37 @@ class _UserPostState extends State<UserPost> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Padding(
-            padding: const EdgeInsets.only(bottom: 20, right: 20, left: 20),
-            // child: SizedBox(
-            //   height: 40,
-            // ),
+            padding: const EdgeInsets.only(bottom: 30, right: 20, left: 20),
+            child: SizedBox(
+              height: 40,
+              child: SearchBar(
+                onSubmitted: (query) {
+                  search(query);
+                },
+                surfaceTintColor: MaterialStateProperty.all(AppColors.surface),
+                backgroundColor:
+                    MaterialStateProperty.all(AppColors.background),
+                overlayColor: MaterialStateProperty.all(AppColors.onPrimary),
+                shadowColor:
+                    MaterialStateProperty.all(AppColors.secondaryVariant),
+                controller: searchController,
+                leading: IconButton(
+                  onPressed: () {},
+                  icon: Icon(
+                    Icons.search,
+                    color: AppColors.onSurface,
+                  ),
+                ),
+                hintText: 'Search',
+                textStyle: MaterialStateProperty.all(GoogleFonts.poppins(
+                  color: AppColors.onSurface,
+                )),
+              ),
+            ),
           ),
           Expanded(
             child: FutureBuilder<dynamic>(
-              future: ApiService().getMyPosts(context),
+              future: ApiService().getMyPosts(context, searchController.text),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(child: CircularProgressIndicator());
