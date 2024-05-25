@@ -42,13 +42,16 @@ class _SignInFormState extends State<SignInForm> {
     } else if (usernameRegExp.hasMatch(value)) {
       return null; // Valid username
     } else {
-      return 'Please enter a valid email';
+      return 'Please enter a valid email or username';
     }
   }
 
   String? _validatePassword(String? value) {
     if (value == null || value.isEmpty) {
       return 'This field is required';
+    }
+    if (value.length < 4 || value.length > 12) {
+      return 'Password must be between 4-12 characters';
     }
     return null;
   }
@@ -88,16 +91,6 @@ class _SignInFormState extends State<SignInForm> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(errorMessage)),
       );
-    }
-  }
-
-  void _submitForm() {
-    if (_formKey.currentState?.validate() ?? false) {
-      // Form is valid, proceed with further actions (e.g., authentication)
-      print('Form is valid');
-      // Add your form submission code here
-    } else {
-      print('Form is invalid');
     }
   }
 
@@ -163,126 +156,107 @@ class _SignInFormState extends State<SignInForm> {
                     ],
                   ),
                 ),
-                TextFormField(
-                  controller: _emailController,
-                  decoration: InputDecoration(
-                    labelText: 'E-mail*',
-                    labelStyle: GoogleFonts.poppins(
-                      color: AppColors.onSurface,
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                      borderSide: BorderSide(
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: TextFormField(
+                    controller: _emailController,
+                    decoration: InputDecoration(
+                      labelText: 'E-mail or Username*',
+                      labelStyle: GoogleFonts.poppins(
                         color: AppColors.onSurface,
-                        width: 2.0,
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        borderSide: BorderSide(
+                          color: AppColors.onSurface,
+                          width: 2.0,
+                        ),
+                      ),
+                      errorBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        borderSide: BorderSide(
+                          color: AppColors.onError,
+                          width: 2.0,
+                        ),
                       ),
                     ),
-                    errorBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                      borderSide: BorderSide(
-                        color: AppColors.onError,
-                        width: 2.0,
-                      ),
-                    ),
+                    cursorColor: Colors.black,
+                    validator: _validateEmailOrUsername,
+                    onChanged: (value) {
+                      setState(() {
+                        _email = value;
+                      });
+                    },
                   ),
-                  cursorColor: Colors.black,
-                  validator: _validateEmailOrUsername,
-                  onChanged: (value) {
-                    setState(() {
-                      _email = value;
-                    });
-                  },
                 ),
-                // Error message for email or username
-                if (_validateEmailOrUsername(_email) != null)
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8.0),
-                    child: Text(
-                      _validateEmailOrUsername(
-                          _email)!, // Display the error message
-                      style: GoogleFonts.poppins(color: AppColors.warning),
-                    ),
-                  ),
                 SizedBox(height: 8.0),
-                TextFormField(
-                  controller: _passwordController,
-                  decoration: InputDecoration(
-                    labelText: 'Password*',
-                    labelStyle: GoogleFonts.poppins(
-                      color: AppColors.onSurface,
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                      borderSide: BorderSide(
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: TextFormField(
+                    controller: _passwordController,
+                    decoration: InputDecoration(
+                      labelText: 'Password*',
+                      labelStyle: GoogleFonts.poppins(
                         color: AppColors.onSurface,
-                        width: 2.0,
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        borderSide: BorderSide(
+                          color: AppColors.onSurface,
+                          width: 2.0,
+                        ),
+                      ),
+                      errorBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        borderSide: BorderSide(
+                          color: AppColors.onError,
+                          width: 2.0,
+                        ),
                       ),
                     ),
-                    errorBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                      borderSide: BorderSide(
-                        color: AppColors.onError,
-                        width: 2.0,
-                      ),
-                    ),
+                    cursorColor: Colors.black,
+                    obscureText: true,
+                    validator: _validatePassword,
+                    onChanged: (value) {
+                      setState(() {
+                        _password = value;
+                      });
+                    },
                   ),
-                  cursorColor: Colors.black,
-                  obscureText: true,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter a password';
-                    } else if (value.length < 4 || value.length > 12) {
-                      return 'Your password must be between 4-12 characters';
-                    }
-                    return null;
-                  },
-                  onChanged: (value) {
-                    setState(() {
-                      _password = value;
-                    });
-                  },
                 ),
-
-                if (_validatePassword(_password) != null)
-                  Padding(
-                    padding: const EdgeInsets.only(left: 12.0),
-                    child: Text(
-                      _validatePassword(
-                          _password)!, // Display the error message
-                      style: GoogleFonts.poppins(color: AppColors.warning),
-                    ),
-                  ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ForgotPasswordScreen(),
-                          ),
-                        );
-                        // Forgot Password sayfasına yönlendirme yapılabilir veya başka işlemler gerçekleştirilebilir
-                      },
-                      child: Text(
-                        "Forgot password?",
-                        style: GoogleFonts.poppins(
-                            color: AppColors.onSurface,
-                            decoration: TextDecoration.underline,
-                            fontSize: screenWidth / 30),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ForgotPasswordScreen(),
+                            ),
+                          );
+                          // Forgot Password sayfasına yönlendirme yapılabilir veya başka işlemler gerçekleştirilebilir
+                        },
+                        child: Text(
+                          "Forgot password?",
+                          style: GoogleFonts.poppins(
+                              color: AppColors.onSurface,
+                              decoration: TextDecoration.underline,
+                              fontSize: screenWidth / 30),
+                        ),
                       ),
                     ),
                   ],
                 ),
-                SizedBox(height: 8.0),
-                SizedBox(height: 8.0),
+                SizedBox(height: 16.0),
                 Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -292,7 +266,15 @@ class _SignInFormState extends State<SignInForm> {
                         height: screenHeight / 20,
                         child: ElevatedButton(
                           onPressed: () async {
-                            await _processFormData(_email, _password);
+                            if (_formKey.currentState?.validate() ?? false) {
+                              await _processFormData(_email, _password);
+                            } else {
+                              // Display a message to the user if form is invalid
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                    content: Text('Please correct the errors')),
+                              );
+                            }
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppColors.primary,

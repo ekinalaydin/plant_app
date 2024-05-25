@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:plant_app/screens/camera_screen.dart';
-import 'package:plant_app/screens/home_screen.dart';
 import 'package:plant_app/themes/colors.dart';
+import 'package:plant_app/widgets/bottom_navigation.dart';
 
 class DiseaseDetection extends StatefulWidget {
   final Map<String, dynamic> data;
@@ -21,79 +21,159 @@ class _DiseaseDetectionState extends State<DiseaseDetection> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFFEFF2EA),
-      body: CustomScrollView(
-        slivers: [
-          SliverToBoxAdapter(
-            child: Stack(
-              alignment: Alignment.bottomCenter,
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(50.0),
-                    bottomRight: Radius.circular(50.0),
-                  ),
-                  child: widget.data['file'] != null
-                      ? Image.file(
-                          File(widget.data['file']),
-                          width: MediaQuery.of(context).size.width,
-                          height: MediaQuery.of(context).size.height *
-                              0.4, // 40% of the screen height
-                          fit: BoxFit.cover,
-                        )
-                      : (Image.network(
-                          widget.data['imageUrl'],
-                          width: MediaQuery.of(context).size.width,
-                          height: MediaQuery.of(context).size.height *
-                              0.4, // 40% of the screen height
-                          fit: BoxFit.cover,
-                        )),
-                ),
-                Positioned(
-                  top: MediaQuery.of(context)
-                      .padding
-                      .top, // Adjust for the status bar height
-                  left: 15, // Added some left padding for the button
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Color(0xFFAACC96), // White color background
-                      shape: BoxShape.circle, // Circular shape
-                      boxShadow: [
-                        // Optional: if you want to add a shadow to the button
-                        BoxShadow(
-                          color: Colors.black26,
-                          blurRadius: 4,
-                          offset: Offset(0, 3),
+      body: Column(
+        children: [
+          Expanded(
+            child: CustomScrollView(
+              slivers: [
+                SliverToBoxAdapter(
+                  child: Stack(
+                    alignment: Alignment.bottomCenter,
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(50.0),
+                          bottomRight: Radius.circular(50.0),
                         ),
-                      ],
-                    ),
-                    child: IconButton(
-                      icon: Icon(Icons.arrow_back,
-                          color: Color(
-                              0xFF233A38)), // Icon color changed to green for contrast
-                      onPressed: () {
-                        Navigator.pop(
-                            context); // Ensure this context has a Navigator ancestor
-                      },
-                    ),
+                        child: widget.data['file'] != null
+                            ? Image.file(
+                                File(widget.data['file']),
+                                width: MediaQuery.of(context).size.width,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.4,
+                                fit: BoxFit.cover,
+                              )
+                            : Image.network(
+                                widget.data['imageUrl'],
+                                width: MediaQuery.of(context).size.width,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.4,
+                                fit: BoxFit.cover,
+                              ),
+                      ),
+                      Positioned(
+                        top: MediaQuery.of(context).padding.top,
+                        left: 15,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Color(0xFFAACC96),
+                            shape: BoxShape.circle,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black26,
+                                blurRadius: 4,
+                                offset: Offset(0, 3),
+                              ),
+                            ],
+                          ),
+                          child: IconButton(
+                            icon: Icon(Icons.home, color: Color(0xFF233A38)),
+                            onPressed: () {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => BottomNavigation(),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(bottom: 16),
+                        width: MediaQuery.of(context).size.width,
+                        padding: EdgeInsets.all(8),
+                        child: Column(
+                          children: [
+                            Text(
+                              'Disease Found!',
+                              textAlign: TextAlign.center,
+                              style: GoogleFonts.poppins(
+                                color: AppColors.onPrimary,
+                                fontSize:
+                                    MediaQuery.of(context).size.width / 15,
+                                fontWeight: FontWeight.bold,
+                                shadows: [
+                                  Shadow(
+                                    offset: Offset(1.0, 1.0),
+                                    blurRadius: 3.0,
+                                    color: AppColors.secondaryVariant
+                                        .withOpacity(0.75),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Text(
+                              widget.data['label'],
+                              textAlign: TextAlign.center,
+                              style: GoogleFonts.poppins(
+                                color: AppColors.onPrimary,
+                                fontSize:
+                                    MediaQuery.of(context).size.width / 13,
+                                fontWeight: FontWeight.bold,
+                                shadows: [
+                                  Shadow(
+                                    offset: Offset(1.0, 1.0),
+                                    blurRadius: 3.0,
+                                    color: AppColors.secondaryVariant
+                                        .withOpacity(0.75),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                Container(
-                  margin: EdgeInsets.only(bottom: 16),
-                  width: MediaQuery.of(context).size.width,
-                  padding: EdgeInsets.all(
-                      8), // Padding for text inside the container
-                  child: Text(
-                    widget.data['label'],
-                    textAlign: TextAlign.center,
-                    style: GoogleFonts.poppins(
-                      color: AppColors.onPrimary,
-                      fontSize: MediaQuery.of(context).size.width / 13,
-                      fontWeight: FontWeight.bold,
-                      shadows: [
-                        Shadow(
-                          offset: Offset(1.0, 1.0),
-                          blurRadius: 3.0,
-                          color: AppColors.secondaryVariant.withOpacity(0.75),
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding:
+                        EdgeInsets.all(MediaQuery.of(context).size.width / 12),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Center(
+                          child: Container(
+                            width: MediaQuery.of(context).size.width,
+                            decoration: BoxDecoration(
+                              color: AppColors.background,
+                              borderRadius: BorderRadius.circular(10),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.5),
+                                  spreadRadius: 1,
+                                  blurRadius: 6,
+                                  offset: Offset(0, 3),
+                                ),
+                              ],
+                            ),
+                            padding: EdgeInsets.all(8),
+                            child: TextSection(
+                              title: 'SYMPTOMS',
+                              content: widget.data['description']['symptoms'],
+                              titleStyle: GoogleFonts.poppins(
+                                fontSize:
+                                    MediaQuery.of(context).size.width / 20,
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.onSurface,
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 16),
+                        TextSection(
+                          title: 'CULTURAL TREATMENT',
+                          content: widget.data['description']['treatments']
+                              ['cultural'],
+                          showAiPowered: true,
+                        ),
+                        SizedBox(height: 16),
+                        TextSection(
+                          title: 'CHEMICAL TREATMENT',
+                          content: widget.data['description']['treatments']
+                              ['chemical'],
                         ),
                       ],
                     ),
@@ -102,74 +182,40 @@ class _DiseaseDetectionState extends State<DiseaseDetection> {
               ],
             ),
           ),
-          SliverToBoxAdapter(
+          Container(
+            margin: EdgeInsets.only(bottom: 28),
             child: Padding(
-              padding: EdgeInsets.all(MediaQuery.of(context).size.width / 12),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Center(
-                    child: Container(
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                        color: AppColors.background,
-                        borderRadius: BorderRadius.circular(10),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            spreadRadius: 1,
-                            blurRadius: 6,
-                            offset: Offset(0, 3),
-                          ),
-                        ],
+              padding: const EdgeInsets.all(16.0),
+              child: Align(
+                alignment: Alignment.bottomRight,
+                child: ElevatedButton.icon(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => CameraScreen(),
                       ),
-                      padding: EdgeInsets.all(8),
-                      child: TextSection(
-                        title: 'SYMPTOMS',
-                        content: widget.data['description']['symptoms'],
-                        titleStyle: GoogleFonts.poppins(
-                            fontSize: MediaQuery.of(context).size.width / 20,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.onSurface),
-                      ),
+                    );
+                  },
+                  icon: Icon(Icons.camera_alt),
+                  label: Text(
+                    'Health Check',
+                    style: GoogleFonts.poppins(color: AppColors.onBackground),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.primary,
+                    padding:
+                        EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
                     ),
                   ),
-                  SizedBox(height: 16),
-                  TextSection(
-                    title: 'CULTURAL TREATMENT',
-                    content: widget.data['description']['treatments']
-                        ['cultural'],
-                  ),
-                  SizedBox(height: 16),
-                  TextSection(
-                    title: 'CHEMICAL TREATMENT',
-                    content: widget.data['description']['treatments']
-                        ['chemical'],
-                  ),
-                ],
+                ),
               ),
             ),
-          )
+          ),
         ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => CameraScreen(),
-            ),
-          );
-        },
-        label: Text(
-          'Health Check',
-          style: GoogleFonts.poppins(color: AppColors.onBackground),
-        ),
-        icon: Icon(Icons.camera_alt),
-        backgroundColor:
-            AppColors.primary, // Use the color from your screenshot
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }
@@ -179,6 +225,7 @@ class TextSection extends StatelessWidget {
   final dynamic content; // Accepts either a string or a list of strings
   final TextStyle? titleStyle; // Optional custom style for the title
   final TextStyle? contentStyle; // Optional custom style for the content
+  final bool showAiPowered; // Flag to show "AI Powered"
 
   const TextSection({
     Key? key,
@@ -186,6 +233,7 @@ class TextSection extends StatelessWidget {
     required this.content,
     this.titleStyle,
     this.contentStyle,
+    this.showAiPowered = false,
   }) : super(key: key);
 
   @override
@@ -204,6 +252,21 @@ class TextSection extends StatelessWidget {
                   fontSize: 18,
                 ),
           ),
+          if (showAiPowered) // Conditionally show "AI Powered" subtext and icon
+            Row(
+              children: [
+                Icon(Icons.smart_toy, color: AppColors.primary, size: 16),
+                SizedBox(width: 4),
+                Text(
+                  'GeminiAI Powered',
+                  style: GoogleFonts.poppins(
+                    color: AppColors.primary,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
           SizedBox(height: 8),
           // Check if content is a list of strings
           if (content is List)

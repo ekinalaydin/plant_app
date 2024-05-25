@@ -62,9 +62,9 @@ class _CardListState extends State<CardList> {
                           : CircularProgressIndicator();
                     }),
                 SizedBox(height: 20),
-                buildHistorySection(),
-                SizedBox(height: 20),
                 buildPlantAssistanceSection(context),
+                SizedBox(height: 20),
+                buildHistorySection(),
               ],
             ),
           ),

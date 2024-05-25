@@ -34,7 +34,10 @@ class CardWidget extends StatelessWidget {
                           context,
                           MaterialPageRoute(
                             builder: (context) => DiseaseDetection(
-                              data: {...historyData['responses'][0], 'imageUrl': historyData['imageUrl']},
+                              data: {
+                                ...historyData['responses'][0],
+                                'imageUrl': historyData['imageUrl']
+                              },
                             ),
                           ),
                         );
@@ -49,7 +52,7 @@ class CardWidget extends StatelessWidget {
                                 NetworkImage(historyData['imageUrl']),
                           ),
                           title: Text(
-                            'Disease Name: ${historyData['responses'][0]['label']}',
+                            'Disease: ${historyData['responses'][0]['label']}',
                             style: GoogleFonts.poppins(
                               fontSize: 14,
                               fontWeight: FontWeight.w500,
@@ -75,7 +78,10 @@ class CardWidget extends StatelessWidget {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => DiseaseDetection(
-                                    data: {...historyData['responses'][0], 'imageUrl': historyData['imageUrl']},
+                                    data: {
+                                      ...historyData['responses'][0],
+                                      'imageUrl': historyData['imageUrl']
+                                    },
                                   ),
                                 ),
                               );
