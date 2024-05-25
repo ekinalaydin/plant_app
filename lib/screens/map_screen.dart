@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:geocoding/geocoding.dart';
@@ -20,6 +21,7 @@ class _MapScreenState extends State<MapScreen> {
   String style = '';
   bool _locationPermissionGranted = false;
   final Set<Marker> _markers = {};
+  final Map<String, List<Marker>> _citymarkers = {};
   final Random _random = Random();
   final Map<String, Color> _markerColors = {};
   late CameraPosition _initialCameraPosition = CameraPosition(
@@ -31,6 +33,15 @@ class _MapScreenState extends State<MapScreen> {
   void initState() {
     super.initState();
     _getCoordinates();
+    _loadMapStyle();
+  }
+
+  Future<void> _loadMapStyle() async {
+    // Load the map style from the asset file
+    String mapstyle = await rootBundle.loadString('lib/assets/style/map.json');
+    setState(() {
+      style = mapstyle;
+    });
   }
 
   void _getCoordinates() async {
@@ -69,14 +80,62 @@ class _MapScreenState extends State<MapScreen> {
 
   void _addRandomMarkers() async {
     List<dynamic> data = await ApiService().getHistorySummary(context);
-
+    Map<String, int> counts = {};
     _markers.clear();
     _markerColors.clear();
     List<Color> colors = [
-      //Colors.red,
-      //Colors.green,
-      //Colors.blue
-    ]; // Marker colors
+      Colors.red,
+      Colors.green,
+      Colors.blue,
+      Colors.yellow,
+      Colors.cyan,
+      Colors.purple,
+      Colors.orange,
+      Colors.pink,
+      Colors.brown,
+      Colors.grey,
+      Colors.teal,
+      Colors.lime,
+      Colors.indigo,
+      Colors.amber,
+      Colors.deepOrange,
+      Colors.deepPurple,
+      Colors.lightBlue,
+      Colors.lightGreen,
+      Colors.black,
+      Colors.white,
+      Colors.blueGrey,
+      Colors.redAccent,
+      Colors.greenAccent,
+      Colors.blueAccent,
+      Colors.yellowAccent,
+      Colors.cyanAccent,
+      Colors.purpleAccent,
+      Colors.orangeAccent,
+      Colors.pinkAccent,
+      Colors.brown[300]!,
+      Colors.grey[300]!,
+      Colors.tealAccent,
+      Colors.limeAccent,
+      Colors.indigoAccent,
+      Colors.amberAccent,
+      Colors.deepOrangeAccent,
+      Colors.deepPurpleAccent,
+      Colors.lightBlueAccent,
+      Colors.lightGreenAccent,
+      Colors.blueGrey[300]!,
+      Colors.red[300]!,
+      Colors.green[300]!,
+      Colors.blue[300]!,
+      Colors.yellow[300]!,
+      Colors.cyan[300]!,
+      Colors.purple[300]!,
+      Colors.orange[300]!,
+      Colors.pink[300]!,
+      Colors.brown[100]!,
+      Colors.grey[100]!,
+      Colors.teal[300]!,
+    ];
 
     Random random = Random();
     for (int i = 0; i < data.length; i++) {
@@ -107,16 +166,21 @@ class _MapScreenState extends State<MapScreen> {
         ),
         icon: BitmapDescriptor.defaultMarkerWithHue(_colorToHue(colors[i])),
       );
+
+      if (_citymarkers.containsKey(data[i]['city'])) {
+        _citymarkers[data[i]['city']]?.add(newMarker);
+      } else {
+        _citymarkers[data[i]['city']] = [newMarker];
+      }
       _markers.add(newMarker);
       _markerColors[markerId] = colors[i];
     }
     setState(() {}); // Trigger rebuild to display markers
   }
 
-  // Helper method to convert Color to BitmapDescriptor Hue
   double _colorToHue(Color color) {
-    HSVColor hsvColor = HSVColor.fromColor(color);
-    return hsvColor.hue;
+    // Convert Flutter Color to hue for Google Maps marker
+    return HSVColor.fromColor(color).hue;
   }
 
   void _showMarkerInfo(BuildContext context) {
@@ -127,14 +191,38 @@ class _MapScreenState extends State<MapScreen> {
           title: Text('Diseases on Map'),
           content: SingleChildScrollView(
             child: ListBody(
-              children: _markers.map((marker) {
-                Color color =
-                    _markerColors[marker.markerId.value] ?? Colors.black;
-                return Row(
+              children: _citymarkers.entries.map((entry) {
+                String city = entry.key;
+                List<Marker> markers = entry.value;
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Icon(Icons.location_on, color: color),
-                    SizedBox(width: 10),
-                    Text(marker.infoWindow.title ?? 'No Title'),
+                    Text(
+                      city,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
+                    SizedBox(height: 8),
+                    ...markers.map((marker) {
+                      Color color =
+                          _markerColors[marker.markerId.value] ?? Colors.black;
+                      String title = marker.infoWindow.title ?? 'No Title';
+                      return Row(
+                        children: <Widget>[
+                          Icon(Icons.location_on, color: color),
+                          SizedBox(width: 10),
+                          Flexible(
+                            child: Text(
+                              title,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      );
+                    }).toList(),
+                    SizedBox(height: 16), // Add spacing between cities
                   ],
                 );
               }).toList(),

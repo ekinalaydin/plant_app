@@ -38,3 +38,4 @@ flutter:
   assets:
     - lib/assets/images/
     - lib/assets/icons/
+    - lib/assets/style/
