@@ -115,6 +115,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     ApiService().getProfile(context).then((data) {
       setState(() {
+        authorProfileImage = 'lib/assets/images/default_pp.png';
         _username = data['username'];
         _email = data['email'];
         _city = data['city'];
@@ -164,6 +165,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ListTile(
               contentPadding: EdgeInsets.only(right: 10, left: 20),
               leading: CircleAvatar(
+                backgroundImage: AssetImage(
+                    authorProfileImage ?? 'lib/assets/images/default_pp.png'),
                 radius: 30,
                 backgroundColor: Color.fromARGB(255, 201, 224, 109),
               ),

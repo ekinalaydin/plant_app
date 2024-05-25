@@ -175,8 +175,9 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                                   contentPadding: EdgeInsets.symmetric(
                                       vertical: 0, horizontal: 8),
                                   leading: CircleAvatar(
-                                      backgroundImage: NetworkImage(
-                                          widget.authorProfileImage)),
+                                    backgroundImage:
+                                        AssetImage(widget.authorProfileImage),
+                                  ),
                                   title: Text(widget.authorName,
                                       style: GoogleFonts.poppins(
                                           fontWeight: FontWeight.bold,
