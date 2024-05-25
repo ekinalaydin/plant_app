@@ -76,10 +76,8 @@ class _SignInFormState extends State<SignInForm> {
     } on FirebaseAuthException catch (e) {
       // FirebaseAuth'tan gelen hataları işle
       String errorMessage = 'An error occurred. Please try again later.';
-      if (e.code == 'user-not-found') {
-        errorMessage = 'No user found for that email.';
-      } else if (e.code == 'wrong-password') {
-        errorMessage = 'Wrong password provided for that user.';
+      if (e.code == 'invalid-credential') {
+        errorMessage = 'Email or password is invalid.';
       }
       // Kullanıcıya hata mesajı göster
       ScaffoldMessenger.of(context).showSnackBar(
