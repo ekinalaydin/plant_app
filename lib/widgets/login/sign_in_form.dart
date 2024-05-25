@@ -22,7 +22,7 @@ class _SignInFormState extends State<SignInForm> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  String? _validateEmailOrUsername(String? value) {
+  String? _validateEmail(String? value) {
     if (value == null || value.isEmpty) {
       return 'This field is required';
     }
@@ -32,17 +32,10 @@ class _SignInFormState extends State<SignInForm> {
       r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
     );
 
-    // Regular expression for username validation (example: alphanumeric and underscores, 3-16 characters)
-    final RegExp usernameRegExp = RegExp(
-      r'^[a-zA-Z0-9_]{3,16}$',
-    );
-
     if (emailRegExp.hasMatch(value)) {
       return null; // Valid email
-    } else if (usernameRegExp.hasMatch(value)) {
-      return null; // Valid username
     } else {
-      return 'Please enter a valid email or username';
+      return 'Please enter a valid email';
     }
   }
 
@@ -161,7 +154,7 @@ class _SignInFormState extends State<SignInForm> {
                   child: TextFormField(
                     controller: _emailController,
                     decoration: InputDecoration(
-                      labelText: 'E-mail or Username*',
+                      labelText: 'E-mail*',
                       labelStyle: GoogleFonts.poppins(
                         color: AppColors.onSurface,
                       ),
@@ -184,7 +177,7 @@ class _SignInFormState extends State<SignInForm> {
                       ),
                     ),
                     cursorColor: Colors.black,
-                    validator: _validateEmailOrUsername,
+                    validator: _validateEmail,
                     onChanged: (value) {
                       setState(() {
                         _email = value;

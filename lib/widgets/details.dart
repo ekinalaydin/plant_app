@@ -77,36 +77,37 @@ class _DetailsWidgetState extends State<DetailsWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        title: Text(
-          widget.postTitle,
-          style: GoogleFonts.poppins(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: AppColors.onSurface),
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            Color.fromARGB(255, 218, 242, 168),
+            Color.fromRGBO(237, 240, 230, 1),
+            Color.fromRGBO(236, 237, 228, 1),
+            Color.fromRGBO(235, 233, 221, 1),
+            Color.fromRGBO(237, 234, 221, 1),
+            Color.fromARGB(255, 218, 242, 168)
+          ],
+          stops: [0.1, 0.25, 0.5, 0.75, 0.8, 1.0],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomCenter,
         ),
       ),
-      extendBodyBehindAppBar: false,
-      body: SafeArea(
-        child: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                Color.fromARGB(255, 218, 242, 168),
-                Color.fromRGBO(237, 240, 230, 1),
-                Color.fromRGBO(236, 237, 228, 1),
-                Color.fromRGBO(235, 233, 221, 1),
-                Color.fromRGBO(237, 234, 221, 1),
-                Color.fromARGB(255, 218, 242, 168)
-              ],
-              stops: [0.1, 0.25, 0.5, 0.75, 0.8, 1.0],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomCenter,
-            ),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          title: Text(
+            widget.postTitle,
+            style: GoogleFonts.poppins(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: AppColors.onSurface),
           ),
+        ),
+        extendBodyBehindAppBar: false,
+        body: SafeArea(
           child: SingleChildScrollView(
             child: Stack(
               children: [
@@ -174,7 +175,7 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                                   contentPadding: EdgeInsets.symmetric(
                                       vertical: 0, horizontal: 8),
                                   leading: CircleAvatar(
-                                      backgroundImage: AssetImage(
+                                      backgroundImage: NetworkImage(
                                           widget.authorProfileImage)),
                                   title: Text(widget.authorName,
                                       style: GoogleFonts.poppins(
@@ -192,7 +193,8 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                                     widget.isLiked ? Colors.red : Colors.grey,
                                 onPressed: () async {
                                   try {
-                                    await ApiService().likePost(widget.postId, context);
+                                    await ApiService()
+                                        .likePost(widget.postId, context);
                                     setState(() {
                                       widget.isLiked = !widget.isLiked;
                                     });
