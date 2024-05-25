@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:ffi';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -310,7 +309,8 @@ class ApiService {
       String? username,
       String? password,
       String? city,
-      String? occupation) async {
+      String? occupation,
+      String? gender) async {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     final token = userProvider.user?.token;
 
@@ -328,6 +328,7 @@ class ApiService {
         'city': city,
         'name': name,
         'surname': surname,
+        'gender': gender
       }),
     );
     if (response.statusCode == 200) {
