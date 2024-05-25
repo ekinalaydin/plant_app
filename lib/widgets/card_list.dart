@@ -59,7 +59,7 @@ class _CardListState extends State<CardList> {
                     builder: (_, weatherData, __) {
                       return weatherData != null
                           ? buildWeatherInfo(context, weatherData)
-                          : CircularProgressIndicator();
+                          : CircularProgressIndicator(); // Empty space when no data
                     }),
                 SizedBox(height: 20),
                 buildPlantAssistanceSection(context),
@@ -74,9 +74,12 @@ class _CardListState extends State<CardList> {
   }
 
   Widget buildWeatherRow(BuildContext context, String? dateString) {
-    var date = dateString != null ? formatDate(dateString) : 'Loading date...';
-    var weatherProvider = Provider.of<WeatherProvider>(context,
-        listen: false); // Use listen: false here
+    if (dateString == null) {
+      return SizedBox.shrink(); // Return empty space if dateString is null
+    }
+
+    var date = formatDate(dateString);
+    var weatherProvider = Provider.of<WeatherProvider>(context, listen: false);
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
@@ -91,9 +94,9 @@ class _CardListState extends State<CardList> {
         SizedBox(width: 25),
         weatherProvider.weatherData != null
             ? Image.asset(
-                'lib/assets/icons/${weatherProvider.weatherData!['days'][0]['icon']}.png', // Dynamic icon based on condition
+                'lib/assets/icons/${weatherProvider.weatherData!['days'][0]['icon']}.png',
               )
-            : CircularProgressIndicator(),
+            : SizedBox.shrink(), // Return empty space if weather data is null
       ],
     );
   }
