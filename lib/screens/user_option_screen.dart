@@ -5,7 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:plant_app/screens/login/sign_in_screen.dart';
 
 import 'package:plant_app/screens/profile_screen.dart';
-import 'package:plant_app/screens/user_comments_screen.dart';
+import 'package:plant_app/screens/user_history_screen.dart';
 import 'package:plant_app/screens/user_favorites_screen.dart';
 import 'package:plant_app/screens/user_posts.dart';
 import 'package:plant_app/services/api_service.dart';
@@ -154,18 +154,18 @@ class _UserOptionScreenState extends State<UserOptionScreen> {
                   title: "My Favorite Posts",
                   iconData: Icons.favorite,
                 )),
-            // GestureDetector(
-            //     onTap: () {
-            //       Navigator.push(
-            //         context,
-            //         MaterialPageRoute(
-            //             builder: (context) => UserCommentsScreen()),
-            //       );
-            //     },
-            //     child: UserOptionsCard(
-            //       title: "My Comments",
-            //       iconData: Icons.insert_comment,
-            //     )),
+            GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => UserCommentsScreen()),
+                  );
+                },
+                child: UserOptionsCard(
+                  title: "My History",
+                  iconData: Icons.history,
+                )),
             GestureDetector(
               onTap: () async {
                 try {
