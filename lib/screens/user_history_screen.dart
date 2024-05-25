@@ -99,7 +99,7 @@ class _UserCommentsScreenState extends State<UserCommentsScreen> {
         ),
         Center(
           child: FutureBuilder<List<dynamic>>(
-            future: ApiService().getMyHistory(context, 3),
+            future: ApiService().getMyHistory(context, 200),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return CircularProgressIndicator();
