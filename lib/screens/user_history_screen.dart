@@ -69,7 +69,6 @@ class _UserCommentsScreenState extends State<UserCommentsScreen> {
         ),
       ),
       body: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
         child:
             Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
           Padding(
@@ -103,7 +102,8 @@ class _UserCommentsScreenState extends State<UserCommentsScreen> {
           ),
           Center(
             child: FutureBuilder<List<dynamic>>(
-              future: ApiService().getMyHistory(context, 200),
+              future: ApiService()
+                  .getMyHistory(context, 200, searchController.text),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return CircularProgressIndicator();
