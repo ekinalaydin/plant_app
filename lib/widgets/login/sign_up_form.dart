@@ -101,6 +101,7 @@ class _SignUpFormState extends State<SignUpForm> {
                                 width: 2.0,
                               ),
                             ),
+                            errorStyle: TextStyle(fontSize: 11),
                             errorBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10.0),
                               borderSide: BorderSide(
@@ -112,6 +113,9 @@ class _SignUpFormState extends State<SignUpForm> {
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Please enter your name';
+                            }
+                            if (value.length < 2) {
+                              return 'At least 2 characters ';
                             }
                             return null;
                           },
@@ -149,6 +153,9 @@ class _SignUpFormState extends State<SignUpForm> {
                             if (value == null || value.isEmpty) {
                               return 'Please enter your surname';
                             }
+                            if (value.length < 2) {
+                              return 'At least 2 characters ';
+                            }
                             return null;
                           },
                           onSaved: (value) {
@@ -185,6 +192,9 @@ class _SignUpFormState extends State<SignUpForm> {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your username';
                     }
+                    if (value.length < 3) {
+                      return 'At least 3 characters ';
+                    }
                     return null;
                   },
                   onSaved: (value) {
@@ -218,6 +228,12 @@ class _SignUpFormState extends State<SignUpForm> {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your e-mail';
                     }
+                    // Regular expression for validating an email address
+                    final emailRegExp =
+                        RegExp(r'^[a-zA-Z0-9._]+@[a-zA-Z0-9]+\.[a-zA-Z]+');
+                    if (!emailRegExp.hasMatch(value)) {
+                      return 'Please enter a valid e-mail address';
+                    }
                     return null;
                   },
                   onSaved: (value) {
@@ -241,6 +257,7 @@ class _SignUpFormState extends State<SignUpForm> {
                         width: 2.0,
                       ),
                     ),
+                    errorStyle: TextStyle(fontSize: 11),
                     errorBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
                       borderSide: BorderSide(
@@ -415,7 +432,7 @@ class _SignUpFormState extends State<SignUpForm> {
                 SizedBox(height: 8.0),
                 TextFormField(
                   decoration: InputDecoration(
-                    labelText: 'Occupation',
+                    labelText: 'Occupation*',
                     labelStyle: GoogleFonts.poppins(color: AppColors.onSurface),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
@@ -554,21 +571,21 @@ class _SignUpFormState extends State<SignUpForm> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              backgroundColor: AppColors.primary,
+              backgroundColor: AppColors.surface,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0),
               ),
               title: Text(
                 'Success',
                 style: GoogleFonts.poppins(
-                  color: AppColors.onPrimary,
+                  color: AppColors.secondary,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               content: Text(
                 'User created successfully! Please sign in!',
                 style: GoogleFonts.poppins(
-                  color: AppColors.onPrimary,
+                  color: AppColors.secondary,
                 ),
               ),
               actions: <Widget>[

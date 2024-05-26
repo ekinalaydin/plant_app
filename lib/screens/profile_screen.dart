@@ -2,6 +2,7 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:plant_app/services/api_service.dart';
+import 'package:plant_app/themes/colors.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -194,7 +195,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             Form(
               key: _formKey,
               child: SingleChildScrollView(
-                padding: const EdgeInsets.only(top: 1.0, left: 10, right: 10),
+                padding: const EdgeInsets.only(top: 1.0, left: 14, right: 14),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
@@ -220,12 +221,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   SizedBox(
                                       height: 65,
                                       child: TextFormField(
+                                          style: GoogleFonts.poppins(),
                                           textAlign: TextAlign.start,
                                           cursorHeight: 20,
                                           decoration: InputDecoration(
                                             hintText: "$_name ",
                                             hintStyle: GoogleFonts.poppins(
-                                                fontWeight: FontWeight.w500),
+                                                fontWeight: FontWeight.w400),
                                             border: OutlineInputBorder(
                                               borderRadius:
                                                   BorderRadius.circular(10.0),
@@ -274,6 +276,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   SizedBox(
                                       height: 65,
                                       child: TextFormField(
+                                          style: GoogleFonts.poppins(),
                                           textAlign: TextAlign.start,
                                           cursorHeight: 20,
                                           decoration: InputDecoration(
@@ -323,6 +326,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             height: 60,
                             width: double.infinity,
                             child: TextFormField(
+                              style: GoogleFonts.poppins(),
                               textAlign: TextAlign.start,
                               cursorHeight: 20,
                               decoration: InputDecoration(
@@ -377,6 +381,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             height: 60,
                             width: double.infinity,
                             child: TextFormField(
+                              style: GoogleFonts.poppins(),
                               textAlign: TextAlign.start,
                               cursorHeight: 20,
                               decoration: InputDecoration(
@@ -675,6 +680,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             height: 50,
                             width: double.infinity,
                             child: TextFormField(
+                              style: GoogleFonts.poppins(),
                               textAlign: TextAlign.start,
                               cursorHeight: 20,
                               decoration: InputDecoration(
@@ -807,11 +813,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     }
                   }
                 },
+                style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.all(AppColors.primaryVariant),
+                ),
                 child: Text(
                   "Save Changes",
                   style: GoogleFonts.poppins(
-                      color: Color.fromRGBO(34, 58, 51, 40),
-                      fontWeight: FontWeight.bold),
+                      color: AppColors.onSurface, fontWeight: FontWeight.bold),
                 ),
               ),
             ),
