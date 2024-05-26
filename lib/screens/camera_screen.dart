@@ -53,7 +53,7 @@ class _CameraScreenState extends State<CameraScreen> {
         if (responseList.isNotEmpty) {
           print(responseList);
 
-          Navigator.push(
+          Navigator.pushReplacement(
               context,
               MaterialPageRoute(
                 builder: (context) => DiseaseDetection(

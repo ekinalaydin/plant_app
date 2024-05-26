@@ -167,14 +167,15 @@ class _DiseaseDetectionState extends State<DiseaseDetection> {
                 ],
               ),
               child: IconButton(
-                icon: Icon(Icons.home, color: AppColors.secondary),
+                icon: Icon(Icons.arrow_back, color: AppColors.secondary),
                 onPressed: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => BottomNavigation(),
-                    ),
-                  );
+                  Navigator.pop(context);
+                  // Navigator.pushReplacement(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //     builder: (context) => BottomNavigation(),
+                  //   ),
+                  // );
                 },
               ),
             ),
