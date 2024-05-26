@@ -614,18 +614,15 @@ class _SignUpFormState extends State<SignUpForm> {
           },
         );
       }
-    } on FirebaseAuthException catch (e) {
+    } on FormatException catch (e) {
       // Burada bir hata mesajı göster
       String errorMessage = 'An error occurred. Please try again later.';
-      if (e.code == 'email-already-in-use') {
+      if (e.message == 'EMAIL_ALREADY_EXISTS') {
         errorMessage =
             'The email address is already in use by another account.';
-      } else if (e.code == 'invalid-email') {
-        errorMessage = 'The email address is not valid.';
-      } else if (e.code == 'operation-not-allowed') {
-        errorMessage = 'Email/password accounts are not enabled.';
-      } else if (e.code == 'weak-password') {
-        errorMessage = 'The password is too weak.';
+      } else if (e.message == 'USERNAME_ALREADY_EXISTS') {
+        errorMessage =
+            'The username is already in use by another account.';
       }
 
       // Hata mesajını kullanıcıya göster

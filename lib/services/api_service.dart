@@ -40,9 +40,9 @@ class ApiService {
 
     // Consider handling other successful status codes or using a range check
     if (response.statusCode < 200 || response.statusCode > 299) {
-      print(response);
-      throw Exception(
-          'Failed to sign up with status code: ${response.statusCode}');
+      var body = response.body;
+      var message = jsonDecode(body)['message'];
+      throw FormatException(message);
     }
 
     return response;
