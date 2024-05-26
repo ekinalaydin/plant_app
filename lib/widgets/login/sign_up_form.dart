@@ -25,6 +25,8 @@ class _SignUpFormState extends State<SignUpForm> {
   String? _occupation;
   String? _gender;
   bool _isPasswordVisible = false;
+  String? _usernameError;
+  String? _emailError;
 
   @override
   Widget build(BuildContext context) {
@@ -187,6 +189,7 @@ class _SignUpFormState extends State<SignUpForm> {
                         width: 2.0,
                       ),
                     ),
+                    errorText: _usernameError,
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -223,6 +226,7 @@ class _SignUpFormState extends State<SignUpForm> {
                         width: 2.0,
                       ),
                     ),
+                    errorText: _emailError,
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -432,7 +436,7 @@ class _SignUpFormState extends State<SignUpForm> {
                 SizedBox(height: 8.0),
                 TextFormField(
                   decoration: InputDecoration(
-                    labelText: 'Occupation*',
+                    labelText: 'Occupation',
                     labelStyle: GoogleFonts.poppins(color: AppColors.onSurface),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
@@ -560,13 +564,26 @@ class _SignUpFormState extends State<SignUpForm> {
     String? occupation,
     String? city,
   }) async {
-    try {
-      final credential = await ApiService().signUp(context, name, familyName,
-          email, nickname, password, occupation, gender, city);
+    setState(() {
+      _usernameError = null;
+      _emailError = null;
+    });
 
-      // Kullanıcının oluşturulduğunu kontrol edin
+    try {
+      final credential = await ApiService().signUp(
+        context,
+        name,
+        familyName,
+        email,
+        nickname,
+        password,
+        occupation,
+        gender,
+        city,
+      );
+
+      // Handle successful signup
       if (credential != null) {
-        // Kullanıcı başarıyla oluşturuldu mesajı göster
         showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -599,10 +616,8 @@ class _SignUpFormState extends State<SignUpForm> {
                   ),
                   onPressed: () {
                     Navigator.of(context).pop();
-                    // UserProvider kullanarak uygulama genelinde kullanıcı bilgilerini kaydedin
                     final userProvider =
                         Provider.of<UserProvider>(context, listen: false);
-                    // Kayıttan sonra kullanıcıyı giriş sayfasına yönlendirin
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(builder: (context) => SignInScreen()),
@@ -615,19 +630,24 @@ class _SignUpFormState extends State<SignUpForm> {
         );
       }
     } on FormatException catch (e) {
-      // Burada bir hata mesajı göster
-      String errorMessage = 'An error occurred. Please try again later.';
-      if (e.message == 'EMAIL_ALREADY_EXISTS') {
-        errorMessage =
-            'The email address is already in use by another account.';
-      } else if (e.message == 'USERNAME_ALREADY_EXISTS') {
-        errorMessage =
-            'The username is already in use by another account.';
-      }
-
-      // Hata mesajını kullanıcıya göster
+      // Pass the error message back to the form
+      setState(() {
+        if (e.message == 'EMAIL_ALREADY_EXISTS') {
+          _emailError =
+              'The email address is already in use by another account.';
+        } else if (e.message == 'USERNAME_ALREADY_EXISTS') {
+          _usernameError = 'The username is already in use by another account.';
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+                content: Text('An error occurred. Please try again later.')),
+          );
+        }
+      });
+    } catch (e) {
+      // Handle other exceptions
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(errorMessage)),
+        SnackBar(content: Text('An error occurred. Please try again later.')),
       );
     }
   }

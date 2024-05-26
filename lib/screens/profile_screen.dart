@@ -142,7 +142,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        surfaceTintColor: Colors.transparent,
+        backgroundColor: AppColors.background,
         title: Text(
           "Profile Settings",
           style: GoogleFonts.poppins(
