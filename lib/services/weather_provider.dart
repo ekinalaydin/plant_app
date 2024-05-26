@@ -26,4 +26,8 @@ class WeatherProvider with ChangeNotifier {
     _weatherData = data;
     notifyListeners();
   }
+
+  void reset() {
+    _weatherData = null;
+  }
 }

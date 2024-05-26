@@ -9,10 +9,13 @@ import 'package:plant_app/screens/user_history_screen.dart';
 import 'package:plant_app/screens/user_favorites_screen.dart';
 import 'package:plant_app/screens/user_posts.dart';
 import 'package:plant_app/services/api_service.dart';
+import 'package:plant_app/services/user_provider.dart';
+import 'package:plant_app/services/weather_provider.dart';
 
 import 'package:plant_app/themes/colors.dart';
 
 import 'package:plant_app/widgets/user_options_card.dart';
+import 'package:provider/provider.dart';
 
 class UserOptionScreen extends StatefulWidget {
   @override
@@ -170,6 +173,8 @@ class _UserOptionScreenState extends State<UserOptionScreen> {
               onTap: () async {
                 try {
                   await FirebaseAuth.instance.signOut();
+                  Provider.of<UserProvider>(context, listen: false).logout();
+                  Provider.of<WeatherProvider>(context, listen: false).reset();
                   Navigator.of(context).pushReplacement(
                     MaterialPageRoute(builder: (context) => SignInScreen()),
                   );

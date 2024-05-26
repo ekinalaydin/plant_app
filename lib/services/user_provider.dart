@@ -22,6 +22,7 @@ class UserProvider with ChangeNotifier {
 
   void logout() {
     _user = null;
+    _city = null;
     notifyListeners();
   }
 
