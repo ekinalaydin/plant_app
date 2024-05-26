@@ -204,9 +204,10 @@ class _DiseaseDetectionState extends State<DiseaseDetection> {
                           //       color: AppColors.onBackground),
                           // ),
                           style: ElevatedButton.styleFrom(
-                              backgroundColor: AppColors.primaryVariant,
+                              backgroundColor:
+                                  AppColors.primaryVariant.withOpacity(0.43),
                               padding: EdgeInsets.symmetric(
-                                  vertical: 12.0, horizontal: 24.0),
+                                  vertical: 12.0, horizontal: 14.0),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10.0),
                               ))))))

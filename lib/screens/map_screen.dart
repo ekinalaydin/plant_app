@@ -3,11 +3,13 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:plant_app/services/api_service.dart';
 import 'package:plant_app/services/user_provider.dart';
+import 'package:plant_app/themes/colors.dart';
 import 'package:provider/provider.dart';
 
 class MapScreen extends StatefulWidget {
@@ -188,7 +190,11 @@ class _MapScreenState extends State<MapScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Diseases on Map'),
+          backgroundColor: AppColors.background,
+          title: Text(
+            'Diseases on Map',
+            style: GoogleFonts.poppins(fontSize: 19),
+          ),
           content: SingleChildScrollView(
             child: ListBody(
               children: _citymarkers.entries.map((entry) {
@@ -199,7 +205,7 @@ class _MapScreenState extends State<MapScreen> {
                   children: <Widget>[
                     Text(
                       city,
-                      style: TextStyle(
+                      style: GoogleFonts.poppins(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
                       ),
@@ -215,6 +221,9 @@ class _MapScreenState extends State<MapScreen> {
                           SizedBox(width: 10),
                           Flexible(
                             child: Text(
+                              style: GoogleFonts.poppins(
+                                fontSize: 13,
+                              ),
                               title,
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -230,7 +239,10 @@ class _MapScreenState extends State<MapScreen> {
           ),
           actions: <Widget>[
             TextButton(
-              child: Text('Close'),
+              child: Text(
+                'Close',
+                style: GoogleFonts.poppins(color: AppColors.onSurface),
+              ),
               onPressed: () {
                 Navigator.of(context).pop();
               },
