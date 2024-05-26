@@ -234,32 +234,32 @@ class _SignInFormState extends State<SignInForm> {
                     },
                   ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ForgotPasswordScreen(),
-                            ),
-                          );
-                          // Forgot Password sayfasına yönlendirme yapılabilir veya başka işlemler gerçekleştirilebilir
-                        },
-                        child: Text(
-                          "Forgot password?",
-                          style: GoogleFonts.poppins(
-                              color: AppColors.onSurface,
-                              decoration: TextDecoration.underline,
-                              fontSize: screenWidth / 30),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.end,
+                //   children: [
+                //     Padding(
+                //       padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                //       child: GestureDetector(
+                //         onTap: () {
+                //           Navigator.push(
+                //             context,
+                //             MaterialPageRoute(
+                //               builder: (context) => ForgotPasswordScreen(),
+                //             ),
+                //           );
+                //           // Forgot Password sayfasına yönlendirme yapılabilir veya başka işlemler gerçekleştirilebilir
+                //         },
+                //         child: Text(
+                //           "Forgot password?",
+                //           style: GoogleFonts.poppins(
+                //               color: AppColors.onSurface,
+                //               decoration: TextDecoration.underline,
+                //               fontSize: screenWidth / 30),
+                //         ),
+                //       ),
+                //     ),
+                //   ],
+                // ),
                 SizedBox(height: 16.0),
                 Center(
                   child: Column(
