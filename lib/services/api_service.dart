@@ -193,11 +193,11 @@ class ApiService {
   }
 
   //GET HISTORY
-  Future<List<dynamic>> getMyHistory(BuildContext context, int? limit) async {
+  Future<List<dynamic>> getMyHistory(BuildContext context, int? limit, String? search) async {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     final token = userProvider.user?.token;
     final response = await http.get(
-      Uri.parse('$baseUrl/history/?limit=$limit'),
+      Uri.parse('$baseUrl/history/?limit=${limit ?? ''}&search=${search ?? ''}'),
       headers: {
         'Authorization': 'Bearer $token',
       },

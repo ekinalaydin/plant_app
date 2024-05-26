@@ -15,12 +15,12 @@ class _UserCommentsScreenState extends State<UserCommentsScreen> {
   var items = [];
   var searchHistory = [];
   final TextEditingController searchController = TextEditingController();
-  late Future<dynamic> _future;
+  late Future<List<dynamic>> _future;
 
   @override
   void initState() {
     super.initState();
-    _future = ApiService().getMyHistory(context, 20);
+    _future = ApiService().getMyHistory(context, null, null);
     searchController.addListener(queryListener);
   }
 
@@ -29,7 +29,7 @@ class _UserCommentsScreenState extends State<UserCommentsScreen> {
     super.didChangeDependencies();
     if (ModalRoute.of(context)!.isCurrent) {
       setState(() {
-        _future = ApiService().getMyHistory(context, 20);
+        _future = ApiService().getMyHistory(context, null, null);
       });
     }
   }
@@ -45,7 +45,7 @@ class _UserCommentsScreenState extends State<UserCommentsScreen> {
 
   void search(String query) async {
     setState(() {
-      _future = ApiService().getMyHistory(context, 20);
+      _future = ApiService().getMyHistory(context, null, query);
     });
   }
 
@@ -99,7 +99,7 @@ class _UserCommentsScreenState extends State<UserCommentsScreen> {
         ),
         Center(
           child: FutureBuilder<List<dynamic>>(
-            future: ApiService().getMyHistory(context, 200),
+            future: _future,
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return CircularProgressIndicator();
