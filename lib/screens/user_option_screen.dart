@@ -69,6 +69,7 @@ class _UserOptionScreenState extends State<UserOptionScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        surfaceTintColor: Colors.transparent,
         backgroundColor: AppColors.background,
         title: Text(
           'User Profile',
@@ -79,7 +80,7 @@ class _UserOptionScreenState extends State<UserOptionScreen> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 35),
+        padding: const EdgeInsets.only(right: 15.0, left: 15, top: 35),
         child: ListView(
           padding: EdgeInsets.all(6.0),
           children: [
@@ -94,34 +95,6 @@ class _UserOptionScreenState extends State<UserOptionScreen> {
                     fontWeight: FontWeight.w700),
               ),
             ),
-            // ListTile(
-            //   contentPadding: EdgeInsets.only(right: 5, left: 5),
-            //   leading: CircleAvatar(
-            //     radius: 30,
-            //     backgroundColor: AppColors.primaryVariant,
-            //   ),
-            //   title: Row(
-            //     children: [
-            //       Text(
-            //         "$_name $_surname",
-            //         style: GoogleFonts.poppins(
-            //           fontWeight: FontWeight.w600,
-            //           fontSize: 18,
-            //           color: AppColors.onSurface,
-            //         ),
-            //       ),
-            //       Text("")
-            //     ],
-            //   ),
-            //   subtitle: Text(
-            //     "$_username | $_email | $_city",
-            //     style: GoogleFonts.poppins(
-            //       fontWeight: FontWeight.w400,
-            //       fontSize: 14,
-            //       color: AppColors.onSurface,
-            //     ),
-            //   ),
-            // ),
             GestureDetector(
                 onTap: () {
                   Navigator.push(
@@ -171,19 +144,55 @@ class _UserOptionScreenState extends State<UserOptionScreen> {
                 )),
             GestureDetector(
               onTap: () async {
-                try {
-                  await FirebaseAuth.instance.signOut();
-                  Provider.of<UserProvider>(context, listen: false).logout();
-                  Provider.of<WeatherProvider>(context, listen: false).reset();
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (context) => SignInScreen()),
-                  );
-                } catch (e) {
-                  print('Error occurred while logging out: $e');
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                        content: Text('An error occurred while logging out')),
-                  );
+                bool shouldLogout = await showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      backgroundColor: AppColors.background,
+                      title: Text(
+                        'Confirm Logout',
+                        style: TextStyle(color: AppColors.onSurface),
+                      ),
+                      content: Text(
+                        'Are you sure you want to log out?',
+                        style: TextStyle(color: AppColors.onSurface),
+                      ),
+                      actions: [
+                        TextButton(
+                          child: Text('No',
+                              style: TextStyle(color: AppColors.primary)),
+                          onPressed: () {
+                            Navigator.of(context).pop(false);
+                          },
+                        ),
+                        TextButton(
+                          child: Text('Yes',
+                              style: TextStyle(color: AppColors.primary)),
+                          onPressed: () {
+                            Navigator.of(context).pop(true);
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                );
+
+                if (shouldLogout) {
+                  try {
+                    await FirebaseAuth.instance.signOut();
+                    Provider.of<UserProvider>(context, listen: false).logout();
+                    Provider.of<WeatherProvider>(context, listen: false)
+                        .reset();
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (context) => SignInScreen()),
+                    );
+                  } catch (e) {
+                    print('Error occurred while logging out: $e');
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                          content: Text('An error occurred while logging out')),
+                    );
+                  }
                 }
               },
               child: UserOptionsCard(
