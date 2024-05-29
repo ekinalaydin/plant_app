@@ -53,13 +53,18 @@ class _PostWidgetState extends State<PostWidget> {
       await ApiService().postCommunity(context, title, content, image!);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Your Question is Submitted!'),
+          content: Text('Your Question is Submitted!',
+              style: GoogleFonts.poppins(color: Colors.green)),
         ),
       );
       Navigator.pop(context); // Go back to the previous screen
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to submit post: $e')),
+        SnackBar(
+            content: Text(
+          'Failed to submit post: $e',
+          style: GoogleFonts.poppins(color: Colors.red),
+        )),
       );
     } finally {
       setState(() => _isLoading = false);
@@ -336,11 +341,17 @@ class _PostWidgetState extends State<PostWidget> {
         image = File(pickedFile.path);
         _photoSelected = true;
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text('Image successfully selected from gallery.')));
+            content: Text(
+          'Image successfully selected from gallery.',
+          style: GoogleFonts.poppins(color: Colors.green),
+        )));
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('No image selected from gallery.'),
+            content: Text(
+              'No image selected from gallery.',
+              style: GoogleFonts.poppins(color: Colors.red),
+            ),
           ),
         );
       }

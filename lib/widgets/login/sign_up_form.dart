@@ -640,14 +640,21 @@ class _SignUpFormState extends State<SignUpForm> {
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-                content: Text('An error occurred. Please try again later.')),
+                content: Text(
+              'An error occurred. Please try again later.',
+              style: GoogleFonts.poppins(color: Colors.red),
+            )),
           );
         }
       });
     } catch (e) {
       // Handle other exceptions
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('An error occurred. Please try again later.')),
+        SnackBar(
+            content: Text(
+          'An error occurred. Please try again later.',
+          style: GoogleFonts.poppins(color: Colors.red),
+        )),
       );
     }
   }

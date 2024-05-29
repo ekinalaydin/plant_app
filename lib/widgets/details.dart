@@ -43,8 +43,11 @@ class _DetailsWidgetState extends State<DetailsWidget> {
   void _submitComment() async {
     final newComment = _commentController.text.trim();
     if (newComment.isEmpty) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('Comment cannot be empty!')));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(
+        'Comment cannot be empty!',
+        style: GoogleFonts.poppins(color: Colors.red),
+      )));
       return;
     }
 
@@ -54,8 +57,11 @@ class _DetailsWidgetState extends State<DetailsWidget> {
       await ApiService().postComment(widget.postId, context, newComment);
       _commentController.clear();
       await _fetchComments(); // Fetch comments again after a successful post
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Comment posted successfully!')));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(
+        'Comment posted successfully!',
+        style: GoogleFonts.poppins(color: Colors.green),
+      )));
     } catch (e) {
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text(e.toString())));

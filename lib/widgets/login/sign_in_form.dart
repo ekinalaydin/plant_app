@@ -81,7 +81,11 @@ class _SignInFormState extends State<SignInForm> {
       }
       // Kullanıcıya hata mesajı göster
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(errorMessage)),
+        SnackBar(
+            content: Text(
+          errorMessage,
+          style: GoogleFonts.poppins(color: Colors.red),
+        )),
       );
     }
   }
@@ -276,7 +280,10 @@ class _SignInFormState extends State<SignInForm> {
                               // Display a message to the user if form is invalid
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
-                                    content: Text('Please correct the errors')),
+                                    content: Text(
+                                  'Please correct the errors',
+                                  style: GoogleFonts.poppins(color: Colors.red),
+                                )),
                               );
                             }
                           },

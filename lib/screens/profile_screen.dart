@@ -802,13 +802,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text('Your Changes are Saved!'),
+                          content: Text(
+                            'Your Changes are Saved!',
+                            style: GoogleFonts.poppins(color: Colors.green),
+                          ),
                         ),
                       );
                     } catch (error) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text('Failed to save changes: $error'),
+                          content: Text(
+                            'Failed to save changes: $error',
+                            style: GoogleFonts.poppins(color: Colors.red),
+                          ),
                         ),
                       );
                     }

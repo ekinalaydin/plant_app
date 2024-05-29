@@ -151,7 +151,7 @@ class _UserOptionScreenState extends State<UserOptionScreen> {
                       backgroundColor: AppColors.background,
                       title: Text(
                         'Confirm Logout',
-                        style: TextStyle(color: AppColors.onSurface),
+                        style: GoogleFonts.poppins(color: AppColors.onSurface),
                       ),
                       content: Text(
                         'Are you sure you want to log out?',
@@ -160,14 +160,16 @@ class _UserOptionScreenState extends State<UserOptionScreen> {
                       actions: [
                         TextButton(
                           child: Text('No',
-                              style: TextStyle(color: AppColors.primary)),
+                              style: GoogleFonts.poppins(
+                                  color: AppColors.primary)),
                           onPressed: () {
                             Navigator.of(context).pop(false);
                           },
                         ),
                         TextButton(
                           child: Text('Yes',
-                              style: TextStyle(color: AppColors.primary)),
+                              style: GoogleFonts.poppins(
+                                  color: AppColors.primary)),
                           onPressed: () {
                             Navigator.of(context).pop(true);
                           },
@@ -190,7 +192,10 @@ class _UserOptionScreenState extends State<UserOptionScreen> {
                     print('Error occurred while logging out: $e');
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                          content: Text('An error occurred while logging out')),
+                          content: Text(
+                        'An error occurred while logging out',
+                        style: GoogleFonts.poppins(color: Colors.red),
+                      )),
                     );
                   }
                 }

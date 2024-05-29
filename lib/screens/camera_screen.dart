@@ -46,7 +46,11 @@ class _CameraScreenState extends State<CameraScreen> {
             decodedList.cast<Map<String, dynamic>>();
 
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Successfully uploaded image.')),
+          SnackBar(
+              content: Text(
+            'Successfully uploaded image.',
+            style: GoogleFonts.poppins(color: Colors.green),
+          )),
         );
 
         // DiseaseDetection ekranına geçiş yapın
@@ -64,12 +68,21 @@ class _CameraScreenState extends State<CameraScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
               content: Text(
-                  'Image upload failed with status: ${response.statusCode}.')),
+            'Image upload failed with status: ${response.statusCode}.',
+            style: GoogleFonts.poppins(color: Colors.red),
+          )),
         );
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: $e')),
+        SnackBar(
+            backgroundColor: AppColors.secondary,
+            content: Text(
+              'Error: $e',
+              style: GoogleFonts.poppins(
+                color: Colors.red,
+              ),
+            )),
       );
     } finally {
       setState(() {
@@ -91,7 +104,9 @@ class _CameraScreenState extends State<CameraScreen> {
           SnackBar(
             content: Text(
               'No image selected from camera.',
-              style: GoogleFonts.poppins(color: AppColors.onSurface),
+              style: GoogleFonts.poppins(
+                color: Colors.red,
+              ),
             ),
           ),
         );
@@ -111,7 +126,7 @@ class _CameraScreenState extends State<CameraScreen> {
           SnackBar(
             content: Text(
               'No image selected from gallery.',
-              style: GoogleFonts.poppins(color: AppColors.onSurface),
+              style: GoogleFonts.poppins(color: Colors.red),
             ),
           ),
         );
