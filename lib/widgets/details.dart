@@ -295,8 +295,9 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 CircleAvatar(
-                                                  backgroundImage: NetworkImage(
-                                                      widget.imageUrl),
+                                                  backgroundImage: AssetImage(
+                                                    'lib/assets/images/default_pp.png',
+                                                  ),
                                                   radius: 18,
                                                 ),
                                                 SizedBox(width: 10),
