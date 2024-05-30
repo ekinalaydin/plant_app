@@ -237,11 +237,7 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                                     width: 2.0), // Focus state
                               ),
                             ),
-                            onFieldSubmitted: (value) {
-                              if (!_isLoading) {
-                                _submitComment();
-                              }
-                            },
+                            onFieldSubmitted: (value) {},
                           ),
                           SizedBox(
                             height: 20,
